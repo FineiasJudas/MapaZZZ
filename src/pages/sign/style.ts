@@ -13,7 +13,7 @@ export const style = StyleSheet.create({
         width: 50,
         height: 50,
         resizeMode: 'contain',
-        marginBottom: 80
+        marginBottom: 60
         
     },
     // Botão de login com Google
@@ -54,7 +54,7 @@ export const style = StyleSheet.create({
         height: 45,
         borderWidth: 1,
         borderRadius: 10,
-        borderColor: '#7F1734',
+        borderColor: '#D9D9D9',
         marginTop: 10,
         paddingHorizontal: 15
     },
@@ -63,7 +63,7 @@ export const style = StyleSheet.create({
         height: 45,
         borderWidth: 1,
         borderRadius: 10,
-        borderColor: '#7F1734',
+        borderColor: '#D9D9D9',
         marginTop: 10,
         paddingHorizontal: 15
     },
@@ -72,7 +72,7 @@ export const style = StyleSheet.create({
         height: 45,
         borderWidth: 1,
         borderRadius: 10,
-        borderColor: '#7F1734',
+        borderColor: '#D9D9D9',
         marginTop: 10,
         paddingHorizontal: 15
     },
@@ -81,7 +81,7 @@ export const style = StyleSheet.create({
         height: 45,
         borderWidth: 1,
         borderRadius: 10,
-        borderColor: '#7F1734',
+        borderColor: '#D9D9D9',
         marginTop: 10,
         paddingHorizontal: 15
     },
