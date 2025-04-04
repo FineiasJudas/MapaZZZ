@@ -140,7 +140,7 @@ export const style = StyleSheet.create({
     justifyContent: 'space-around',
     backgroundColor: '#fff',
     padding: 20,
-    elevation: 2,
+    elevation: 6,
     borderTopWidth: 2,
     borderColor: '#ddd',
   },
@@ -148,7 +148,7 @@ export const style = StyleSheet.create({
     alignItems: 'center',
   },
   bottomBarText: {
-    fontSize: 12,
+    fontSize: 10,
     color: '#77767b',
   },
 });

@@ -9,7 +9,7 @@ import EvalsPage from './src/pages/evalsPage';
 export default function App() {
   return (
     <View style={styles.container}>
-      <RegisterRiskZone/>
+      <MapaPage/>
       <StatusBar style="auto" />
     </View>
   );

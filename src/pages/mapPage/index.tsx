@@ -22,16 +22,29 @@ export default function SidebarComponent() {
   const mapRef = useRef<MapView | null>(null);
 
   useEffect(() => {
-    // Obter a localização atual do usuário
     const getLocation = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status === "granted") {
         let location = await Location.getCurrentPositionAsync({});
         setLocation(location.coords);
+  
+        // Move a câmera em visão 3D logo que abre o app
+        if (mapRef.current) {
+          mapRef.current.animateCamera({
+            center: location.coords,
+            zoom: 18,
+            pitch: 60, // 3D direto
+            heading: 0,
+            altitude: 0,
+          });
+          setIs3D(true); // Atualiza o estado pra refletir que já está em 3D
+        }
       }
     };
     getLocation();
   }, []);
+  
+  
 
   const toggleMenu = () => {
     Animated.timing(slideAnim, {
@@ -98,12 +111,13 @@ export default function SidebarComponent() {
               <Star size={18} color={"#26A269"}/>
               <Star size={18} color={"#26A269"}/>
               <Star size={18} color={"#000000"}/>
-              <Star size={18} color={"#000000"}/></View>
+              <Star size={18} color={"#000000"}/>
+            </View>
           </View>
         </View>
 
         <ScrollView style={style.scrollView}>
-          <TouchableOpacity style={style.menuItem}>
+          <TouchableOpacity style={style.menuItem} activeOpacity={0.1}>
             <House size={30} color={'#77767b'} />
             <Text style={style.menuItemText}>Início</Text>
           </TouchableOpacity>
@@ -175,7 +189,7 @@ export default function SidebarComponent() {
           </TouchableOpacity>
           <TouchableOpacity style={style.bottomBarItem}>
             <BellRing size={30} color={'#77767b'} />
-            <Text style={style.bottomBarText}>Notificações</Text>
+            <Text style={style.bottomBarText}>Notifics</Text>
           </TouchableOpacity>
         </View>
       )}

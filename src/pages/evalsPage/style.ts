@@ -45,7 +45,7 @@ export const style = StyleSheet.create({
   },
   locationContainer: {
     borderRadius: 15,
-    padding: 10,
+    padding: 8,
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
     position: 'absolute',
     top: '15%',
