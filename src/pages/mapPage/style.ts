@@ -7,13 +7,15 @@ export const style = StyleSheet.create({
     height: '100%'
   },
   meIcon: {
-    width: 30,
-    height: 30,
+    top: 10,
+    left: 10,
+    width: 25,
+    height: 20,
     resizeMode: "contain",
   },
   menuButton: {
     position: "absolute",
-    top: 20,
+    top: 35,
     left: 15,
     backgroundColor: "white",
     padding: 18,
@@ -42,8 +44,8 @@ export const style = StyleSheet.create({
   sideMenu: {
     position: "absolute",
     left: 0,
-    top: 0,
-    bottom: 0,
+    top: 30,
+    bottom: 2,
     width: "80%",
     backgroundColor: "white",
     shadowColor: "#000",

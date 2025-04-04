@@ -6,46 +6,49 @@ import {
   Animated,
   Text,
   ScrollView,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Dimensions
 } from "react-native";
 import * as Location from "expo-location";
 import MapView, { Marker } from 'react-native-maps';
 import { style } from './style';
-import { Menu, House, MessageCircleWarning, BellRing, Gamepad2, Hospital, CircleHelp, LogOut, LocateFixed, Globe, Star } from 'lucide-react-native';
+import MapStyle from '../../../mapStyle.json';
+import { Menu, House, MessageCircleWarning, BellRing, Gamepad2, Hospital, CircleHelp, LogOut, LocateFixed, Globe, Star, PersonStanding, MapPinned } from 'lucide-react-native';
+
+const SCREEN_WIDTH = Dimensions.get("window").width; // Largura da tela
 
 export default function SidebarComponent() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [is3D, setIs3D] = useState(false);
-  const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
-  const [showBottomBar, setShowBottomBar] = useState(true); // Controle da visibilidade da barra inferior
-  const slideAnim = useRef(new Animated.Value(-300)).current;
+  const [location, setLocation] = useState<Location.LocationObject | null>(null);
   const mapRef = useRef<MapView | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const slideAnim = useRef(new Animated.Value(-SCREEN_WIDTH * 0.6)).current;
+  const [is3D, setIs3D] = useState(false);
+  const [showBottomBar, setShowBottomBar] = useState(true); // Controle da visibilidade da barra inferior
+ 
+
 
   useEffect(() => {
-    const getLocation = async () => {
+    (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status === "granted") {
-        let location = await Location.getCurrentPositionAsync({});
-        setLocation(location.coords);
-  
-        // Move a câmera em visão 3D logo que abre o app
-        if (mapRef.current) {
-          mapRef.current.animateCamera({
-            center: location.coords,
-            zoom: 18,
-            pitch: 60, // 3D direto
-            heading: 0,
-            altitude: 0,
-          });
-          setIs3D(true); // Atualiza o estado pra refletir que já está em 3D
-        }
+      if (status !== "granted") {
+        alert("Permissão negada para acessar a localização.");
+        return;
+      }      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);      if (mapRef.current) {
+        mapRef.current.animateCamera({
+          center: {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          },
+          pitch: 60, // Inclinação 3D
+          heading: 0, // Direção
+          altitude: 1000, // Altura da câmera
+          zoom: 18, // Zoom
+        });
       }
-    };
-    getLocation();
+    })();
   }, []);
   
-  
-
   const toggleMenu = () => {
     Animated.timing(slideAnim, {
       toValue: menuOpen ? -300 : 0,
@@ -57,15 +60,18 @@ export default function SidebarComponent() {
   };
   
 
-  const toggle3DView = () => {
-    if (mapRef.current && location) {
-      setIs3D(!is3D);
-      mapRef.current.animateCamera({
-        center: location,
-        zoom: 15,
-        pitch: is3D ? 0 : 60, // Alterna entre 2D e 3D
-      });
-    }
+  // Função para recentralizar no usuário
+  const handleRecenter = async () => {
+    if (!location || !mapRef.current) return;    mapRef.current.animateCamera({
+      center: {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      },
+      pitch: 60,
+      heading: 0,
+      altitude: 1000,
+      zoom: 18,
+    });
   };
 
   return (
@@ -73,31 +79,25 @@ export default function SidebarComponent() {
       <MapView
         ref={mapRef}
         style={StyleSheet.absoluteFillObject}
+        customMapStyle={MapStyle}
         showsUserLocation
         showsTraffic
         showsCompass={false}
         showsMyLocationButton={false}
-        initialRegion={{
-          latitude: location ? location.latitude : -8.839, // Usa a localização obtida ou uma coordenada padrão
-          longitude: location ? location.longitude : 13.289,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
       >
         {location && (
-          <Marker coordinate={location}>
-            <View style={style.meIcon} />
+          <Marker coordinate={location.coords}>
+            <PersonStanding color="#77767B" style={style.meIcon} />
           </Marker>
         )}
       </MapView>
 
       {/* Aba lateral */}
-      
+
       {menuOpen && (
   <TouchableWithoutFeedback onPress={toggleMenu}>
     <View style={style.overlay}>
       <TouchableWithoutFeedback>
-
       <Animated.View style={[style.sideMenu, { transform: [{ translateX: slideAnim }] }]}> 
         <View style={style.profileContainer}>
           <View style={style.profileIcon}>
@@ -164,16 +164,9 @@ export default function SidebarComponent() {
         </TouchableOpacity>
       )}
 
-      {/* Botão de Recentralizar e Visão 3D */}
-      <TouchableOpacity
-        style={style.recenterButton}
-        onPress={toggle3DView}
-      >
-        {is3D ? (
-          <Globe size={30} color="#77767b" />
-        ) : (
-          <LocateFixed size={30} color="#77767b" />
-        )}
+      {/* Ícone para Recentralizar */}
+      <TouchableOpacity style={style.recenterButton} onPress={handleRecenter}>
+        <MapPinned color="#77767B" style={style.recenterIcon} />
       </TouchableOpacity>
 
       {/* Barra Inferior com opções */}

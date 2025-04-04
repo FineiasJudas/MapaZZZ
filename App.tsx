@@ -5,11 +5,12 @@ import Sign from './src/pages/sign';
 import MapaPage from './src/pages/mapPage';
 import RegisterRiskZone from './src/pages/reportPage'
 import EvalsPage from './src/pages/evalsPage';
+import NotifyPage from './src/pages/notifyPage'
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <MapaPage/>
+      <NotifyPage/>
       <StatusBar style="auto" />
     </View>
   );
@@ -21,6 +22,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 30
   },
 });
