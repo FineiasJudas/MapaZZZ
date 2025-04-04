@@ -18,16 +18,11 @@ export const style = StyleSheet.create({
     backgroundColor: "white",
     padding: 18,
     borderRadius: 30,
-    elevation: 10,
+    elevation: 8,
   },
   menuIcon: {
     width: 40,
     height: 40,
-    resizeMode: "contain",
-  },
-  menuIcons: {
-    width: 100,
-    height: 30,
     resizeMode: "contain",
   },
   recenterButton: {
@@ -46,18 +41,18 @@ export const style = StyleSheet.create({
   },
   sideMenu: {
     position: "absolute",
-    top: 0,
     left: 0,
+    top: 0,
+    bottom: 0,
     width: "80%",
-    height: "100%",
-    backgroundColor: "#fff",
-    paddingTop: 20,
-    // paddingHorizontal: 20,
-    elevation: 15,
+    backgroundColor: "white",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
+    shadowOffset: { width: -2, height: 0 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+    paddingTop: 20,
+    paddingHorizontal: 15,
   },
   overlay: {
     position: "absolute",
@@ -65,18 +60,7 @@ export const style = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "rgba(0,0,0,0.5)",
-  },
-  bottomBar: {
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    height: 100,
-    backgroundColor: "white",
-    paddingVertical: 10,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    elevation: 10,
+    backgroundColor: "rgba(0,0,0,0.3)",
   },
   bottomMenu: {
     flexDirection: "row",
@@ -85,24 +69,88 @@ export const style = StyleSheet.create({
     width: "100%",
   },
   menuItem: {
-    padding: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
     flexDirection: "row",
-    alignItems: 'center'
+    alignItems: "center",
   },
-  menuIc:{
-    width: 20,
-    height: 20,
-    resizeMode: "contain",
+  menuItemText: {
+    marginLeft: 15,
+    color: "#77767b",
+    fontSize: 18,
   },
-  spaceName : {
-    height : 30,
-    width : 30,
-    backgroundColor : "black",
-    position : "absolute",
-
-
-  }
-
-
+  profileContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: '100%',
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    paddingBottom: 15,
+    marginBottom: 10,
+  },
+  profileIcon: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    backgroundColor: "#ccc",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10,
+  },
+  profileTextContainer: {
+    flexDirection: "column",
+  },
+  profileName: {
+    fontSize: 18,
+    fontWeight: "600",
+  },
+  profileStatus: {
+    fontSize: 14,
+    color: "#777",
+  },
+  scrollView: {
+    flex: 1,
+  },
+  contactContainer: {
+    borderTopWidth: 1,
+    borderTopColor: "#ddd",
+    paddingTop: 15,
+    marginTop: 10,
+    paddingHorizontal: 15,
+  },
+  contactTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  contactText: {
+    fontSize: 14,
+    color: "#444",
+  },
+  bottomBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 100,
+    borderRadius: 1,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    backgroundColor: '#fff',
+    padding: 20,
+    elevation: 6,
+    borderTopWidth: 2,
+    borderColor: '#ddd',
+  },
+  bottomBarItem: {
+    alignItems: 'center',
+  },
+  bottomBarText: {
+    fontSize: 10,
+    color: '#77767b',
+  },
 });
+
  
