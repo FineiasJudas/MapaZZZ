@@ -2,6 +2,7 @@ import { Dimensions, StyleSheet } from "react-native";
 
 export const style = StyleSheet.create({
   mainConteiner:{
+    top: 30,
     paddingLeft: 10,
     paddingRight: 10
   },

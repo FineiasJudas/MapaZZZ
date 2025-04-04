@@ -6,7 +6,7 @@ import like from '../../assets/Like.png';
 import deslike from '../../assets/Deslike.png';
 
 const EvalsPage = () => {
-  const [photoLocation, setPhotoLocation] = useState("Localização da Foto");
+  const [photoLocation, setPhotoLocation] = useState("Localização da foto");
 
   return (
     <View style={style.mainConteiner}>

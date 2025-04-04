@@ -5,12 +5,13 @@ import Sign from './src/pages/sign';
 import MapaPage from './src/pages/mapPage';
 import RegisterRiskZone from './src/pages/reportPage'
 import EvalsPage from './src/pages/evalsPage';
-import NotifyPage from './src/pages/notifyPage'
+import NotifyPage from './src/pages/notifyPage';
+import WelcomePage from './src/pages/welcomePage';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <NotifyPage/>
+      <WelcomePage/>
       <StatusBar style="auto" />
     </View>
   );

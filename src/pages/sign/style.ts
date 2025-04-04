@@ -19,7 +19,7 @@ export const style = StyleSheet.create({
     // Botão de login com Google
     googleButton: {
         width: 300,
-        height: 50,
+        height: 45,
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#FFF',
