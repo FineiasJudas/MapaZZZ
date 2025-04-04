@@ -40,25 +40,27 @@ export const style = StyleSheet.create({
     borderRadius: 60,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 20,
+    marginBottom: 70,
   },
   pikerView:{
     height: Dimensions.get('window').height / 4,
     width: '100%',
     marginBottom: 10,
     alignItems: 'center',
+    
   },
   previewImage: {
     width: "100%",
     height: "100%",
     borderRadius: 60,
+    
   },
   picker: {
     height: 50,
     width: "100%",
     backgroundColor: "#fff",
     borderRadius: 8,
-    marginBottom: 20,
+    marginBottom: 70,
   },
   reportButton: {
     flexDirection: "row",
@@ -68,6 +70,7 @@ export const style = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
     width: "100%",
+    marginBottom: 90,
   },
   buttonText: {
     color: "#fff",

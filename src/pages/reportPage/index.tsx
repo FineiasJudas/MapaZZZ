@@ -26,8 +26,6 @@ const RegisterRiskZone = () => {
     setImage(result.assets[0].uri); // Now works without TypeScript issues!
   }
 };
-
-
   // Simulação de envio do relatório
   const handleSubmit = () => {
     setLoading(true);
@@ -64,18 +62,7 @@ const RegisterRiskZone = () => {
           <FontAwesome5 name="camera" size={40} color="#fff" />
         )}
       </TouchableOpacity>
-      <View style={style.pikerView}>
-      <Picker
-        selectedValue={riskLevel}
-        style={style.picker}
-        onValueChange={(itemValue) => setRiskLevel(itemValue)}
-      >
-        <Picker.Item label="Nível de risco" value="" />
-        <Picker.Item label="Baixo" value="Baixo" />
-        <Picker.Item label="Médio" value="Médio" />
-        <Picker.Item label="Alto" value="Alto" />
-      </Picker>
-      </View>
+
       <TouchableOpacity style={style.reportButton} onPress={handleSubmit} disabled={loading}>
         {loading ? (
           <ActivityIndicator size="small" color="#fff" />
