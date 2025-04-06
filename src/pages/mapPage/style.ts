@@ -7,13 +7,15 @@ export const style = StyleSheet.create({
     height: '100%'
   },
   meIcon: {
-    width: 30,
-    height: 30,
+    top: 10,
+    left: 10,
+    width: 25,
+    height: 20,
     resizeMode: "contain",
   },
   menuButton: {
     position: "absolute",
-    top: 20,
+    top: 35,
     left: 15,
     backgroundColor: "white",
     padding: 18,
@@ -42,8 +44,8 @@ export const style = StyleSheet.create({
   sideMenu: {
     position: "absolute",
     left: 0,
-    top: 0,
-    bottom: 0,
+    top: 30,
+    bottom: 2,
     width: "80%",
     backgroundColor: "white",
     shadowColor: "#000",
@@ -132,25 +134,40 @@ export const style = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 100,
-    borderRadius: 1,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    height: 70,
+    borderRadius: 5,
+    // borderStartEndRadius: 50,
+    // borderEndStartRadius: 50,
+    // borderStartStartRadius: 50,
+    // borderEndEndRadius: 50,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
     padding: 20,
-    elevation: 6,
-    borderTopWidth: 2,
-    borderColor: '#ddd',
+    // marginHorizontal: 30,
+    // elevation: 6,
+    // borderTopWidth: 2,
+    // borderColor: '#ddd',
   },
   bottomBarItem: {
     alignItems: 'center',
+    
   },
   bottomBarText: {
     fontSize: 10,
-    color: '#77767b',
+    color: '#77767B',
   },
+  activeTabItem: {
+  // backgroundColor: '#ffffff22', // leve destaque de fundo
+  borderRadius: 10,
+  // padding: 5,
+},
+
+activeTabText: {
+  color: '#000', // amarelo ouro
+  fontWeight: 'bold',
+  textDecorationLine: 'underline', // sublinhado
+},
 });
 
  

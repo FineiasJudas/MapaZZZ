@@ -1,99 +1,143 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react'
 import {
   View,
   StyleSheet,
-  Image,
   TouchableOpacity,
   Animated,
-  Dimensions,
-  Text
-} from "react-native";
-import MapView, { Marker } from "react-native-maps";
-import * as Location from "expo-location";
-import { style } from "./style";
-import mapStyle from "../../../mapStyle.json"; // Estilo personalizado
-import MenuIcon from "../../assets/menuBottton.png";
-import MeIcon from "../../assets/pedestre.png"; // Ícone do usuário
-import HomeIcon from "../../assets/casa.png";
-import ReportIcon from "../../assets/reporter.png";
-import NotifyIcon from "../../assets/notifyIcon(1).png";
-import LocateIcon from "../../assets/pedestre.png"; // Ícone para recentralizar
-import Inicio from "../../assets/Inicio.png";
-import menuNotify from "../../assets/Notificoes.png";
-import menuHospitais from "../../assets/Hospitais.png";
-import menuReportar from "../../assets/Reportar.png";
-import menuJogo from "../../assets/jogos.png";
-import menuSair from "../../assets/Sair.png";
-import menuVerRep from "../../assets/Ver relatos.png";
-import menuAjuda from "../../assets/Ajuda.png";
-import { BellRing, CircleHelp, Eye, Gamepad2, Hospital, House, LogOut, MapPinned, Menu, MessageCircleWarning, PersonStanding, Star } from "lucide-react-native";
+  Text,
+  Image,
+  ScrollView,
+  TouchableWithoutFeedback,
+  Dimensions
+} from 'react-native'
+import * as Location from 'expo-location'
+import MapView, { Marker, Circle } from 'react-native-maps'
+import dangerIcon from '../../assets/mosquito.png'
+import { style } from './style'
+import MapStyle from '../../../mapStyle.json'
+import {
+  Menu,
+  House,
+  MessageCircleWarning,
+  BellRing,
+  Gamepad2,
+  Hospital,
+  CircleHelp,
+  LogOut,
+  LocateFixed,
+  Globe,
+  Star,
+  PersonStanding,
+  MapPinned,
+  Radio
+} from 'lucide-react-native'
 
-const SCREEN_WIDTH = Dimensions.get("window").width; // Largura da tela
+const SCREEN_WIDTH = Dimensions.get('window').width // Largura da tela
 
-export default function MapPage() {
-  const [location, setLocation] = useState<Location.LocationObject | null>(null);
-  const mapRef = useRef<MapView | null>(null);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const slideAnim = useRef(new Animated.Value(-SCREEN_WIDTH * 0.6)).current;
+export default function SidebarComponent ({navigation}: any) {
+  const [location, setLocation] = useState<Location.LocationObject | null>(null)
+  const mapRef = useRef<MapView | null>(null)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const slideAnim = useRef(new Animated.Value(-SCREEN_WIDTH * 0.6)).current
+  const [is3D, setIs3D] = useState(false)
+  const [showBottomBar, setShowBottomBar] = useState(true) // Controle da visibilidade da barra inferior
+  const [activeTab, setActiveTab] = useState('home')
+  const [dangerZones, setDangerZones] = useState([])
+
+  const getZoneStyle = (level: string) => {
+    switch (level) {
+      case 'low':
+        return { color: '#26A269', radius: 350 }
+      case 'medium':
+        return { color: '#F6C915', radius: 500 }
+      case 'high':
+        return { color: '#C01C28', radius: 1000 }
+      default:
+        return { color: '#808080', radius: 100 }
+    }
+  }
 
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        alert("Permissão negada para acessar a localização.");
-        return;
+    ;(async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync()
+      if (status !== 'granted') {
+        alert('Permissão negada para acessar a localização.')
+        return
       }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-
+      let location = await Location.getCurrentPositionAsync({})
+      setLocation(location)
       if (mapRef.current) {
         mapRef.current.animateCamera({
           center: {
             latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
+            longitude: location.coords.longitude
           },
           pitch: 60, // Inclinação 3D
           heading: 0, // Direção
           altitude: 1000, // Altura da câmera
-          zoom: 18, // Zoom
-        });
+          zoom: 10 // Zoom
+        })
       }
-    })();
-  }, []);
+      // 🔴 Busca as zonas de perigo
+      try {
+        const response = await fetch(
+          'https://mapazzz.onrender.com/api/danger_zone/all'
+        )
+        const data = await response.json()
+        if (response.ok) {
+            setDangerZones(data.dangerZones || [])
+        }
+        else {
+            console.error('Erro ao buscar zonas de perigo:', data.message)
+        }
+      } catch (error) {
+        console.error('Erro ao buscar zonas de perigo:', error)
+      }
+    })()
+  }, [])
 
-  // Função para alternar a aba lateral
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-    Animated.timing(slideAnim, {
-      toValue: menuOpen ? -SCREEN_WIDTH * 1 : 0, // Abre/fecha a aba
-      duration: 400,
-      useNativeDriver: false,
-    }).start();
-  };
+    if (menuOpen) {
+      // Fechar menu
+      Animated.timing(slideAnim, {
+        toValue: -300,
+        duration: 300,
+        useNativeDriver: true
+      }).start(() => setMenuOpen(false)) // Só esconde depois da animação
+      setShowBottomBar(true)
+    } else {
+      setMenuOpen(true) // Mostra antes de animar
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true
+      }).start()
+      setMenuOpen(true)
+      setShowBottomBar(false) // Corrigido: Agora oculta a barra inferior quando o menu está aberto
+    } // Corrigido: Agora oculta a barra inferior quando o menu está aberto
+  }
 
   // Função para recentralizar no usuário
   const handleRecenter = async () => {
-    if (!location || !mapRef.current) return;
-
+    if (!location || !mapRef.current) return
     mapRef.current.animateCamera({
       center: {
         latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
+        longitude: location.coords.longitude
       },
       pitch: 60,
       heading: 0,
       altitude: 1000,
-      zoom: 18,
-    });
-  };
+      zoom: 18
+    })
+  }
 
   return (
     <View style={style.container}>
       <MapView
         ref={mapRef}
         style={StyleSheet.absoluteFillObject}
-        customMapStyle={mapStyle}
+        customMapStyle={MapStyle}
         showsUserLocation
         showsTraffic
         showsCompass={false}
@@ -101,187 +145,208 @@ export default function MapPage() {
       >
         {location && (
           <Marker coordinate={location.coords}>
-            <PersonStanding color="#77767b" style={style.meIcon} />
+            <PersonStanding color='#77767B' style={style.meIcon} />
           </Marker>
         )}
+
+        {/* Zonas de perigo no mapa */}
+        {dangerZones.map(zone => {
+          const { color, radius } = getZoneStyle(zone.level)
+          return (
+            <React.Fragment key={zone.id}>
+              <Circle
+                key={zone.id}
+                center={{
+                  latitude: parseFloat(zone.lat),
+                  longitude: parseFloat(zone.lon)
+                }}
+                radius={radius}
+                strokeColor={color}
+                fillColor={`${color}55`}
+                strokeWidth={2}
+              />
+              {/* Ícone de perigo */}
+              <Marker
+                coordinate={{
+                  latitude: parseFloat(zone.lat),
+                  longitude: parseFloat(zone.lon)
+                }}
+                anchor={{ x: 0.5, y: 0.5 }} // Centraliza o ícone no marcador
+                pinColor={color} // Cor do pino
+                // image={dangerIcon} // ícone customizado
+                title={`Zona de perigo ${zone.level === 'high' ? 'alta' : zone.level === 'medium' ? 'média' : 'baixa'}`}
+                description={`${zone.description}`}
+              >  
+                <Image
+                  source={dangerIcon}
+                  style={{ width: 20, height: 20, resizeMode: 'contain' }}
+                />
+               
+              </Marker>
+            </React.Fragment>
+          )
+        })}
       </MapView>
 
       {/* Aba lateral */}
-      <Animated.View style={[style.sideMenu, { transform: [{ translateX: slideAnim }], display: "flex", flexDirection: "column", justifyContent: "space-between" }]}>
-        <View style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: 12,
-          borderBottomWidth: 5,
-          borderColor: "#ccc",
-          paddingVertical: 15,
-          paddingHorizontal: 15
-        }}>
-          <View style={{
-            width: 50,
-            height: 50,
-            borderRadius: 100,
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor:  "#ccc",
-            position: "relative"
-          }}>
-              <Text style={{
-                fontSize: 25,
-                fontWeight: 800,
-              }}>
-                J
-              </Text>
-              <View style={{
-                width: 15,
-                height: 15,
-              borderRadius: 100,
-              backgroundColor: "green",
-              position: "absolute",
-              bottom: 5,
-              right: -1,
-              borderWidth: 1,
-              borderColor: "#fff"
-              }}>
 
-              </View>
+      {menuOpen && (
+        <TouchableWithoutFeedback onPress={toggleMenu}>
+          <View style={style.overlay}>
+            <TouchableWithoutFeedback>
+              <Animated.View
+                style={[
+                  style.sideMenu,
+                  { transform: [{ translateX: slideAnim }] }
+                ]}
+              >
+                <View style={style.profileContainer}>
+                  <View style={style.profileIcon}>
+                    <Text style={{ fontSize: 25, fontWeight: 'bold' }}>J</Text>
+                  </View>
+                  <View style={style.profileTextContainer}>
+                    <Text style={style.profileName}>Justino Soares</Text>
+                    {/* <Text style={style.profileStatus}>Ativo</Text> */}
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        marginTop: 5
+                      }}
+                    >
+                      <Star size={18} color={'#26A269'} />
+                      <Star size={18} color={'#26A269'} />
+                      <Star size={18} color={'#26A269'} />
+                      <Star size={18} color={'#000000'} />
+                      <Star size={18} color={'#000000'} />
+                    </View>
+                  </View>
+                </View>
+
+                <ScrollView style={style.scrollView}>
+                  <TouchableOpacity style={style.menuItem} onPress={() => navigation.navigate("MapaPage")} activeOpacity={0.1}>
+                    <House size={30} color={'#77767b'}  />
+                    <Text style={style.menuItemText}>Início</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={style.menuItem}>
+                    <MessageCircleWarning size={30} color={'#77767b'} />
+                    <Text style={style.menuItemText}>Reportar</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={style.menuItem}>
+                    <BellRing size={30} color={'#77767b'} />
+                    <Text style={style.menuItemText}>Notificações</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={style.menuItem}>
+                    <Gamepad2 size={30} color={'#77767b'} />
+                    <Text style={style.menuItemText}>Jogos</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={style.menuItem}>
+                    <Hospital size={30} color={'#77767b'} />
+                    <Text style={style.menuItemText}>Hospitais Próximos</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={style.menuItem}>
+                    <CircleHelp size={30} color={'#77767b'} />
+                    <Text style={style.menuItemText}>Ajuda</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={style.menuItem}>
+                    <LogOut size={30} color={'#77767b'} />
+                    <Text style={style.menuItemText}>Sair</Text>
+                  </TouchableOpacity>
+                </ScrollView>
+                <View style={{ marginBottom: 20, marginLeft: 15 }}>
+                  <Text style={{ fontSize: 20 }}>Info de contacto:</Text>
+                  <Text style={{ fontSize: 18, color: '#77767B' }}>
+                    Salonis@gmail.com
+                  </Text>
+                  <Text style={{ fontSize: 18, color: '#77767B' }}>
+                    +244 946671828
+                  </Text>
+                </View>
+              </Animated.View>
+            </TouchableWithoutFeedback>
           </View>
-          <View style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            justifyContent: "center",
-          }}>
-            <Text style={{
-              fontSize: 18,
-              fontWeight: "600",
-             // color: "#77767b"
-            }}>
-              Justino Soares
-            </Text>
-            <Text style={{
-              fontSize: 14,
-              fontWeight: "400",
-              color: "#77767b"
-            }}>
-              active
-            </Text>
-            <View style={{display: "flex", flexDirection: "row", justifyContent: "center", marginTop: 5}}>
-            <Star size={18} color={"#26a269"}/>
-            <Star size={18} color={"#26a269"}/>
-            <Star size={18} color={"#26a269"}/>
-            <Star size={18} color={"#000000"}/>
-            <Star size={18} color={"#000000"}/>
-            </View>
-          </View>
-
-        </View>
-        <View style={{height: 100, display: "flex", flexDirection: "column", justifyContent: "center", paddingLeft: 10}}>
-          <TouchableOpacity style={style.menuItem}>
-            <House size={30} color={"#77767b"} />
-            <Text style={{marginLeft: 10, color: "#77767b", fontSize: 18}}>Início</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={style.menuItem}>
-            <Eye size={30} color={"#77767b"} />
-            <Text style={{marginLeft: 10, color: "#77767b", fontSize: 18}}>Ver relatos</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={style.menuItem}>
-            <MessageCircleWarning size={30} color={"#77767b"} />
-            <Text style={{marginLeft: 10, color: "#77767b", fontSize: 18}}>Reportar</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={style.menuItem}>
-          <BellRing size={30} color={"#77767b"} />
-            <Text style={{marginLeft: 10, color: "#77767b", fontSize: 18}}>Notificações</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={style.menuItem}>
-            <Gamepad2 size={30} color={"#77767b"} />
-            <Text style={{marginLeft: 10, color: "#77767b", fontSize: 18}}>Jogos</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={style.menuItem}>
-            <Hospital size={30} color={"#77767b"} />
-            <Text style={{marginLeft: 10, color: "#77767b", fontSize: 18}}>Hospitais próximos</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={style.menuItem}>
-            <CircleHelp size={30} color={"#77767b"} />
-            <Text style={{marginLeft: 10, color: "#77767b", fontSize: 18}}>Ajuda</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={style.menuItem}>
-            <LogOut size={30} color={"#77767b"} />
-            <Text style={{marginLeft: 10, color: "#77767b", fontSize: 18}}>Sair</Text>
-          </TouchableOpacity>
-
-        </View>
-
-        <View style={{marginBottom: 20}}>
-        <View style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: 12,
-            borderBottomWidth: 5,
-            borderColor: "#ccc",
-            paddingVertical: 15,
-            paddingHorizontal: 15
-          }}>
-          </View>
-
-          <TouchableOpacity style={style.menuItem}>
-            <Text style={{marginLeft: 15, color: "#77767b", fontSize: 18}}>Info sobre contacto:</Text>
-          </TouchableOpacity>
-          <TouchableOpacity >
-            <Text style={{marginLeft: 15, color: "#77767b", fontSize: 18}}>Salonis@gmail.com</Text>
-          </TouchableOpacity>
-          <TouchableOpacity >
-            <Text style={{marginLeft: 15, color: "#77767b", fontSize: 18}}>+244 946677128</Text>
-          </TouchableOpacity>
-
-        </View>
-      </Animated.View>
-
-
-
-      {/* Ícone de Menu */}
-      {!menuOpen && ( // Só exibe quando o menu está fechado
-        <TouchableOpacity style={style.menuButton} onPress={toggleMenu}>
-          <Menu color="#77767b" style={style.menuIcon} />
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
       )}
 
-
-      {/* Fundo para fechar menu quando clicar fora */}
-      {menuOpen && (
-        <TouchableOpacity style={style.overlay} onPress={toggleMenu} />
+      {/* Ícone de Menu */}
+      {!menuOpen && (
+        <TouchableOpacity style={style.menuButton} onPress={toggleMenu}>
+          <Menu color='#77767b' style={style.menuIcon} />
+        </TouchableOpacity>
       )}
 
       {/* Ícone para Recentralizar */}
       <TouchableOpacity style={style.recenterButton} onPress={handleRecenter}>
-        <MapPinned color="#77767b" style={style.recenterIcon} />
+        <MapPinned color='#77767B' style={style.recenterIcon} />
       </TouchableOpacity>
 
-      {/* Barra inferior fixa */}
-      {!menuOpen && (
-       <View style={style.bottomBar}>
-      
-        <View style={style.bottomMenu}>
-          <TouchableOpacity style={style.menuItem}>
-            <House size={30} color={"#77767b"} style={style.menuIcon} />
+      {/* Barra Inferior com opções */}
+      {showBottomBar && (
+        <View style={style.bottomBar}>
+          <TouchableOpacity
+            style={[
+              style.bottomBarItem,
+              activeTab === 'home' && style.activeTabItem
+            ]}
+            onPress={() => setActiveTab('home')}
+          >
+            <House
+              size={30}
+              color={activeTab === 'home' ? '#000' : '#77767B'}
+            />
+            <Text
+              style={[
+                style.bottomBarText,
+                activeTab === 'home' && style.activeTabText
+              ]}
+            >
+              Home
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={style.menuItem}>
-            <MessageCircleWarning size={30} color={"#77767b"} style={style.menuIcon} />
+
+          <TouchableOpacity
+            style={[
+              style.bottomBarItem,
+              activeTab === 'report' && style.activeTabItem
+            ]}
+            onPress={() => navigation.navigate('reportPage')}
+          >
+            <Radio
+              size={30}
+              color={activeTab === 'report' ? '#000' : '#77767B'}
+            />
+            <Text
+              style={[
+                style.bottomBarText,
+                activeTab === 'report' && style.activeTabText
+              ]}
+            >
+              Reportar
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={style.menuItem}>
-            <BellRing size={30} color={"#77767b"} style={style.menuIcon} />
+
+          <TouchableOpacity
+            style={[
+              style.bottomBarItem,
+              activeTab === 'notifics' && style.activeTabItem
+            ]}
+            onPress={() => setActiveTab('notifics')}
+          >
+            <BellRing
+              size={30}
+              color={activeTab === 'notifics' ? '#000' : '#77767B'}
+            />
+            <Text
+              style={[
+                style.bottomBarText,
+                activeTab === 'notifics' && style.activeTabText
+              ]}
+            >
+              Notifics
+            </Text>
           </TouchableOpacity>
         </View>
-      </View>)} 
+      )}
     </View>
-  );
+  )
 }

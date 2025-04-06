@@ -3,7 +3,7 @@ import { Dimensions, StyleSheet } from "react-native";
 export const style = StyleSheet.create({
   mainConteiner:{
     flex: 1,
-    // backgroundColor: '#7F1734',
+    // // backgroundColor: '#7F1734',
     alignItems: 'center',
     justifyContent: 'center',
     // paddingTop: 35,
@@ -15,8 +15,7 @@ export const style = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: "column",
     alignItems: "center",
-    // alignContent: "center",
-    // justifyContent: "center",
+    fontFamily: 'Poppins-Regular',
      padding: 70,
   },
   logoX:{
@@ -42,9 +41,9 @@ export const style = StyleSheet.create({
     marginBottom: 20,
   },
   imagePicker: {
-    width: 120,
-    height: 120,
-    backgroundColor: "#7F1734",
+    // width: 120,
+    // height: 120,
+    // backgroundColor: "#7F1734",
     borderRadius: 60,
     alignItems: "center",
     justifyContent: "center",
@@ -71,9 +70,10 @@ export const style = StyleSheet.create({
     marginBottom: 70,
   },
   reportButton: {
-    flexDirection: "row",
-    backgroundColor: "#7F1734",
+    // flexDirection: "row",
+    // backgroundColor: "#7F1734",
     padding: 15,
+   
     borderRadius: 8,
     alignItems: "center",
     justifyContent: "space-around",
@@ -81,9 +81,57 @@ export const style = StyleSheet.create({
     marginBottom: 90,
   },
   buttonText: {
-    color: "#fff",
+    color: "#000",
+    textAlign: "center",
     fontSize: 16,
     fontWeight: "bold",
-    marginLeft: 10,
+    // marginLeft: 10,
+  },
+  textMinus :{
+    color: "#000",
+    fontSize: 15,
+    textAlign: "center",
+    paddingTop: 10,
+    // fontWeight: "bold",
+     marginTop: 10,
+
+    // fontSize: 18,
+  },
+  buttonReportar: {
+    backgroundColor: "#7F1734",
+    padding: 15,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "space-around",
+    width: 300,
+    marginBottom: 10,
+  },
+  
+  textReportar: {
+    color: "#fff",
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+
+  levelContainer: {
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  levelText: {
+    fontSize: 16,
+    fontFamily: 'Poppins-Regular',
+  },
+  
+  descriptionContainer: {
+    margin: 20,
+    padding: 10,
+    backgroundColor: '#f2f2f2',
+    borderRadius: 10,
+  },
+  descriptionText: {
+    fontSize: 14,
+    textAlign: 'center',
+    fontFamily: 'Poppins-Regular',
   },
 });

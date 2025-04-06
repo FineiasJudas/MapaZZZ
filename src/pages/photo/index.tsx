@@ -22,9 +22,13 @@ import * as Location from 'expo-location'
 import { style } from '../login/style'
 
 export default function App ({navigation}: any) {
+  {/* posicao da camera */}
   const [facing, setFacing] = useState<CameraType>('back')
+   {/* pegar foto para preview */}
   const [photo, setPhoto] = useState<string | null>(null)
+   {/* lazy Loading para quando o usuário decidir cadastrar uma zona de perigo */}
   const [loading, setLoading] = useState(false)
+   {/* permissao da camera */}
   const [permission, requestPermission] = useCameraPermissions()
   const [galleryPermission, requestGalleryPermission] =
     MediaLibrary.usePermissions()
@@ -36,7 +40,7 @@ export default function App ({navigation}: any) {
       const token = await AsyncStorage.getItem('Token')
       if (!token) {
         Alert.alert('Erro', 'Você não tem permissão para acessar essa tela')
-        // Redirecionar para a tela de login ou outra ação
+        // Redirecionar para a tela de login
         navigation.navigate('Login');
         return
       }
@@ -65,22 +69,24 @@ export default function App ({navigation}: any) {
       </View>
     )
   }
-
+  {/* Troca de posicao da camera */}
   function toggleCameraFacing () {
     setFacing(current => (current === 'back' ? 'front' : 'back'))
   }
 
+  // Função para tirar foto
   async function takePicture () {
     if (cameraRef.current) {
       const photoData = await cameraRef.current.takePictureAsync()
       setPhoto(photoData.uri)
     }
   }
-
+  // Função para descartar a foto
   function discardPhoto () {
     setPhoto(null)
   }
 
+  // Função para salvar a foto na galeria
   async function saveToGallery () {
     if (photo) {
       try {
@@ -92,6 +98,7 @@ export default function App ({navigation}: any) {
     }
   }
 
+  // Função para registrar a zona de perigo
   async function RegisterDangerZone () {
     // pegar a latitude e longitude exata do local que o telefone está
     setLoading(true)
@@ -146,6 +153,9 @@ export default function App ({navigation}: any) {
 
           if (responseApi.ok) {
             Alert.alert('Sucesso', 'Zona de perigo registrada com sucesso!')
+            setPhoto(null)
+            setLoading(false)
+            navigation.navigate('MapaPage')
           } else {
             Alert.alert('Erro', responseData.message)
             setLoading(false)
@@ -175,9 +185,9 @@ export default function App ({navigation}: any) {
       {!photo && (
         <TouchableOpacity
           style={styles.topLeftLogo}
-          
+          onPress={() => navigation.navigate('reportPage')}
         >
-          <Image source={out} style={styles.out} />
+          <Image source={out} style={styles.out}  />
           <TouchableOpacity onPress={toggleCameraFacing}>
 
           <Image  source={repeat} style={styles.changeCamera}  />
