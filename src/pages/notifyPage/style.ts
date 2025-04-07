@@ -61,7 +61,7 @@ export const style = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'flex-end', // fica no canto inferior direito
-    marginTop: 8,
+
   },
   
   timeText: {

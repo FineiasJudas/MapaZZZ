@@ -31,7 +31,6 @@ const RegisterRiskZone = () => {
 
       <View style={style.container}>
       <Text style={{marginTop: 20, left: 6, fontSize: 18, fontWeight: '600'}}>Notificações:</Text>
-      <Text style={{marginBottom: 20, marginTop: 12, left: 6,fontSize: 18,fontWeight: '600', color: '#7F1734'}}>__ __ __ __ __ __ __ __ __ __ __ __ __ __ </Text>
         <ScrollView style={style.scroll}>
         <TouchableOpacity>
         <View style={style.infCamp}>

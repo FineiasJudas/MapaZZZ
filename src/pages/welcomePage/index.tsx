@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, TextInput, ActivityIndicator, Image } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, ActivityIndicator, Image, SafeAreaView, ScrollView } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
@@ -40,34 +40,31 @@ const WelcomePage = () => {
     }, 2000);
   };
 
-  return (
-    <View style={style.mainConteiner}>
-      <View style={style.container}>
-      <View style={style.logoX}>
-      <Image source={mapaZZZ} style={{width: '100%', height:18, resizeMode: 'contain', marginBottom: 10}}>
-      </Image>
-      </View>
-        <Image source={welcomeView} style={{width: '100%', height:320, resizeMode: 'contain'}}>
-      </Image>
-    </View>
-    <View style={style.enterContainer}>
-      
-    <TouchableOpacity style={style.loginButtonView}>
-                <Image source={getInButton} style={style.loginButtonImage} />
-                <Text style={style.buttonEntrarText1}> Entrar </Text>
-              </TouchableOpacity>
-    <TouchableOpacity style={style.loginButtonView}>
-                <Image source={sigInButton} style={style.loginButtonImage} />
-                <Text style={style.buttonEntrarText2}> Criar conta </Text>
-              </TouchableOpacity>
-              
-    </View>
-    <View style={{alignItems: 'center', justifyContent: 'center', bottom: 30}}>
-          <Image source={bySalonis} style={{width: 80, height: 50, resizeMode: 'contain'}}>
-          </Image>
-    </View>
-    </View>
-    
+  return (<SafeAreaView style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={style.mainConteiner}>
+          <View style={style.container}>
+            <View style={style.logoX}>
+              <Image source={mapaZZZ} style={{ width: '100%', height: 18, resizeMode: 'contain', marginBottom: 10 }} />
+            </View>
+            <Image source={welcomeView} style={{ width: '100%', height: 320, resizeMode: 'contain' }} />
+          </View>
+          <View style={style.enterContainer}>
+            <TouchableOpacity style={style.loginButtonView}>
+              <Image source={getInButton} style={style.loginButtonImage} />
+              <Text style={style.buttonEntrarText1}> Entrar </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={style.loginButtonView}>
+              <Image source={sigInButton} style={style.loginButtonImage} />
+              <Text style={style.buttonEntrarText2}> Criar conta </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={style.footerContainer}>
+            <Image source={bySalonis} style={style.bySalonisImg} />
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
