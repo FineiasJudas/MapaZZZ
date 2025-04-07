@@ -1,23 +1,34 @@
 import { StyleSheet } from "react-native";
 
 export const style = StyleSheet.create({
-  mainConteiner: {
+  mainContainer: {
     flex: 1,
-    justifyContent: 'space-between', // Distribui o espaço entre os componentes
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 10,
+    paddingTop: 30
+    
   },
-  container: {
-    marginTop: 50,
-  },
-  enterContainer: {
+  topContainer: {
+    width: '100%',
     alignItems: 'center',
     marginTop: 20,
   },
-  logoX: {
+  mapaLogo: {
     width: '100%',
+    height: 18,
+    resizeMode: 'contain',
+    marginBottom: 10,
+  },
+  welcomeImg: {
+    width: '100%',
+    height: 320,
+    resizeMode: 'contain',
+  },
+  enterContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
+    width: '100%',
   },
   loginButtonView: {
     width: '100%',
@@ -47,9 +58,7 @@ export const style = StyleSheet.create({
   },
   footerContainer: {
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    marginTop: 60,
-    marginBottom: 15, // Ajuste essa margem conforme necessário
+    paddingBottom: 20,
   },
   bySalonisImg: {
     width: 80,
