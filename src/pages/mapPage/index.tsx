@@ -29,8 +29,10 @@ import {
   Star,
   PersonStanding,
   MapPinned,
-  Radio
+  Radio,
+  Siren
 } from 'lucide-react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const SCREEN_WIDTH = Dimensions.get('window').width // Largura da tela
 
@@ -115,6 +117,15 @@ export default function SidebarComponent ({navigation}: any) {
       setMenuOpen(true)
       setShowBottomBar(false) // Corrigido: Agora oculta a barra inferior quando o menu está aberto
     } // Corrigido: Agora oculta a barra inferior quando o menu está aberto
+  }
+
+  const logOut = async () => {
+    try {
+      await AsyncStorage.removeItem('Token')
+      navigation.navigate('Login')
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error)
+    }
   }
 
   // Função para recentralizar no usuário
@@ -224,14 +235,14 @@ export default function SidebarComponent ({navigation}: any) {
                 </View>
 
                 <ScrollView style={style.scrollView}>
-                  <TouchableOpacity style={style.menuItem} onPress={() => navigation.navigate("MapaPage")} activeOpacity={0.1}>
+                  {/* <TouchableOpacity style={style.menuItem} onPress={() => navigation.navigate("MapaPage")} activeOpacity={0.1}>
                     <House size={30} color={'#77767b'}  />
                     <Text style={style.menuItemText}>Início</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={style.menuItem}>
-                    <MessageCircleWarning size={30} color={'#77767b'} />
-                    <Text style={style.menuItemText}>Reportar</Text>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
+                   <TouchableOpacity style={style.menuItem} onPress={() => navigation.navigate('EvalsPage')} activeOpacity={0.1}>
+                    <Siren size={30} color={'#77767b'} />
+                    <Text style={style.menuItemText}>Verificar Relatos</Text>
+                  </TouchableOpacity> 
                   <TouchableOpacity style={style.menuItem}>
                     <BellRing size={30} color={'#77767b'} />
                     <Text style={style.menuItemText}>Notificações</Text>
@@ -248,7 +259,7 @@ export default function SidebarComponent ({navigation}: any) {
                     <CircleHelp size={30} color={'#77767b'} />
                     <Text style={style.menuItemText}>Ajuda</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={style.menuItem}>
+                  <TouchableOpacity style={style.menuItem} onPress={logOut} >
                     <LogOut size={30} color={'#77767b'} />
                     <Text style={style.menuItemText}>Sair</Text>
                   </TouchableOpacity>

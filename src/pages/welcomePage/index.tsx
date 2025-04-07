@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, TextInput, ActivityIndicator, Image } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
@@ -12,12 +12,25 @@ import getInButton from '../../assets/loginButton.png';
 import sigInButton from '../../assets/SignBotton.png';
 import mapaZZZ from '../../assets/MapaZzz.png'
 import bySalonis from '../../assets/bySalōnis.png'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const WelcomePage = ({navigation} : any) => {
 
   const [riskLevel, setRiskLevel] = useState("");
   const [image, setImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+   // verifica se o usuário já está logado
+    const checkLogin = async () => {
+      const token = await AsyncStorage.getItem("Token");
+      if (token) {
+        navigation.navigate("MapaPage");
+      }
+    }
+    checkLogin();
+  }
+  , []);
 
   // Função para capturar foto da galeria ou câmera
   const pickImage = async () => {

@@ -41,6 +41,11 @@ const EvalsPage = ({navigation} : any) => {
         const responseData = await response.json()
         // console.log("Response: "+ JSON.stringify(responseData))
         if (response.ok) {
+          if (responseData.dangerZone === null) {
+            Alert.alert('Alerta', 'Não há mais zonas para repostar,Muito obrigado pela sua participação.')
+            navigation.navigate('MapaPage')
+            return
+          }
           setDangerZone(responseData.dangerZone)
         } else if (response.status === 401 || response.status === 403) {
           Alert.alert(
@@ -108,31 +113,31 @@ const EvalsPage = ({navigation} : any) => {
 
   return (
     <View style={style.mainConteiner}>
-      {/* Botão de Fechar */}
-      {/* <TouchableOpacity style={style.logoX}>
-        <Image source={esc} style={style.logoX} />
-      </TouchableOpacity> */}
-
+  {/* Mostra tudo somente se tiver imagem */}
+  {dangerZone?.image && (
+    <>
       {/* Imagem */}
-      {console.log("Danger Zone "+ dangerZone.image)}
-      {/* {dangerZone.image && ( */}
-        <Image
-          source={{ uri: dangerZone.image }}
-          style={{width: '95%', height: "100%", borderRadius: 10, position: 'absolute', top: 0, flex: 1, alignSelf: 'center'}}
-          resizeMode='cover'
-          resizeMethod='scale'
-        />
-      {/* )} */}
+      <Image
+        source={{ uri: dangerZone.image }}
+        style={{
+          width: '95%',
+          height: '100%',
+          borderRadius: 10,
+          position: 'absolute',
+          top: 0,
+          flex: 1,
+          alignSelf: 'center'
+        }}
+        resizeMode='cover'
+        resizeMethod='scale'
+      />
 
       {/* Localização da Foto */}
       <View style={style.locationContainer}>
-        <Text style={style.locationText}>{getLastTwoAddresses(dangerZone?.address)}</Text>
+        <Text style={style.locationText}>
+          {getLastTwoAddresses(dangerZone?.address)}
+        </Text>
       </View>
-
-      {/* Descrição da zona */}
-      {/* <View style={style.descriptionContainer}>
-        <Text style={style.descriptionText}>{dangerZone?.description}</Text>
-      </View> */}
 
       {/* Botões de Avaliação */}
       <View style={style.optionButtons}>
@@ -144,12 +149,14 @@ const EvalsPage = ({navigation} : any) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={style.optionsR}
-          onPress={() => handleConfirm('no', dangerZone.id)}
+          onPress={() => handleConfirm('no', dangerZone?.id)}
         >
           <Image source={deslike} style={style.options} />
         </TouchableOpacity>
       </View>
-    </View>
+    </>
+  )}
+</View>
   )
 }
 
