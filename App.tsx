@@ -1,5 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './src/pages/login';
 import Sign from './src/pages/sign';
 import MapaPage from './src/pages/mapPage';
@@ -8,9 +10,6 @@ import photo from './src/pages/photo';
 import WelcomePage from './src/pages/welcomePage';
 import EvalsPage from './src/pages/evalsPage';
 import initPage from './src/pages/InitPage';
-
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
