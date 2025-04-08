@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
-  Image
+  Image,
+  Alert
 } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
@@ -38,6 +39,7 @@ const initPage = ({ navigation }: any) => {
   const [riskLevel, setRiskLevel] = useState('')
   const [image, setImage] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [logged, setLogged] = useState(false)
   const [location, setLocation] = useState<{
     latitude: number
     longitude: number
@@ -105,7 +107,14 @@ const initPage = ({ navigation }: any) => {
       setLoading(false)
     }
   }
+  const checkPermission = async () => {
+    const token = await AsyncStorage.getItem('Token')
+    if (token) {
+      setLogged(true)
+    }
+  }
   useEffect(() => {
+    checkPermission()
     getLocation()
   }, [])
 
@@ -244,7 +253,23 @@ const initPage = ({ navigation }: any) => {
             </View>
             <View>
               <TouchableOpacity
-                onPress={() => navigation.navigate('EvalsPage')}
+                onPress={() => {
+                  if (logged) {
+                    navigation.navigate('EvalsPage')
+                    Alert.alert(
+                      'Atenção',
+                      "Essa página irá mostrar possíveis zonas de risco. \
+                                                          precisamos da sua ajuda para verificar se realmente são zonas de risco. Por favor, clique no botão 'Verificar' para confirmar se a zona de risco é real ou não. \
+                                                          Obrigado por sua colaboração!"
+                    )
+                  } else {
+                    navigation.navigate('Login')
+                    Alert.alert(
+                      'Atenção',
+                      'Você precisa estar logado para acessar esta página, tente Logar'
+                    )
+                  }
+                }}
                 style={{
                   width: 70,
                   height: 70,
@@ -314,7 +339,17 @@ const initPage = ({ navigation }: any) => {
         <View>
           <TouchableOpacity
             // style={style.menuItem}
-            onPress={() => navigation.navigate('reportPage')}
+            onPress={() => {
+              if (logged) {
+                navigation.navigate('reportPage')
+              } else {
+                navigation.navigate('Login')
+                Alert.alert(
+                  'Atenção',
+                  'Você precisa estar logado para acessar esta página, tente Logar'
+                )
+              }
+            }}
             activeOpacity={0.1}
             style={{
               width: 80,

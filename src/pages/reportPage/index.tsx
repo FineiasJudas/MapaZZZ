@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   View,
   Text,
@@ -33,7 +33,9 @@ const RegisterRiskZone = ({navigation} : any) => {
       return
     }
   }
-  checkPermission();
+  useEffect(() => {
+    checkPermission();
+  })
   // Função para capturar foto da galeria ou câmera
   const pickImage = async () => {
     let result = await ImagePicker.launchCameraAsync({

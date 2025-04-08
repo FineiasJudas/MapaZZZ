@@ -20,7 +20,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="WelcomePage">
         <Stack.Screen name="Login" component={Login} options={{headerShown : false}} />
         <Stack.Screen name="initPage" component={initPage} options={{headerShown : false}} />
-        <Stack.Screen name="reportPage" component={reportPage}   />
+        <Stack.Screen name="reportPage" component={reportPage}  options={{headerShown : false}} />
         <Stack.Screen name="photo" component={photo} options={{headerShown : false}} />
         <Stack.Screen name="WelcomePage" component={WelcomePage} options={{headerShown : false}} />
         <Stack.Screen name="EvalsPage" component={EvalsPage} options={{headerShown : false}} />

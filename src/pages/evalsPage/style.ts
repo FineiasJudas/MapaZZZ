@@ -42,7 +42,8 @@ export const style = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     height: '100%',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
+    marginBottom: 50,
   },
   locationContainer: {
     flexDirection: 'row',

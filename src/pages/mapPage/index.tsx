@@ -9,7 +9,8 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Dimensions,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert
 } from 'react-native'
 import * as Location from 'expo-location'
 import MapView, { Marker, Circle } from 'react-native-maps'
@@ -32,13 +33,14 @@ import {
   MapPinned,
   Radio,
   Siren,
-  Home
+  Home,
+  OctagonAlert
 } from 'lucide-react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const SCREEN_WIDTH = Dimensions.get('window').width // Largura da tela
 
-export default function SidebarComponent ({navigation}: any) {
+export default function SidebarComponent ({ navigation }: any) {
   const [location, setLocation] = useState<Location.LocationObject | null>(null)
   const mapRef = useRef<MapView | null>(null)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -47,45 +49,46 @@ export default function SidebarComponent ({navigation}: any) {
   const [showBottomBar, setShowBottomBar] = useState(true) // Controle da visibilidade da barra inferior
   const [activeTab, setActiveTab] = useState('home')
   const [dangerZones, setDangerZones] = useState([])
-  const [userName, setUserName] = useState("Visitante...");
-  const [loading, setLoading] = useState(false);
-  const [logged, setLogged] = useState(true);
+  const [userName, setUserName] = useState('Visitante...')
+  const [loading, setLoading] = useState(false)
+  const [logged, setLogged] = useState(false)
 
   const getUserName = async () => {
     try {
       const token = await AsyncStorage.getItem('Token')
       if (token) {
-        setLoading(true);
-        const response = await fetch('https://mapazzz.onrender.com/api/users/', {   
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`
+        setLoading(true)
+        setLogged(true)
+        const response = await fetch(
+          'https://mapazzz.onrender.com/api/users/',
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
           }
-        })  
+        )
         const data = await response.json()
         if (response.ok) {
-          setUserName(data.data.name);
-          console.log("Nome do usuário:", data.data.name);
-          setLoading(false);
+          setUserName(data.data.name)
+          console.log('Nome do usuário:', data.data.name)
+          setLoading(false)
         } else {
-          setUserName("Visitante...!!")
-          setLoading(false);
+          setUserName('Visitante...!!')
+          setLoading(false)
           console.error('Erro ao buscar nome do usuário:', data)
         }
+      } else {
+        setUserName('Visitante...')
       }
-      else{
-        setUserName("Visitante...")
-      }
-      setLoading(false);
+      setLoading(false)
     } catch (error) {
-      setUserName("Visitante...")
-      setLoading(false);
+      setUserName('Visitante...')
+      setLoading(false)
       console.error('Erro ao buscar nome do usuário:', error)
     }
   }
-  // 
-
-
+  //
 
   const getZoneStyle = (level: string) => {
     switch (level) {
@@ -128,17 +131,16 @@ export default function SidebarComponent ({navigation}: any) {
         )
         const data = await response.json()
         if (response.ok) {
-            setDangerZones(data.dangerZones || [])
-        }
-        else {
-            console.error('Erro ao buscar zonas de perigo:', data.message)
+          setDangerZones(data.dangerZones || [])
+        } else {
+          console.error('Erro ao buscar zonas de perigo:', data.message)
         }
       } catch (error) {
         console.error('Erro ao buscar zonas de perigo:', error)
       }
     })()
     // pegar o nome
-    getUserName();
+    getUserName()
   }, [])
 
   const toggleMenu = () => {
@@ -228,14 +230,19 @@ export default function SidebarComponent ({navigation}: any) {
                 anchor={{ x: 0.5, y: 0.5 }} // Centraliza o ícone no marcador
                 pinColor={color} // Cor do pino
                 // image={dangerIcon} // ícone customizado
-                title={`Zona de perigo ${zone.level === 'high' ? 'alta' : zone.level === 'medium' ? 'média' : 'baixa'}`}
+                title={`Zona de perigo ${
+                  zone.level === 'high'
+                    ? 'alta'
+                    : zone.level === 'medium'
+                    ? 'média'
+                    : 'baixa'
+                }`}
                 description={`${zone.description}`}
-              >  
+              >
                 <Image
                   source={dangerIcon}
                   style={{ width: 20, height: 20, resizeMode: 'contain' }}
                 />
-               
               </Marker>
             </React.Fragment>
           )
@@ -256,12 +263,14 @@ export default function SidebarComponent ({navigation}: any) {
               >
                 <View style={style.profileContainer}>
                   <View style={style.profileIcon}>
-                    <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{userName[0]}</Text>
+                    <Text style={{ fontSize: 25, fontWeight: 'bold' }}>
+                      {userName[0]}
+                    </Text>
                   </View>
                   <View style={style.profileTextContainer}>
                     <Text style={style.profileName}>
                       {loading ? (
-                        <ActivityIndicator size="small" color="#7F1734" />
+                        <ActivityIndicator size='small' color='#7F1734' />
                       ) : (
                         <Text style={{ fontSize: 20, color: '#77767B' }}>
                           {userName}
@@ -289,14 +298,38 @@ export default function SidebarComponent ({navigation}: any) {
                     <House size={30} color={'#77767b'}  />
                     <Text style={style.menuItemText}>Início</Text>
                   </TouchableOpacity> */}
-                  <TouchableOpacity style={style.menuItem} onPress={() => navigation.navigate('initPage')} activeOpacity={0.1}>
+                  <TouchableOpacity
+                    style={style.menuItem}
+                    onPress={() => navigation.navigate('initPage')}
+                    activeOpacity={0.1}
+                  >
                     <Home size={30} color={'#77767b'} />
                     <Text style={style.menuItemText}>Inicio</Text>
-                  </TouchableOpacity> 
-                   <TouchableOpacity style={style.menuItem} onPress={() => navigation.navigate('EvalsPage')} activeOpacity={0.1}>
-                    <Siren size={30} color={'#77767b'} />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={style.menuItem}
+                    onPress={() => {
+                      if (logged) {
+                        navigation.navigate('EvalsPage')
+                        Alert.alert(
+                          'Atenção',
+                          "Essa página irá mostrar possíveis zonas de risco. \
+                                        precisamos da sua ajuda para verificar se realmente são zonas de risco. Por favor, clique no botão 'Verificar' para confirmar se a zona de risco é real ou não. \
+                                        Obrigado por sua colaboração!"
+                        )
+                      } else {
+                        navigation.navigate('Login')
+                        Alert.alert(
+                          'Atenção',
+                          'Você precisa estar logado para acessar esta página, tente Logar'
+                        )
+                      }
+                    }}
+                    activeOpacity={0.1}
+                  >
+                    <OctagonAlert size={30} color={'#77767b'} />
                     <Text style={style.menuItemText}>Verificar Relatos</Text>
-                  </TouchableOpacity> 
+                  </TouchableOpacity>
                   <TouchableOpacity style={style.menuItem}>
                     <BellRing size={30} color={'#77767b'} />
                     <Text style={style.menuItemText}>Notificações</Text>
@@ -313,7 +346,7 @@ export default function SidebarComponent ({navigation}: any) {
                     <CircleHelp size={30} color={'#77767b'} />
                     <Text style={style.menuItemText}>Ajuda</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={style.menuItem} onPress={logOut} >
+                  <TouchableOpacity style={style.menuItem} onPress={logOut}>
                     <LogOut size={30} color={'#77767b'} />
                     <Text style={style.menuItemText}>Sair</Text>
                   </TouchableOpacity>
@@ -374,7 +407,16 @@ export default function SidebarComponent ({navigation}: any) {
               style.bottomBarItem,
               activeTab === 'report' && style.activeTabItem
             ]}
-            onPress={() => navigation.navigate('reportPage')}
+            onPress={() => {
+              if (logged) navigation.navigate('reportPage')
+              else {
+                navigation.navigate('Login')
+                Alert.alert(
+                  'Atenção',
+                  'Você precisa estar logado para acessar esta página, tente Logar'
+                )
+              }
+            }}
           >
             <Siren
               size={30}
