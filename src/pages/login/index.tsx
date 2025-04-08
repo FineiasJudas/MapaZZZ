@@ -25,6 +25,16 @@ export default function Login({ navigation }: any) {
   //   checkToken();
   // }, [navigation]);
 
+  //verificar se o token já existe no AsyncStorage
+  const checkToken = async () => {
+    const token = await AsyncStorage.getItem("Token");
+    if (token) {
+      navigation.navigate("initPage");
+    }
+  };
+
+  checkToken();
+
 
   const handleLogin = async () => {
     if (!email || !senha) {
@@ -51,7 +61,7 @@ export default function Login({ navigation }: any) {
         ToastAndroid.show('Login feito com sucesso', ToastAndroid.LONG);
         setEmail("");
         setSenha("");
-        navigation.navigate("MapaPage");
+        navigation.navigate("initPage");
       } else {
         Alert.alert("Erro", data.errors[0].message || "Erro ao fazer login");
       }

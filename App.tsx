@@ -7,6 +7,7 @@ import reportPage from './src/pages/reportPage';
 import photo from './src/pages/photo';
 import WelcomePage from './src/pages/welcomePage';
 import EvalsPage from './src/pages/evalsPage';
+import initPage from './src/pages/InitPage';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -18,7 +19,8 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="WelcomePage">
         <Stack.Screen name="Login" component={Login} options={{headerShown : false}} />
-        <Stack.Screen name="reportPage" component={reportPage} options={{headerShown : false}} />
+        <Stack.Screen name="initPage" component={initPage} options={{headerShown : false}} />
+        <Stack.Screen name="reportPage" component={reportPage}   />
         <Stack.Screen name="photo" component={photo} options={{headerShown : false}} />
         <Stack.Screen name="WelcomePage" component={WelcomePage} options={{headerShown : false}} />
         <Stack.Screen name="EvalsPage" component={EvalsPage} options={{headerShown : false}} />

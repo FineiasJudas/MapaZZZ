@@ -8,7 +8,8 @@ import {
   Image,
   ScrollView,
   TouchableWithoutFeedback,
-  Dimensions
+  Dimensions,
+  ActivityIndicator
 } from 'react-native'
 import * as Location from 'expo-location'
 import MapView, { Marker, Circle } from 'react-native-maps'
@@ -30,7 +31,8 @@ import {
   PersonStanding,
   MapPinned,
   Radio,
-  Siren
+  Siren,
+  Home
 } from 'lucide-react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -45,6 +47,45 @@ export default function SidebarComponent ({navigation}: any) {
   const [showBottomBar, setShowBottomBar] = useState(true) // Controle da visibilidade da barra inferior
   const [activeTab, setActiveTab] = useState('home')
   const [dangerZones, setDangerZones] = useState([])
+  const [userName, setUserName] = useState("Visitante...");
+  const [loading, setLoading] = useState(false);
+  const [logged, setLogged] = useState(true);
+
+  const getUserName = async () => {
+    try {
+      const token = await AsyncStorage.getItem('Token')
+      if (token) {
+        setLoading(true);
+        const response = await fetch('https://mapazzz.onrender.com/api/users/', {   
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })  
+        const data = await response.json()
+        if (response.ok) {
+          setUserName(data.data.name);
+          console.log("Nome do usuário:", data.data.name);
+          setLoading(false);
+        } else {
+          setUserName("Visitante...!!")
+          setLoading(false);
+          console.error('Erro ao buscar nome do usuário:', data)
+        }
+      }
+      else{
+        setUserName("Visitante...")
+      }
+      setLoading(false);
+    } catch (error) {
+      setUserName("Visitante...")
+      setLoading(false);
+      console.error('Erro ao buscar nome do usuário:', error)
+    }
+  }
+  // 
+
+
 
   const getZoneStyle = (level: string) => {
     switch (level) {
@@ -96,6 +137,8 @@ export default function SidebarComponent ({navigation}: any) {
         console.error('Erro ao buscar zonas de perigo:', error)
       }
     })()
+    // pegar o nome
+    getUserName();
   }, [])
 
   const toggleMenu = () => {
@@ -213,11 +256,18 @@ export default function SidebarComponent ({navigation}: any) {
               >
                 <View style={style.profileContainer}>
                   <View style={style.profileIcon}>
-                    <Text style={{ fontSize: 25, fontWeight: 'bold' }}>J</Text>
+                    <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{userName[0]}</Text>
                   </View>
                   <View style={style.profileTextContainer}>
-                    <Text style={style.profileName}>Justino Soares</Text>
-                    {/* <Text style={style.profileStatus}>Ativo</Text> */}
+                    <Text style={style.profileName}>
+                      {loading ? (
+                        <ActivityIndicator size="small" color="#7F1734" />
+                      ) : (
+                        <Text style={{ fontSize: 20, color: '#77767B' }}>
+                          {userName}
+                        </Text>
+                      )}
+                    </Text>
                     <View
                       style={{
                         display: 'flex',
@@ -239,6 +289,10 @@ export default function SidebarComponent ({navigation}: any) {
                     <House size={30} color={'#77767b'}  />
                     <Text style={style.menuItemText}>Início</Text>
                   </TouchableOpacity> */}
+                  <TouchableOpacity style={style.menuItem} onPress={() => navigation.navigate('initPage')} activeOpacity={0.1}>
+                    <Home size={30} color={'#77767b'} />
+                    <Text style={style.menuItemText}>Inicio</Text>
+                  </TouchableOpacity> 
                    <TouchableOpacity style={style.menuItem} onPress={() => navigation.navigate('EvalsPage')} activeOpacity={0.1}>
                     <Siren size={30} color={'#77767b'} />
                     <Text style={style.menuItemText}>Verificar Relatos</Text>
@@ -322,7 +376,7 @@ export default function SidebarComponent ({navigation}: any) {
             ]}
             onPress={() => navigation.navigate('reportPage')}
           >
-            <Radio
+            <Siren
               size={30}
               color={activeTab === 'report' ? '#000' : '#77767B'}
             />

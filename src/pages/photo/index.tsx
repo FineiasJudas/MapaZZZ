@@ -21,34 +21,41 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Location from 'expo-location'
 import { style } from '../login/style'
 
-export default function App ({navigation}: any) {
-  {/* posicao da camera */}
+export default function App ({ navigation }: any) {
+  {
+    /* posicao da camera */
+  }
   const [facing, setFacing] = useState<CameraType>('back')
-   {/* pegar foto para preview */}
+  {
+    /* pegar foto para preview */
+  }
   const [photo, setPhoto] = useState<string | null>(null)
-   {/* lazy Loading para quando o usuário decidir cadastrar uma zona de perigo */}
+  {
+    /* lazy Loading para quando o usuário decidir cadastrar uma zona de perigo */
+  }
   const [loading, setLoading] = useState(false)
-   {/* permissao da camera */}
+  {
+    /* permissao da camera */
+  }
   const [permission, requestPermission] = useCameraPermissions()
   const [galleryPermission, requestGalleryPermission] =
     MediaLibrary.usePermissions()
   const cameraRef = useRef<any>(null)
 
   useEffect(() => {
-    // verificar se o usuário tem permissão para estar nessa tela
-    const checkPermission = async () => {
-      const token = await AsyncStorage.getItem('Token')
-      if (!token) {
-        Alert.alert('Erro', 'Você não tem permissão para acessar essa tela')
-        // Redirecionar para a tela de login
-        navigation.navigate('Login');
-        return
-      }
+   
+  }, [])
+
+  const checkPermission = async () => {
+    const token = await AsyncStorage.getItem('Token')
+    if (!token) {
+      Alert.alert('Erro', 'Você não tem permissão para acessar essa tela')
+      // Redirecionar para a tela de login
+      navigation.navigate('Login')
+      return
     }
-    checkPermission()
-  }, []);
-
-
+  }
+  checkPermission();
 
   // Verificar e solicitar permissões da galeria
   if (!galleryPermission) {
@@ -69,7 +76,9 @@ export default function App ({navigation}: any) {
       </View>
     )
   }
-  {/* Troca de posicao da camera */}
+  {
+    /* Troca de posicao da camera */
+  }
   function toggleCameraFacing () {
     setFacing(current => (current === 'back' ? 'front' : 'back'))
   }
@@ -178,8 +187,6 @@ export default function App ({navigation}: any) {
     }
   }
 
-
-
   return (
     <View style={styles.container}>
       {!photo && (
@@ -187,11 +194,9 @@ export default function App ({navigation}: any) {
           style={styles.topLeftLogo}
           onPress={() => navigation.navigate('reportPage')}
         >
-          <Image source={out} style={styles.out}  />
+          <Image source={out} style={styles.out} />
           <TouchableOpacity onPress={toggleCameraFacing}>
-
-          <Image  source={repeat} style={styles.changeCamera}  />
-          
+            <Image source={repeat} style={styles.changeCamera} />
           </TouchableOpacity>
         </TouchableOpacity>
       )}
@@ -200,7 +205,7 @@ export default function App ({navigation}: any) {
         <>
           {loading ? (
             <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#7F1734" />
+              <ActivityIndicator size='large' color='#7F1734' />
               <Text style={styles.message}>Aguarde um pouco...</Text>
               {/* <Text style={styles.message}>Carregando...</Text> */}
             </View>
@@ -268,7 +273,7 @@ const styles = StyleSheet.create({
   message: {
     textAlign: 'center',
     paddingBottom: 10,
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   camera: {
     flex: 1

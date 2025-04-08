@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
-  Image
+  Image,
+  Alert
 } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
@@ -17,11 +18,22 @@ import esc from '../../assets/esc.png'
 import reportCamera from '../../assets/reportCamera.png'
 import apelo from '../../assets/apelo.png'
 import bySalonis from '../../assets/bySalōnis.png'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 const RegisterRiskZone = ({navigation} : any) => {
   const [riskLevel, setRiskLevel] = useState('')
   const [image, setImage] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
+  const checkPermission = async () => {
+    const token = await AsyncStorage.getItem('Token')
+    if (!token) {
+      Alert.alert('Erro', 'Você não tem permissão para acessar essa tela')
+      // Redirecionar para a tela de login
+      navigation.navigate('Login')
+      return
+    }
+  }
+  checkPermission();
   // Função para capturar foto da galeria ou câmera
   const pickImage = async () => {
     let result = await ImagePicker.launchCameraAsync({
