@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { 
+import {
   Image, Text, TextInput, View, TouchableOpacity, 
-  Alert, ToastAndroid, ActivityIndicator 
+  Alert, ToastAndroid, ActivityIndicator
 } from "react-native";
 import { style } from "./style";
 import Logo from "../../assets/logo.png";
@@ -14,18 +14,6 @@ export default function Login({ navigation }: any) {
   const [senha, setSenha] = useState("");
   const [loading, setLoading] = useState(false);  // Estado para controlar o carregamento
   
-  // Verifica se já existe um token no AsyncStorage ao iniciar o componente
-  // useEffect(() => {
-  //   const checkToken = async () => {
-  //     const token = await AsyncStorage.getItem("Token");
-  //     if (token) {
-  //       navigation.navigate("MapaPage");
-  //     }
-  //   };
-  //   checkToken();
-  // }, [navigation]);
-
-  //verificar se o token já existe no AsyncStorage
   const checkToken = async () => {
     const token = await AsyncStorage.getItem("Token");
     if (token) {
@@ -33,8 +21,9 @@ export default function Login({ navigation }: any) {
     }
   };
 
-  checkToken();
-
+  useEffect(() => {
+    checkToken();
+  }, []); // Verifica o token na montagem do componente
 
   const handleLogin = async () => {
     if (!email || !senha) {
@@ -58,9 +47,6 @@ export default function Login({ navigation }: any) {
       if (response.ok) {
         ToastAndroid.show('Login feito com sucesso', ToastAndroid.LONG);
         await AsyncStorage.setItem("Token", data.token); // Salva o token no AsyncStorage
-        ToastAndroid.show('Login feito com sucesso', ToastAndroid.LONG);
-        setEmail("");
-        setSenha("");
         navigation.navigate("initPage");
       } else {
         Alert.alert("Erro", data.errors[0].message || "Erro ao fazer login");
@@ -137,3 +123,4 @@ export default function Login({ navigation }: any) {
     </View>
   );
 }
+

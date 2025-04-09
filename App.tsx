@@ -9,14 +9,15 @@ import reportPage from './src/pages/reportPage';
 import photo from './src/pages/photo';
 import WelcomePage from './src/pages/welcomePage';
 import EvalsPage from './src/pages/evalsPage';
+import NotifyPage from './src/pages/notifyPage';
 import initPage from './src/pages/InitPage';
-
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="WelcomePage">
+        <Stack.Screen name='NotifyPage' component={NotifyPage} options={{headerShown : false}}/>
         <Stack.Screen name="Login" component={Login} options={{headerShown : false}} />
         <Stack.Screen name="initPage" component={initPage} options={{headerShown : false}} />
         <Stack.Screen name="reportPage" component={reportPage}  options={{headerShown : false}} />
@@ -43,3 +44,4 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 });
+

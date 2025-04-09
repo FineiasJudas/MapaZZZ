@@ -4,8 +4,7 @@ export const style = StyleSheet.create({
     body : {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'flex-start',
-        paddingTop: 100,
+        justifyContent: 'center',
     },
     Container:{
         width: '100%',
@@ -24,8 +23,8 @@ export const style = StyleSheet.create({
     },
     // Botão de login com Google
     googleButton: {
-        width: 300,
-        height: 50,
+        width: "80%",
+        height: 45,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -128,5 +127,3 @@ export const style = StyleSheet.create({
     fontWeight: 'bold'
     },
 });
-
-

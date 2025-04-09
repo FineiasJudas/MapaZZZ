@@ -4,7 +4,6 @@ export const style = StyleSheet.create({
   safeArea: {
     flex: 1,
     paddingTop: 40,
-    backgroundColor: "#fff",
   },
   mainContainer: {
     flex: 1,

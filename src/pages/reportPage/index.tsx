@@ -47,7 +47,7 @@ const RegisterRiskZone = ({ navigation }: any) => {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={style.mainConteiner}>
         <View style={style.container}>
-          <View style={style.imagePicker} >
+          <View style={style.imagePicker}>
             <Image source={reportCamera} style={{ width: 150, height: 150 }} />
           </View>
 
@@ -70,10 +70,10 @@ const RegisterRiskZone = ({ navigation }: any) => {
           </TouchableOpacity>
         </View>
 
-        <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
+        <View style={{ alignItems: 'center', justifyContent: 'center',}}>
           <Image
             source={bySalonis}
-            style={{ width: 80, height: 150, resizeMode: 'contain' }}
+            style={{ width: 80, height: 80, resizeMode: 'contain', marginTop:  50}}
           />
         </View>
       </View>

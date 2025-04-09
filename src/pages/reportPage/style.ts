@@ -4,9 +4,9 @@ const { width, height } = Dimensions.get('window');
 
 export const style = StyleSheet.create({
   mainConteiner: {
-    paddingTop: 50,
+    flex : 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
   },
   container: {
     paddingHorizontal: width * 0.05,

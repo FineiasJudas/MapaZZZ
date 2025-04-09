@@ -8,7 +8,6 @@ import {
   Image,
   Alert
 } from 'react-native'
-import { Picker } from '@react-native-picker/picker'
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
 import { style } from './style'

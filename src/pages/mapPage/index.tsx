@@ -195,7 +195,6 @@ export default function SidebarComponent ({ navigation }: any) {
         style={StyleSheet.absoluteFillObject}
         customMapStyle={MapStyle}
         showsUserLocation
-        showsTraffic
         showsCompass={false}
         showsMyLocationButton={false}
       >
