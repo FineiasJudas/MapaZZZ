@@ -10,18 +10,18 @@ import {
 import * as ImagePicker from 'expo-image-picker'
 import { style } from './style'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
-// Imagens
 import reportCamera from '../../assets/reportCamera.png'
 import bySalonis from '../../assets/bySalōnis.png'
+import {useAlert} from "../alertProvider/index";
+const { showAlert } = useAlert();
 
 const RegisterRiskZone = ({ navigation }: any) => {
   const [image, setImage] = useState<string | null>(null)
-
+  
   const checkPermission = async () => {
     const token = await AsyncStorage.getItem('Token')
     if (!token) {
-      Alert.alert('Erro', 'Você não tem permissão para acessar essa tela')
+      await showAlert('erro', 'Você não tem permissão para acessar essa tela', 'Erro')
       navigation.navigate('Login')
     }
   }
@@ -81,4 +81,4 @@ const RegisterRiskZone = ({ navigation }: any) => {
   )
 }
 
-export default RegisterRiskZone
+export default RegisterRiskZone;

@@ -20,6 +20,8 @@ import repeat from '../../assets/repeat.png'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Location from 'expo-location'
 import { style } from '../login/style'
+import {useAlert} from "../alertProvider/index";
+const { showAlert } = useAlert();
 
 export default function App ({ navigation }: any) {
   {
@@ -49,7 +51,7 @@ export default function App ({ navigation }: any) {
   const checkPermission = async () => {
     const token = await AsyncStorage.getItem('Token')
     if (!token) {
-      Alert.alert('Erro', 'Você não tem permissão para acessar essa tela')
+      await showAlert('erro', 'Você não tem permissão para acessar essa tela', 'Erro')
       // Redirecionar para a tela de login
       navigation.navigate('Login')
       return
@@ -100,9 +102,9 @@ export default function App ({ navigation }: any) {
     if (photo) {
       try {
         await MediaLibrary.createAssetAsync(photo)
-        Alert.alert('Sucesso', 'Foto salva na galeria!')
+        await showAlert('sucesso', 'Foto salva na galeria!', 'Sucesso')
       } catch (error) {
-        Alert.alert('Erro', 'Não foi possível salvar a foto.')
+        await showAlert('erro', 'Não foi possível salvar a foto.', 'Erro')
       }
     }
   }
@@ -113,7 +115,7 @@ export default function App ({ navigation }: any) {
     setLoading(true)
     const { status } = await Location.requestForegroundPermissionsAsync()
     if (status !== 'granted') {
-      Alert.alert('Erro', 'Permissão de localização negada.')
+      await showAlert('erro', 'Permissão de localização negada.', 'Erro')
 
       return
     }
@@ -161,26 +163,26 @@ export default function App ({ navigation }: any) {
           let responseData = await responseApi.json()
 
           if (responseApi.ok) {
-            Alert.alert('Sucesso', 'Zona de perigo registrada com sucesso!')
+            await showAlert('sucesso', 'Zona de perigo registrada com sucesso!', "Sucesso")
             setPhoto(null)
             setLoading(false)
             navigation.navigate('MapaPage')
           } else {
-            Alert.alert('Erro', responseData.message)
+            await showAlert('erro', responseData.message, "Erro")
             setLoading(false)
             console.log('Erro ao enviar a imagem:', responseData)
           }
         } catch (error) {
-          Alert.alert('Erro', 'Não foi possível salvar a imagem na galeria.')
+          await showAlert('erro', 'Não foi possível salvar a imagem na galeria.', "Erro")
           setLoading(false)
         }
       } else {
-        Alert.alert('Erro', 'Falha ao enviar a imagem.')
+        await showAlert('erro', 'Falha ao enviar a imagem.', 'Erro')
         setLoading(false)
       }
     } catch (error) {
       // Alert.alert('Erro', 'Falha ao enviar a imagem para o Cloudinary.');
-      Alert.alert('Error', 'Falha a reportar a zona de risco!')
+      await showAlert('erro', 'Falha a reportar a zona de risco!', 'Erro')
       setLoading(false)
     } finally {
       setLoading(false)

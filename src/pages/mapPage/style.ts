@@ -168,6 +168,43 @@ activeTabText: {
   fontWeight: 'bold',
   textDecorationLine: 'underline', // sublinhado
 },
+modalOverlay: {
+  flex: 1,
+  backgroundColor: 'rgba(0,0,0,0.5)',
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+modalContent: {
+  backgroundColor: '#fff',
+  width: '80%',
+  borderRadius: 10,
+  padding: 20,
+  alignItems: 'center',
+  elevation: 5
+},
+modalTitle: {
+  fontSize: 18,
+  fontWeight: 'bold',
+  marginBottom: 10,
+},
+modalText: {
+  fontSize: 16,
+  color: '#333',
+  marginBottom: 20,
+  textAlign: 'center'
+},
+modalButton: {
+  backgroundColor: '#7F1734',
+  borderRadius: 8,
+  paddingVertical: 10,
+  paddingHorizontal: 20,
+},
+modalButtonText: {
+  color: '#fff',
+  fontWeight: 'bold',
+  fontSize: 16,
+},
+
 });
 
  

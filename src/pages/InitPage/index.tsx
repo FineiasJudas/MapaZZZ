@@ -33,12 +33,15 @@ import bySalonis from '../../assets/bySalōnis.png'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import notifyIcon from '../../assets/notifyIcon.png'
 import geo from '../../assets/geo.png'
+import {useAlert} from "../alertProvider/index";
 
 const initPage = ({ navigation }: any) => {
+  const { showAlert } = useAlert();
   const [riskLevel, setRiskLevel] = useState('')
   const [image, setImage] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [logged, setLogged] = useState(false)
+
   const [location, setLocation] = useState<{
     latitude: number
     longitude: number
@@ -147,9 +150,9 @@ const initPage = ({ navigation }: any) => {
   // Simulação de envio do relatório
   const handleSubmit = () => {
     setLoading(true)
-    setTimeout(() => {
+    setTimeout(async () => {
       setLoading(false)
-      alert('Zona de risco reportada com sucesso!')
+      await showAlert('sucesso','Zona de risco reportada com sucesso!', 'Sucesso')
     }, 2000)
   }
 
@@ -252,20 +255,20 @@ const initPage = ({ navigation }: any) => {
             </View>
             <View>
               <TouchableOpacity
-                onPress={() => {
+                onPress={async () => {
                   if (logged) {
                     navigation.navigate('EvalsPage')
-                    Alert.alert(
-                      'Atenção',
+                    await showAlert(
+                      'aviso',
                       "Essa página irá mostrar possíveis zonas de risco. \
                                                           precisamos da sua ajuda para verificar se realmente são zonas de risco. Por favor, clique no botão 'Verificar' para confirmar se a zona de risco é real ou não. \
-                                                          Obrigado por sua colaboração!"
+                                                          Obrigado por sua colaboração!", 'Atenção'
                     )
                   } else {
                     navigation.navigate('Login')
-                    Alert.alert(
-                      'Atenção',
-                      'Você precisa estar logado para acessar esta página, tente Logar'
+                    await showAlert(
+                      'aviso',
+                      'Você precisa estar logado para acessar esta página, tente Logar', 'Atenção'
                     )
                   }
                 }}
@@ -338,14 +341,14 @@ const initPage = ({ navigation }: any) => {
         <View>
           <TouchableOpacity
             // style={style.menuItem}
-            onPress={() => {
+            onPress={async () => {
               if (logged) {
                 navigation.navigate('reportPage')
               } else {
                 navigation.navigate('Login')
-                Alert.alert(
-                  'Atenção',
-                  'Você precisa estar logado para acessar esta página, tente Logar'
+                await showAlert(
+                  'aviso',
+                  'Você precisa estar logado para acessar esta página, tente Logar', 'Atenção'
                 )
               }
             }}
@@ -381,4 +384,4 @@ const initPage = ({ navigation }: any) => {
   )
 }
 
-export default initPage
+export default initPage;

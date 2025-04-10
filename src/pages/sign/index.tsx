@@ -15,6 +15,8 @@ import Logo from '../../assets/logo.png'
 import LoginButton from '../../assets/loginButton.png'
 import GoogleLogo from '../../assets/google.png'
 import Toast from 'react-native-toast-message'
+import {useAlert} from "../alertProvider/index";
+const { showAlert } = useAlert();
 
 export default function Sign ({ navigation }: any) {
   const [fullName, setFullName] = useState('')
@@ -23,21 +25,6 @@ export default function Sign ({ navigation }: any) {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false) // Estado para controlar o carregamento
   const [addressSuggestions, setAddressSuggestions] = useState<string[]>([])
-
-  // Função para buscar sugestões de endereços
-  // const fetchAddressSuggestions = async (query: string) => {
-  //   if (!query) return setAddressSuggestions([]);
-
-  //   try {
-  //     const response = await fetch(`https://geocode.xyz/${query}?json=1`);
-  //     const data = await response.json();
-  //     const suggestions = data?.standard?.city ? [data.standard.city] : [];
-  //     setAddressSuggestions(suggestions);
-  //   } catch (error) {
-  //     console.error("Erro ao buscar sugestões de endereço:", error);
-  //     setAddressSuggestions([]);
-  //   }
-  // };
 
   // Função para cadastrar usuário
   const handleSignUp = async () => {
@@ -80,7 +67,7 @@ export default function Sign ({ navigation }: any) {
         )
       }
     } catch (error) {
-      alert('Falha na conexão com o servidor')
+      await showAlert('erro','Falha na conexão com o servidor', 'Erro')
     } finally {
       setLoading(false) // Desativa o estado de carregamento após a resposta
     }
@@ -165,10 +152,6 @@ export default function Sign ({ navigation }: any) {
             </>
           )}
         </TouchableOpacity>
-        {/* <TouchableOpacity style={style.loginButtonView} onPress={handleSignUp}>
-          <Image source={LoginButton} style={style.loginButtonImage} />
-          <Text style={style.buttonEntrarText}>Cadastrar</Text>
-        </TouchableOpacity> */}
 
         <View style={style.signAsGuessView}>
           <TouchableOpacity>

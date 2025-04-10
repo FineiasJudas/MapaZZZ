@@ -8,12 +8,14 @@ import Logo from "../../assets/logo.png";
 import LoginButton from "../../assets/loginButton.png";
 import GoogleLogo from "../../assets/google.png";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {useAlert} from "../alertProvider/index";
+const { showAlert } = useAlert();
 
 export default function Login({ navigation }: any) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [loading, setLoading] = useState(false);  // Estado para controlar o carregamento
-  
+
   const checkToken = async () => {
     const token = await AsyncStorage.getItem("Token");
     if (token) {
@@ -27,7 +29,7 @@ export default function Login({ navigation }: any) {
 
   const handleLogin = async () => {
     if (!email || !senha) {
-      Alert.alert("Erro", "Preencha todos os campos!");
+      ToastAndroid.show('Preencha todos os campos', ToastAndroid.LONG)
       return;
     }
 
@@ -49,10 +51,10 @@ export default function Login({ navigation }: any) {
         await AsyncStorage.setItem("Token", data.token); // Salva o token no AsyncStorage
         navigation.navigate("initPage");
       } else {
-        Alert.alert("Erro", data.errors[0].message || "Erro ao fazer login");
+        await showAlert("erro", data.errors[0].message || "Erro ao fazer login", 'Erro');
       }
     } catch (error) {
-      Alert.alert("Erro", "Falha na conexão com o servidor");
+      await showAlert("erro", "Falha na conexão com o servidor", "Erro");
     } finally {
       setLoading(false);  // Desativa o estado de carregamento após a resposta
     }
@@ -119,6 +121,7 @@ export default function Login({ navigation }: any) {
             </Text>
           </TouchableOpacity>
         </View>
+
       </View>
     </View>
   );

@@ -37,6 +37,7 @@ import {
   OctagonAlert
 } from 'lucide-react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import {useAlert} from "../alertProvider/index";
 
 const SCREEN_WIDTH = Dimensions.get('window').width // Largura da tela
 
@@ -52,6 +53,8 @@ export default function SidebarComponent ({ navigation }: any) {
   const [userName, setUserName] = useState('Visitante...')
   const [loading, setLoading] = useState(false)
   const [logged, setLogged] = useState(false)
+  const { showAlert } = useAlert();
+
 
   const getUserName = async () => {
     try {
@@ -107,7 +110,7 @@ export default function SidebarComponent ({ navigation }: any) {
     ;(async () => {
       let { status } = await Location.requestForegroundPermissionsAsync()
       if (status !== 'granted') {
-        alert('Permissão negada para acessar a localização.')
+        showAlert('erro','Permissão negada para acessar a localização.', 'Erro')
         return
       }
       let location = await Location.getCurrentPositionAsync({})
@@ -293,10 +296,7 @@ export default function SidebarComponent ({ navigation }: any) {
                 </View>
 
                 <ScrollView style={style.scrollView}>
-                  {/* <TouchableOpacity style={style.menuItem} onPress={() => navigation.navigate("MapaPage")} activeOpacity={0.1}>
-                    <House size={30} color={'#77767b'}  />
-                    <Text style={style.menuItemText}>Início</Text>
-                  </TouchableOpacity> */}
+                  {/**/}
                   <TouchableOpacity
                     style={style.menuItem}
                     onPress={() => navigation.navigate('initPage')}
@@ -307,21 +307,24 @@ export default function SidebarComponent ({ navigation }: any) {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={style.menuItem}
-                    onPress={() => {
+                    onPress={async () => {
                       if (logged) {
-                        navigation.navigate('EvalsPage')
-                        Alert.alert(
-                          'Atenção',
-                          "Essa página irá mostrar possíveis zonas de risco. \
-                                        precisamos da sua ajuda para verificar se realmente são zonas de risco. Por favor, clique no botão 'Verificar' para confirmar se a zona de risco é real ou não. \
-                                        Obrigado por sua colaboração!"
-                        )
+                        // Exibe o alerta e, se necessário, aguarda o fechamento
+                        await showAlert(
+                          'aviso',
+                          "Essa página irá mostrar possíveis zonas de risco. Precisamos da sua ajuda para verificar se realmente são zonas de risco. Por favor, clique no botão 'Verificar' para confirmar se a zona de risco é real ou não. Obrigado por sua colaboração!",
+                          'Atenção'
+                        );
+                        // Após fechar o alerta, navega para a página
+                        navigation.navigate('EvalsPage');
                       } else {
-                        navigation.navigate('Login')
-                        Alert.alert(
-                          'Atenção',
-                          'Você precisa estar logado para acessar esta página, tente Logar'
-                        )
+                        // Se o usuário não estiver logado, espera o alerta ser fechado e então navega
+                        await showAlert(
+                          'aviso',
+                          'Você precisa estar logado para acessar esta página, tente Logar',
+                          'Atenção'
+                        );
+                        navigation.navigate('Login');
                       }
                     }}
                     activeOpacity={0.1}
@@ -406,14 +409,16 @@ export default function SidebarComponent ({ navigation }: any) {
               style.bottomBarItem,
               activeTab === 'report' && style.activeTabItem
             ]}
-            onPress={() => {
-              if (logged) navigation.navigate('reportPage')
-              else {
-                navigation.navigate('Login')
-                Alert.alert(
-                  'Atenção',
-                  'Você precisa estar logado para acessar esta página, tente Logar'
-                )
+            onPress={async () => {
+              if (logged) {
+                navigation.navigate('reportPage');
+              } else {
+                await showAlert(
+                  'aviso',
+                  'Você precisa estar logado para acessar esta página, tente Logar',
+                  'Atenção'
+                );
+                navigation.navigate('Login');
               }
             }}
           >
