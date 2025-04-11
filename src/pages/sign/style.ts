@@ -1,6 +1,11 @@
 import { StyleSheet, Dimensions } from "react-native";
 
 export const style = StyleSheet.create({
+    body : {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     Container:{
         width: '100%',
         alignItems: 'center',
@@ -18,10 +23,11 @@ export const style = StyleSheet.create({
     },
     // Botão de login com Google
     googleButton: {
-        width: 300,
+        width: "80%",
         height: 45,
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: '#FFF',
         paddingVertical: 10,
         paddingHorizontal: 20,
@@ -58,7 +64,7 @@ export const style = StyleSheet.create({
         marginTop: 10,
         paddingHorizontal: 15
     },
-    boxEmailImput:{
+    boxphoneImput:{
         width:'100%',
         height: 45,
         borderWidth: 1,
@@ -87,8 +93,8 @@ export const style = StyleSheet.create({
     },
     inputText: {
         flex: 1,
-        fontSize: 16,
-        color: '#333'
+        fontSize: 15,
+        color: '#333000'
     },
     // Botões de login e cadastro
     loginButtonView:{
@@ -121,5 +127,3 @@ export const style = StyleSheet.create({
     fontWeight: 'bold'
     },
 });
-
-

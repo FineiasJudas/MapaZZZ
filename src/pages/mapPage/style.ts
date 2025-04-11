@@ -134,25 +134,77 @@ export const style = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 100,
-    borderRadius: 1,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    height: 90,
+    borderRadius: 20,
+    // borderStartEndRadius: 50,
+    // borderEndStartRadius: 50,
+    // borderStartStartRadius: 50,
+    // borderEndEndRadius: 50,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
     padding: 20,
-    elevation: 6,
-    borderTopWidth: 2,
-    borderColor: '#ddd',
+    // marginHorizontal: 30,
+    // elevation: 6,
+    // borderTopWidth: 2,
+    // borderColor: '#ddd',
   },
   bottomBarItem: {
     alignItems: 'center',
+    
   },
   bottomBarText: {
     fontSize: 10,
-    color: '#77767b',
+    color: '#77767B',
   },
+  activeTabItem: {
+  // backgroundColor: '#ffffff22', // leve destaque de fundo
+  borderRadius: 10,
+  // padding: 5,
+},
+
+activeTabText: {
+  color: '#000', // amarelo ouro
+  fontWeight: 'bold',
+  textDecorationLine: 'underline', // sublinhado
+},
+modalOverlay: {
+  flex: 1,
+  backgroundColor: 'rgba(0,0,0,0.5)',
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+modalContent: {
+  backgroundColor: '#fff',
+  width: '80%',
+  borderRadius: 10,
+  padding: 20,
+  alignItems: 'center',
+  elevation: 5
+},
+modalTitle: {
+  fontSize: 18,
+  fontWeight: 'bold',
+  marginBottom: 10,
+},
+modalText: {
+  fontSize: 16,
+  color: '#333',
+  marginBottom: 20,
+  textAlign: 'center'
+},
+modalButton: {
+  backgroundColor: '#7F1734',
+  borderRadius: 8,
+  paddingVertical: 10,
+  paddingHorizontal: 20,
+},
+modalButtonText: {
+  color: '#fff',
+  fontWeight: 'bold',
+  fontSize: 16,
+},
+
 });
 
  

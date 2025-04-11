@@ -1,22 +1,40 @@
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import * as SplashScreen from 'expo-splash-screen';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './src/pages/login';
 import Sign from './src/pages/sign';
 import MapaPage from './src/pages/mapPage';
-import RegisterRiskZone from './src/pages/reportPage'
+import reportPage from './src/pages/reportPage';
+import photo from './src/pages/photo';
+import WelcomePage from './src/pages/welcomePage';
 import EvalsPage from './src/pages/evalsPage';
 import NotifyPage from './src/pages/notifyPage';
-import WelcomePage from './src/pages/welcomePage';
-import { useEffect } from 'react';
+import initPage from './src/pages/InitPage';
+import GamingPage from './src/pages/gamingPage';
+import { AlertProvider } from './src/pages/alertProvider/index';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
-
   return (
-    <View style={styles.container}>
-      <WelcomePage/>
-      <StatusBar style="auto" />
-    </View>
+    <AlertProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="WelcomePage">
+          <Stack.Screen name="GamingPage" component={GamingPage} options={{ headerShown: false }} />
+          <Stack.Screen name="NotifyPage" component={NotifyPage} options={{ headerShown: false }} />
+          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+          <Stack.Screen name="initPage" component={initPage} options={{ headerShown: false }} />
+          <Stack.Screen name="reportPage" component={reportPage} options={{ headerShown: false }} />
+          <Stack.Screen name="photo" component={photo} options={{ headerShown: false }} />
+          <Stack.Screen name="WelcomePage" component={WelcomePage} options={{ headerShown: false }} />
+          <Stack.Screen name="EvalsPage" component={EvalsPage} options={{ headerShown: false }} />
+          <Stack.Screen name="Sign" component={Sign} options={{ headerShown: false }} />
+          <Stack.Screen name="MapaPage" component={MapaPage} options={{ headerShown: false }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AlertProvider>
   );
 }
 
@@ -26,5 +44,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: 35,
   },
-});
+  text: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 18,
+  },
+})
