@@ -21,7 +21,7 @@ export default function App() {
   return (
     <AlertProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="WelcomePage">
+        <Stack.Navigator initialRouteName="GamingPage">
           <Stack.Screen name="GamingPage" component={GamingPage} options={{ headerShown: false }} />
           <Stack.Screen name="NotifyPage" component={NotifyPage} options={{ headerShown: false }} />
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
