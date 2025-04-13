@@ -186,12 +186,23 @@ const initPage = ({ navigation }: any) => {
               )}
             </View>
           </View>
-          <View>
+          <TouchableOpacity
+            onPress={() => {
+              if (logged) {
+                navigation.navigate('notifyPage')
+              } else {
+                Alert.alert(
+                  'Atenção',
+                  'Você precisa estar logado para acessar esta página, tente Logar'
+                )
+              }
+            }}
+          >
             <Image
               source={notifyIcon}
               style={{ width: 20, height: 20 }}
             ></Image>
-          </View>
+          </TouchableOpacity>
         </View>
         {/* Container para as categorias */}
         <View style={style.containerCategoria}>

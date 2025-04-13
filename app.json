@@ -2,30 +2,36 @@
   "expo": {
     "name": "MapaZZZ",
     "slug": "MapaZZZ",
+    "notification": {
+      "icon": "./src/assets/flash.png",
+      "color": "#00FF00" 
+    },
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "",
+    "icon": "./src/assets/flash.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./src/assets/flash.png",
+      "image": "./assets/favicon.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "ios": {
       "supportsTablet": true,
+      "icon": "./assets/favicon.png",
       "bundleIdentifier": "com.jsoares256.MapaZZZ",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
+      "icon": "./assets/favicon.png", 
       "permissions": [
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION"
       ],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/favicon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.jsoares256.MapaZZZ"
