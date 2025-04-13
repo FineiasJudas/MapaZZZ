@@ -56,7 +56,6 @@ const NotifyPage = ({ navigation }) => {
         return alartQuiz;
       case 'surto':
         return alertStop;
-        
       case 'risco':
         return alertStop;
       default:
