@@ -26,7 +26,7 @@ export async function registerForPushNotificationsAsync() {
       console.log('Permissão para notificações não concedida!');
       return;
     }
-
+    console.log('Permissão concedida!');
     token = (await Notifications.getExpoPushTokenAsync({ projectId: 'e712808c-20f2-45a4-91bd-066ff3a253c4' })).data;
     console.log('Token:', token);
 

@@ -21,15 +21,14 @@ import alartQuiz from '../../assets/quizAlert.png';
 import alartRain from '../../assets/rainAlarte.png';
 import alertStop from '../../assets/stop.png';
 import alertEdu from '../../assets/goo.png';
+
 import useSocketNotification from '../utils/socketio';
 
 // Configuração do WebSocket com socket.io-client
 import { io } from 'socket.io-client';
 const socket = io('https://mapazzz.onrender.com', {
-  transports: ['websocket'],
+  transports: ['websocket', 'polling'],
   reconnection: true,
-  recombinationAttempts: 5,
-  recombinationDelay: 1000,
 });
 
 // Configuração de notificações
@@ -42,6 +41,7 @@ Notifications.setNotificationHandler({
 });
 
 const NotifyPage = ({ navigation }) => {
+
   useSocketNotification();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedNotification, setSelectedNotification] = useState(null);
@@ -107,11 +107,24 @@ const NotifyPage = ({ navigation }) => {
       setLoading(false);
     }
   };
+  async function getPermission() {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+
+      if (finalStatus !== 'granted') {
+        console.log('Permissão para notificações não concedida');
+        return false;
+      }
+  }
 
   useEffect(() => {
     // Carregar notificações iniciais
     fetchNotifications();
-
     // Configurar WebSocket
     const handleConnect = () => {
       console.log('WebSocket conectado');

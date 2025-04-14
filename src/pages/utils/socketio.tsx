@@ -21,7 +21,10 @@ export default function useSocketNotification() {
           body: data.data.describe|| 'Você recebeu uma nova notificação',
           sound: true,
         },
-        trigger: null,
+        trigger: { 
+          seconds: 1,
+          repeats: true,
+        }
       });
     });
 

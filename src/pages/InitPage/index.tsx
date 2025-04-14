@@ -195,6 +195,7 @@ const initPage = ({ navigation }: any) => {
                   'Atenção',
                   'Você precisa estar logado para acessar esta página, tente Logar'
                 )
+                navigation.navigate('Login');
               }
             }}
           >
