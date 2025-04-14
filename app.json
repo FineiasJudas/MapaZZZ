@@ -43,6 +43,7 @@
       "expo-font"
     ],
     "extra": {
+      "owner": "com.jsoares256.MapaZZZ",
       "eas": {
         "projectId": "e712808c-20f2-45a4-91bd-066ff3a253c4"
       }

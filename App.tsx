@@ -47,7 +47,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="notifyPage">
+      <Stack.Navigator initialRouteName="initPage">
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name="notifyPage" component={notifyPage} options={{ headerShown: false }} />
         <Stack.Screen name="initPage" component={initPage} options={{ headerShown: false }} />

@@ -171,7 +171,7 @@ export default function App ({ navigation }: any) {
             console.log('Erro ao enviar a imagem:', responseData)
           }
         } catch (error) {
-          Alert.alert('Erro', 'Não foi possível salvar a imagem na galeria.')
+          // Alert.alert('Erro', 'Não foi possível salvar a imagem na galeria.')
           setLoading(false)
         }
       } else {
