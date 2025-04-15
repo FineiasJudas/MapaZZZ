@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { AlertProvider } from './src/pages/alertProvider/index';
 import Login from './src/pages/login';
 import Sign from './src/pages/sign';
 import MapaPage from './src/pages/mapPage';
@@ -13,7 +14,6 @@ import EvalsPage from './src/pages/evalsPage';
 import NotifyPage from './src/pages/notifyPage';
 import initPage from './src/pages/InitPage';
 import GamingPage from './src/pages/gamingPage';
-import { AlertProvider } from './src/pages/alertProvider/index';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,7 +21,7 @@ export default function App() {
   return (
     <AlertProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="GamingPage">
+        <Stack.Navigator initialRouteName="WelcomePage">
           <Stack.Screen name="GamingPage" component={GamingPage} options={{ headerShown: false }} />
           <Stack.Screen name="NotifyPage" component={NotifyPage} options={{ headerShown: false }} />
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
