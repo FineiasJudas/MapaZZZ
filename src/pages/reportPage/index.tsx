@@ -6,20 +6,25 @@ import {
   TextInput,
   ActivityIndicator,
   Image,
-  Alert
+  Alert,
+  Dimensions
 } from 'react-native'
-import { Picker } from '@react-native-picker/picker'
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
 import { style } from './style'
 import { CircleX, Import } from 'lucide-react-native'
+import {useAlert} from "../alertProvider/index";
 import logo from '../../assets/logo.png'
 import esc from '../../assets/esc.png'
 import reportCamera from '../../assets/reportCamera.png'
 import apelo from '../../assets/apelo.png'
 import bySalonis from '../../assets/bySalōnis.png'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+
+const { width, height } = Dimensions.get('window');
+
 const RegisterRiskZone = ({navigation} : any) => {
+  const { showAlert } = useAlert();
   const [riskLevel, setRiskLevel] = useState('')
   const [image, setImage] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -27,7 +32,7 @@ const RegisterRiskZone = ({navigation} : any) => {
   const checkPermission = async () => {
     const token = await AsyncStorage.getItem('Token')
     if (!token) {
-      Alert.alert('Erro', 'Você não tem permissão para acessar essa tela')
+      await showAlert('erro', 'Você não tem permissão para acessar essa tela', 'Erro')
       // Redirecionar para a tela de login
       navigation.navigate('Login')
       return
@@ -51,9 +56,9 @@ const RegisterRiskZone = ({navigation} : any) => {
   // Simulação de envio do relatório
   const handleSubmit = () => {
     setLoading(true)
-    setTimeout(() => {
+    setTimeout(async () => {
       setLoading(false)
-      alert('Zona de risco reportada com sucesso!')
+      await showAlert('sucesso', 'Zona de risco reportada com sucesso!', 'Sucesso')
     }, 2000)
   }
 
@@ -61,13 +66,14 @@ const RegisterRiskZone = ({navigation} : any) => {
     <View style={style.mainConteiner}>
       <View style={style.container}>
         <TouchableOpacity style={style.imagePicker}>
-          <Image source={reportCamera} style={{ width: 150, height: 150 }} />
+        <Image
+          source={reportCamera}
+            style={{ width: width * 0.4, height: width * 0.4, resizeMode: 'contain' }}/>
         </TouchableOpacity>
 
-        <TouchableOpacity
+        <View
           style={style.reportButton}
-          onPress={handleSubmit}
-          disabled={loading}
+
         >
           <Text style={style.buttonText}>
             Denuncie e Ajude a Combater a Malária!
@@ -77,7 +83,7 @@ const RegisterRiskZone = ({navigation} : any) => {
             previsualização da image, depois de aceitar o local será registado
             como uma zona de risco.
           </Text>
-        </TouchableOpacity>
+        </View>
 
         <TouchableOpacity style={style.buttonReportar} onPress={() => navigation.navigate('photo')}>
           <Text style={style.textReportar}>Reportar</Text>
@@ -88,7 +94,7 @@ const RegisterRiskZone = ({navigation} : any) => {
       >
         <Image
           source={bySalonis}
-          style={{ width: 80, height: 50, resizeMode: 'contain' }}
+          style={{ width: 80, height: 40, resizeMode: 'contain', marginBottom: 15 }}
         ></Image>
       </View>
     </View>

@@ -3,12 +3,10 @@ import { Dimensions, StyleSheet } from "react-native";
 export const style = StyleSheet.create({
   
   mainConteiner: {
-    top: 10,
+    flex: 1,
+    top: 12,
     flexDirection: 'column',
     fontFamily: 'Poppins-Regular',
-  },
-  container: {
-    marginTop: 50,
   },
   enterContainer: {
     marginTop: 30,

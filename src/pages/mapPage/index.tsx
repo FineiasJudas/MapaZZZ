@@ -16,7 +16,6 @@ import * as Location from 'expo-location'
 import MapView, { Marker, Circle } from 'react-native-maps'
 import dangerIcon from '../../assets/mosquito.png'
 import { style } from './style'
-import MapStyle from '../../../mapStyle.json'
 import {
   Menu,
   House,
@@ -110,7 +109,7 @@ export default function SidebarComponent ({ navigation }: any) {
     ;(async () => {
       let { status } = await Location.requestForegroundPermissionsAsync()
       if (status !== 'granted') {
-        showAlert('erro','Permissão negada para acessar a localização.', 'Erro')
+        await showAlert('erro','Permissão negada para acessar a localização.', 'Erro')
         return
       }
       let location = await Location.getCurrentPositionAsync({})
@@ -190,6 +189,50 @@ export default function SidebarComponent ({ navigation }: any) {
       zoom: 18
     })
   }
+
+  const MapStyle = [
+    {
+      featureType: 'poi.business', // Remove empresas e lojas
+      stylers: [{ visibility: 'on' }]
+    },
+    {
+      featureType: 'poi.school', // Opcional: remove escolas
+      stylers: [{ visibility: 'on' }]
+    },
+    {
+      featureType: 'poi.place_of_worship', // Opcional: remove igrejas
+      stylers: [{ visibility: 'off' }]
+    },
+    {
+      featureType: 'poi', // Mantém somente hospitais
+      elementType: 'labels.text',
+      stylers: [{ visibility: 'off' }]
+    },
+    {
+      featureType: 'poi.medical', // Mostra hospitais e farmácias
+      stylers: [{ visibility: 'on' }]
+    },
+    {
+      featureType: 'administrative',
+      stylers: [{ visibility: 'on' }] // Mostra países, estados, municípios
+    },
+    {
+      featureType: 'transit', // Oculta transporte público se quiser
+      stylers: [{ visibility: 'off' }]
+    },
+    {
+      featureType: 'road',
+      stylers: [{ visibility: 'on' }]
+    },
+    {
+      featureType: 'water',
+      stylers: [{ color: '#aadaff' }]
+    },
+    {
+      featureType: 'landscape',
+      stylers: [{ color: '#f3f4f4' }]
+    }
+  ]
 
   return (
     <View style={style.container}>

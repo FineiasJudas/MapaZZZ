@@ -14,19 +14,20 @@ import deslike from '../../assets/Deslike.png'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { LogOut } from 'lucide-react-native'
+import {useAlert} from "../alertProvider/index";
 
 const EvalsPage = ({navigation} : any) => {
   const [dangerZone, setDangerZone] = useState(null)
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
-
+  const { showAlert } = useAlert();
   // Busca os dados da zona de risco da API
   const fetchData = async () => {
     try {
       setLoading(true)
       const token = await AsyncStorage.getItem('Token')
       if (!token) {
-        Alert.alert('Erro', 'Usuário não autorizado.')
+        showAlert('erro', 'Usuário não autorizado.', 'Erro')
         navigation.navigate('Login')
         return
       }
@@ -42,7 +43,7 @@ const EvalsPage = ({navigation} : any) => {
       const responseData = await response.json()
       if (response.ok) {
         if (responseData.dangerZone === null) {
-          Alert.alert('Alerta', 'Não há mais zonas para repostar, Muito obrigado pela sua participação.')
+          await showAlert('aviso', 'Não há mais zonas para repostar.\nMuito obrigado pela sua participação.', 'Aviso')
           navigation.navigate('MapaPage')
           return
         }
@@ -55,12 +56,12 @@ const EvalsPage = ({navigation} : any) => {
         navigation.navigate('Login');
       }
       else if (response.status === 404) {
-        Alert.alert('Alerta', 'Não há mais zonas para repostar, Muito obrigado pela sua participação.')
+        await showAlert('aviso', 'Não há mais zonas para repostar.\nMuito obrigado pela sua participação.', 'Aviso')
         navigation.navigate('MapaPage')
       }
     } catch (error) {
       console.error('Erro ao buscar dados:', error)
-      Alert.alert('Erro', 'Ocorreu um erro ao buscar os dados.')
+      await showAlert('erro', 'Ocorreu um erro ao buscar os dados.', 'Erro')
     } finally {
       setLoading(false)
       setRefreshing(false)
@@ -98,15 +99,14 @@ const EvalsPage = ({navigation} : any) => {
       )
       const responseData = await response.json()
       if (response.ok) {
-        Alert.alert("Sucesso", responseData.message)
-        // Fetch new zone after successful report
+        await showAlert("sucesso", responseData.message, "Sucesso")
         await fetchData()
       } else {
-        Alert.alert("Error", responseData.message)
+        await showAlert("erro", responseData.message, 'Erro')
       }
     } catch (error) {
       console.error('Erro ao enviar avaliação:', error)
-      Alert.alert('Erro', 'Ocorreu um erro ao enviar a avaliação.')
+      await showAlert('erro', 'Ocorreu um erro ao enviar a avaliação.', 'Erro')
     } finally {
       setRefreshing(false)
     }

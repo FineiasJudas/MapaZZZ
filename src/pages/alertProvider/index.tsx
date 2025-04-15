@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode, useRef } from 'react';
-import AlertCostum from '../customAlert/index'; // Ajuste o caminho conforme sua estrutura
+import AlertCostum from '../customAlert'; // Ajuste o caminho conforme sua estrutura
 // Defina os tipos de alerta se ainda não estiverem definidos
 export type AlertType = 'erro' | 'sucesso' | 'aviso';
 

@@ -8,11 +8,11 @@ import {
   Image,
   Alert
 } from 'react-native'
-import { Picker } from '@react-native-picker/picker'
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
 import { style } from './style'
 import {
+  Bell,
   BellRing,
   CircleHelp,
   CircleX,
@@ -20,9 +20,11 @@ import {
   Gamepad2,
   Hospital,
   Import,
+  MapPin,
   OctagonAlert,
   Siren
 } from 'lucide-react-native'
+import {useAlert} from "../alertProvider/index";
 import * as Location from 'expo-location'
 import logo from '../../assets/logo.png'
 import esc from '../../assets/esc.png'
@@ -36,6 +38,7 @@ import notifyIcon from '../../assets/notifyIcon.png'
 import geo from '../../assets/geo.png'
 
 const initPage = ({ navigation }: any) => {
+  const { showAlert } = useAlert();
   const [riskLevel, setRiskLevel] = useState('')
   const [image, setImage] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -148,15 +151,15 @@ const initPage = ({ navigation }: any) => {
   // Simulação de envio do relatório
   const handleSubmit = () => {
     setLoading(true)
-    setTimeout(() => {
+    setTimeout(async () => {
       setLoading(false)
-      alert('Zona de risco reportada com sucesso!')
+      await showAlert('sucesso','Zona de risco reportada com sucesso!', 'Sucesso')
     }, 2000)
   }
 
   return (
     <View style={style.mainConteiner}>
-      <View style={style.container}>
+      <View style={style.mainConteiner}>
         <View
           style={{
             flexDirection: 'row',
@@ -167,7 +170,7 @@ const initPage = ({ navigation }: any) => {
           }}
         >
           <View>
-            <Text style={{ color: 'grey', fontSize: 10 }}>Localização</Text>
+            <Text style={{ color: 'grey', fontSize: 12, marginLeft: 5 }}>Localização</Text>
             <View
               style={{
                 flexDirection: 'row',
@@ -175,8 +178,7 @@ const initPage = ({ navigation }: any) => {
                 justifyContent: 'space-between'
               }}
             >
-              <Image source={geo} style={style.logoGeo} />
-
+              <MapPin color="#7F1734" style={style.logoGeo} />
               {loading ? (
                 <ActivityIndicator size='small' color='grey' />
               ) : (
@@ -187,21 +189,18 @@ const initPage = ({ navigation }: any) => {
             </View>
           </View>
           <TouchableOpacity
-            onPress={() => {
+            onPress={async () => {
               if (logged) {
                 navigation.navigate('notifyPage')
               } else {
-                Alert.alert(
-                  'Atenção',
-                  'Você precisa estar logado para acessar esta página, tente Logar'
+                await showAlert(
+                  'aviso',
+                  'Você precisa estar logado para acessar esta página, tente Logar', 'Aviso'
                 )
               }
             }}
           >
-            <Image
-              source={notifyIcon}
-              style={{ width: 20, height: 20 }}
-            ></Image>
+            <Bell color="#5e5c64"size={28} />
           </TouchableOpacity>
         </View>
         {/* Container para as categorias */}
@@ -264,20 +263,20 @@ const initPage = ({ navigation }: any) => {
             </View>
             <View>
               <TouchableOpacity
-                onPress={() => {
+                onPress={async () => {
                   if (logged) {
                     navigation.navigate('EvalsPage')
-                    Alert.alert(
-                      'Atenção',
+                   await showAlert(
+                      'aviso',
                       "Essa página irá mostrar possíveis zonas de risco. \
                                                           precisamos da sua ajuda para verificar se realmente são zonas de risco. Por favor, clique no botão 'Verificar' para confirmar se a zona de risco é real ou não. \
-                                                          Obrigado por sua colaboração!"
+                                                          Obrigado por sua colaboração!", 'Atenção'
                     )
                   } else {
                     navigation.navigate('Login')
-                    Alert.alert(
-                      'Atenção',
-                      'Você precisa estar logado para acessar esta página, tente Logar'
+                    await showAlert(
+                      'aviso',
+                      'Você precisa estar logado para acessar esta página, tente Logar', 'Atenção'
                     )
                   }
                 }}
@@ -350,14 +349,14 @@ const initPage = ({ navigation }: any) => {
         <View>
           <TouchableOpacity
             // style={style.menuItem}
-            onPress={() => {
+            onPress={async () => {
               if (logged) {
                 navigation.navigate('reportPage')
               } else {
                 navigation.navigate('Login')
-                Alert.alert(
-                  'Atenção',
-                  'Você precisa estar logado para acessar esta página, tente Logar'
+                await showAlert(
+                  'aviso',
+                  'Você precisa estar logado para acessar esta página, tente Logar', 'Atenção'
                 )
               }
             }}

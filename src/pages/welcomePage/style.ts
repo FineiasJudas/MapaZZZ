@@ -1,64 +1,69 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
 export const style = StyleSheet.create({
-  mainConteiner:{
-    top: 30,
-    flexDirection: 'column'
+  safeArea: {
+    flex: 1,
+    paddingTop: 40,
   },
-  container: {
-    marginTop: 50,
+  mainContainer: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    justifyContent: "space-between",
+    alignItems: "center",
   },
-  enterContainer:{
-    marginTop: 30,
-    marginBottom:120,
-    alignItems: 'center',
+  topContainer: {
+    alignItems: "center",
+    width: "100%",
   },
-  logoX:{
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center'
+  mapaLogo: {
+    width: "100%",
+    height: 18,
+    resizeMode: "contain",
+    marginBottom: 10,
   },
-  escImg:{
-    width: 40,
-    height: 40,
-    resizeMode: 'contain'
+  welcomeImg: {
+    width: "100%",
+    height: 300,
+    resizeMode: "contain",
   },
-  logoImg:{
-    width: 40,
-    height: 40,
-    resizeMode: 'contain'
+  buttonsContainer: {
+    width: "100%",
+    alignItems: "center",
   },
-
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
+  loginButtonView: {
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
+  },
+  loginButtonImage: {
+    width: 300,
+    height: 50,
+    borderRadius: 10,
+    resizeMode: "contain",
+  },
+  buttonEntrarText1: {
+    position: "absolute",
+    color: "white",
+    fontSize: 18,
     fontWeight: "bold",
-    marginLeft: 10,
+    textAlign: "center",
   },
-  loginButtonView:{
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20
-},
-loginButtonImage: { 
-  width: 300,
-  height: 50,
-  borderRadius: 10,
-  resizeMode: 'contain',
-},
-buttonEntrarText1:{
-  position: 'absolute',  
-  color: 'white',       
-  fontSize: 18,
-  fontWeight: 'bold',
-  textAlign: 'center'
-},
-buttonEntrarText2:{
-  position: 'absolute',  
-  color: '#7F1734',       
-  fontSize: 18,
-  fontWeight: 'bold',
-  textAlign: 'center'
-}
+  buttonEntrarText2: {
+    position: "absolute",
+    color: "#7F1734",
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  footerContainer: {
+    alignItems: "center",
+    paddingBottom: 10,
+  },
+  bySalonisImg: {
+    width: 80,
+    height: 50,
+    resizeMode: "contain",
+  },
 });

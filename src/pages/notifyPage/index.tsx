@@ -9,7 +9,8 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
-import { Clock } from 'lucide-react-native';
+import {useAlert} from "../alertProvider/index";
+import { ArrowLeft, Clock } from 'lucide-react-native';
 import * as Notifications from 'expo-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { formatRelativeDate } from '../utils/date_formater';
@@ -42,6 +43,7 @@ Notifications.setNotificationHandler({
 });
 
 const NotifyPage = ({ navigation }) => {
+  const { showAlert } = useAlert();
   useSocketNotification();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedNotification, setSelectedNotification] = useState(null);
@@ -68,7 +70,7 @@ const NotifyPage = ({ navigation }) => {
     try {
       const token = await AsyncStorage.getItem('Token');
       if (!token) {
-        Alert.alert('Erro', 'Você precisa estar logado.');
+        await showAlert('erro', 'Você precisa estar logado.', 'Erro');
         navigation.navigate('Login');
         return;
       }
@@ -85,7 +87,7 @@ const NotifyPage = ({ navigation }) => {
 
       if (!response.ok) {
         if (response.status === 401 || response.status === 403) {
-          Alert.alert('Erro', 'Sessão expirada. Faça login novamente.');
+          await showAlert('erro', 'Sessão expirada. Faça login novamente.', 'Erro');
           await AsyncStorage.removeItem('Token');
           navigation.navigate('Login');
           return;
@@ -102,7 +104,7 @@ const NotifyPage = ({ navigation }) => {
       setNotifications(notificationsWithImages);
     } catch (error) {
       console.error('Erro ao buscar notificações:', error);
-      Alert.alert('Erro', 'Não foi possível carregar as notificações.');
+      await showAlert('erro', 'Não foi possível carregar as notificações.', 'Erro');
     } finally {
       setLoading(false);
     }
@@ -163,7 +165,7 @@ const NotifyPage = ({ navigation }) => {
       {/* Topo */}
       <View style={style.logoX}>
         <TouchableOpacity onPress={() => navigation.navigate('initPage')}>
-          <Image source={esc} style={style.escImg} />
+        <ArrowLeft color="#7F1734" size={35}/>
         </TouchableOpacity>
         <Image source={logo} style={style.logoImg} />
       </View>

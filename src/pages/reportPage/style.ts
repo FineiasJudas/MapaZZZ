@@ -1,136 +1,118 @@
 import { Dimensions, StyleSheet } from "react-native";
 
+const { width, height } = Dimensions.get('window');
+
 export const style = StyleSheet.create({
-  mainConteiner:{
+  mainConteiner: {
     flex: 1,
-    // // backgroundColor: '#7F1734',
     alignItems: 'center',
     justifyContent: 'center',
-    // paddingTop: 35,
-    // paddingLeft: 10,
-    // paddingRight: 10
   },
   container: {
-    // flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: width * 0.05,
     flexDirection: "column",
     alignItems: "center",
-    fontFamily: 'Poppins-Regular',
-     padding: 70,
+    paddingVertical: height * 0.07,
   },
-  logoX:{
+  logoX: {
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between'
   },
-  escImg:{
-    width: 40,
-    height: 40,
+  escImg: {
+    width: width * 0.1,
+    height: width * 0.1,
     resizeMode: 'contain'
   },
-  logoImg:{
-    width: 40,
-    height: 40,
+  logoImg: {
+    width: width * 0.1,
+    height: width * 0.1,
     resizeMode: 'contain'
   },
   header: {
-    fontSize: 22,
+    fontSize: width * 0.055,
     fontWeight: "bold",
     color: "#fff",
-    marginBottom: 20,
+    marginBottom: height * 0.02,
   },
   imagePicker: {
-    // width: 120,
-    // height: 120,
-    // backgroundColor: "#7F1734",
-    borderRadius: 60,
+    borderRadius: width * 0.3,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 70,
+    marginBottom: height * 0.07,
   },
-  pikerView:{
-    height: Dimensions.get('window').height / 4,
+  pikerView: {
+    height: height * 0.25,
     width: '100%',
-    marginBottom: 10,
+    marginBottom: height * 0.01,
     alignItems: 'center',
-    
   },
   previewImage: {
     width: "100%",
     height: "100%",
-    borderRadius: 60,
-    
+    borderRadius: width * 0.1,
   },
   picker: {
-    height: 50,
+    height: height * 0.06,
     width: "100%",
     backgroundColor: "#fff",
     borderRadius: 8,
-    marginBottom: 70,
+    marginBottom: height * 0.07,
   },
   reportButton: {
-    // flexDirection: "row",
-    // backgroundColor: "#7F1734",
-    padding: 15,
-   
+    padding: height * 0.02,
     borderRadius: 8,
     alignItems: "center",
     justifyContent: "space-around",
     width: "100%",
-    marginBottom: 90,
+    marginBottom: 15,
   },
   buttonText: {
     color: "#000",
     textAlign: "center",
-    fontSize: 16,
+    fontSize: width * 0.045,
     fontWeight: "bold",
-    // marginLeft: 10,
   },
-  textMinus :{
+  textMinus: {
     color: "#000",
-    fontSize: 15,
+    fontSize: width * 0.04,
     textAlign: "center",
-    paddingTop: 10,
-    // fontWeight: "bold",
-     marginTop: 10,
-
-    // fontSize: 18,
+    paddingTop: height * 0.01,
+    marginTop: height * 0.01,
   },
   buttonReportar: {
     backgroundColor: "#7F1734",
-    padding: 15,
+    paddingVertical: height * 0.015,
+    paddingHorizontal: width * 0.1,
     borderRadius: 8,
     alignItems: "center",
     justifyContent: "space-around",
-    width: 300,
-    marginBottom: 10,
+    width: width * 0.8,
+    marginBottom: height * 0.015,
   },
-  
   textReportar: {
     color: "#fff",
     textAlign: "center",
-    fontSize: 16,
+    fontSize: width * 0.045,
     fontWeight: "bold",
   },
-
   levelContainer: {
-    marginTop: 10,
+    marginTop: height * 0.01,
     alignItems: 'center',
   },
   levelText: {
-    fontSize: 16,
+    fontSize: width * 0.04,
     fontFamily: 'Poppins-Regular',
   },
-  
   descriptionContainer: {
-    margin: 20,
-    padding: 10,
+    margin: width * 0.05,
+    padding: width * 0.03,
     backgroundColor: '#f2f2f2',
     borderRadius: 10,
   },
   descriptionText: {
-    fontSize: 14,
+    fontSize: width * 0.035,
     textAlign: 'center',
     fontFamily: 'Poppins-Regular',
   },

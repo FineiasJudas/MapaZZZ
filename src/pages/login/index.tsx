@@ -1,31 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { 
+import {
   Image, Text, TextInput, View, TouchableOpacity, 
-  Alert, ToastAndroid, ActivityIndicator 
+  Alert, ToastAndroid, ActivityIndicator
 } from "react-native";
 import { style } from "./style";
 import Logo from "../../assets/logo.png";
 import LoginButton from "../../assets/loginButton.png";
 import GoogleLogo from "../../assets/google.png";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {useAlert} from "../alertProvider/index";
 
 export default function Login({ navigation }: any) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [loading, setLoading] = useState(false);  // Estado para controlar o carregamento
-  
-  // Verifica se já existe um token no AsyncStorage ao iniciar o componente
-  // useEffect(() => {
-  //   const checkToken = async () => {
-  //     const token = await AsyncStorage.getItem("Token");
-  //     if (token) {
-  //       navigation.navigate("MapaPage");
-  //     }
-  //   };
-  //   checkToken();
-  // }, [navigation]);
-
-  //verificar se o token já existe no AsyncStorage
+  const { showAlert } = useAlert();
   const checkToken = async () => {
     const token = await AsyncStorage.getItem("Token");
     if (token) {
@@ -33,12 +22,13 @@ export default function Login({ navigation }: any) {
     }
   };
 
-  checkToken();
-
+  useEffect(() => {
+    checkToken();
+  }, []); // Verifica o token na montagem do componente
 
   const handleLogin = async () => {
     if (!email || !senha) {
-      Alert.alert("Erro", "Preencha todos os campos!");
+      ToastAndroid.show('Preencha todos os campos', ToastAndroid.LONG)
       return;
     }
 
@@ -58,15 +48,12 @@ export default function Login({ navigation }: any) {
       if (response.ok) {
         ToastAndroid.show('Login feito com sucesso', ToastAndroid.LONG);
         await AsyncStorage.setItem("Token", data.token); // Salva o token no AsyncStorage
-        ToastAndroid.show('Login feito com sucesso', ToastAndroid.LONG);
-        setEmail("");
-        setSenha("");
         navigation.navigate("initPage");
       } else {
-        Alert.alert("Erro", data.errors[0].message || "Erro ao fazer login");
+        await showAlert("erro", data.errors[0].message || "Erro ao fazer login", 'Erro');
       }
     } catch (error) {
-      Alert.alert("Erro", "Falha na conexão com o servidor");
+      await showAlert("erro", "Falha na conexão com o servidor", "Erro");
     } finally {
       setLoading(false);  // Desativa o estado de carregamento após a resposta
     }
@@ -133,6 +120,7 @@ export default function Login({ navigation }: any) {
             </Text>
           </TouchableOpacity>
         </View>
+
       </View>
     </View>
   );
