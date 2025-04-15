@@ -14,11 +14,13 @@ import EvalsPage from './src/pages/evalsPage';
 import initPage from './src/pages/InitPage';
 import notifyPage from './src/pages/notifyPage';
 import { registerForPushNotificationsAsync } from './src/pages/manegeNotification/index';
+import useSocketNotification from './src/pages/utils/socketio';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   useEffect(() => {
+    useSocketNotification();
     // Registrar para notificações push
     registerForPushNotificationsAsync().then((token) => {
       if (token) {
@@ -26,7 +28,6 @@ export default function App() {
         console.log('Enviar token para o backend:', token);
       }
     });
-
     // Ouvinte para notificações recebidas com o app aberto
     const subscription = Notifications.addNotificationReceivedListener((notification) => {
       console.log('Notificação recebida:', notification);

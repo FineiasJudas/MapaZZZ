@@ -3,12 +3,12 @@
     "name": "MapaZZZ",
     "slug": "MapaZZZ",
     "notification": {
-      "icon": "./src/assets/flash.png",
-      "color": "#00FF00" 
+      "icon": "./assets/favicon.png",
+      "color": "#00FF00"
     },
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/flash.png",
+    "icon": "./assets/favicon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
