@@ -10,7 +10,6 @@ import {
   Alert,
   ActivityIndicator
 } from 'react-native'
-import {useAlert} from "../alertProvider/index";
 import * as MediaLibrary from 'expo-media-library'
 import mudar_camera from '../../assets/mudar-camera.png'
 import foto from '../../assets/foto.png'
@@ -21,9 +20,12 @@ import repeat from '../../assets/repeat.png'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Location from 'expo-location'
 import { style } from '../login/style'
-import { Repeat, X } from 'lucide-react-native';
+import {useAlert} from "../alertProvider/index";
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { Repeat, X } from 'lucide-react-native'
 
 export default function App ({ navigation }: any) {
+const { showAlert } = useAlert();
   {
     /* posicao da camera */
   }
@@ -39,7 +41,6 @@ export default function App ({ navigation }: any) {
   {
     /* permissao da camera */
   }
-  const { showAlert } = useAlert();
   const [permission, requestPermission] = useCameraPermissions()
   const [galleryPermission, requestGalleryPermission] =
     MediaLibrary.usePermissions()
@@ -117,6 +118,7 @@ export default function App ({ navigation }: any) {
     const { status } = await Location.requestForegroundPermissionsAsync()
     if (status !== 'granted') {
       await showAlert('erro', 'Permissão de localização negada.', 'Erro')
+
       return
     }
     if (!photo) return
@@ -163,17 +165,17 @@ export default function App ({ navigation }: any) {
           let responseData = await responseApi.json()
 
           if (responseApi.ok) {
-            await showAlert('sucesso', 'Zona de perigo registrada com sucesso!', 'Sucesso')
+            await showAlert('sucesso', 'Zona de perigo registrada com sucesso!', "Sucesso")
             setPhoto(null)
             setLoading(false)
             navigation.navigate('MapaPage')
           } else {
-            await showAlert('erro', responseData.message, 'Erro')
+            await showAlert('erro', responseData.message, "Erro")
             setLoading(false)
             console.log('Erro ao enviar a imagem:', responseData)
           }
         } catch (error) {
-          await showAlert('erro', 'Não foi possível salvar a imagem na galeria.', 'Erro')
+          await showAlert('erro', 'Não foi possível salvar a imagem na galeria.', "Erro")
           setLoading(false)
         }
       } else {
@@ -190,7 +192,7 @@ export default function App ({ navigation }: any) {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {!photo && (
         <TouchableOpacity
           style={styles.topLeftLogo}
@@ -244,7 +246,7 @@ export default function App ({ navigation }: any) {
           </View>
         </CameraView>
       )}
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -311,12 +313,11 @@ const styles = StyleSheet.create({
   topLeftLogo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 15,
     gap: 10,
     marginHorizontal: 10,
     alignItems: 'center',
     backgroundColor: 'transparent',
-    height: 50,
+    height: 30,
     zIndex: 1
   },
   btnFoto: {
