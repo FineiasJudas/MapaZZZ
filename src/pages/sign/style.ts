@@ -5,6 +5,7 @@ export const style = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        marginBottom: 40
     },
     Container:{
         width: '100%',
@@ -101,7 +102,6 @@ export const style = StyleSheet.create({
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 20
     },
     loginButtonImage: { 
         width: 300,
@@ -126,4 +126,74 @@ export const style = StyleSheet.create({
         fontSize: 14,
     fontWeight: 'bold'
     },
+      checkboxContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 4,
+        padding: 10
+      },
+      checkbox: {
+        width: 20,
+        height: 20,
+        borderWidth: 2,
+        borderColor: '#7F1734',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 8
+      },
+      checkboxChecked: {
+        width: 12,
+        height: 12,
+        backgroundColor: '#7F1734'
+      },
+      checkboxText: {
+        fontSize: 14
+      },
+      disabledButton: {
+            opacity: 0.3
+      },
+      modalOverlay: {
+        flex: 1,
+        paddingVertical: 60,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'center',
+        alignItems: 'center'
+      },
+      modalContainer: {
+        width: '90%',
+        backgroundColor: '#FFF',
+        borderRadius: 8,
+        padding: 20,
+        elevation: 10
+      },
+      modalTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10
+      },
+      modalContent: {
+        fontSize: 14,
+        color: '#333',
+        marginBottom: 20
+      },
+      closeModalButton: {
+        alignSelf: 'flex-end',
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        backgroundColor: '#7F1734',
+        borderRadius: 8
+      },
+      closeModalButtonText: {
+        color: '#FFF',
+        fontWeight: 'bold'
+      },
+      linkText: {
+        color: '#7F1734',
+        textDecorationLine: 'underline',
+        fontWeight: 'bold'
+      },
+      modalScroll: {
+        maxHeight: 300, // ajuste conforme o tamanho ideal
+        marginBottom: 10
+      }      
 });

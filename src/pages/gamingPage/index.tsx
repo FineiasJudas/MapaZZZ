@@ -10,16 +10,21 @@ import {
 } from "react-native";
 import { ArrowLeft, Gamepad2 } from "lucide-react-native";
 import { style } from "./style";
+import {useAlert} from "../alertProvider/index";
 import logo from "../../assets/logo.png";
+import { useNavigation } from "@react-navigation/native";
 
-const QuizPage = () => {
+const QuizPage = ({ navigator }: any) =>  {
+  const { showAlert } = useAlert();
+  const [logged, setLogged] = useState(false)
   const [answer, setAnswer] = useState("");
   const [modalVisible, setModalVisible] = useState(true);
   const [editorVisible, setEditorVisible] = useState(false);
   const [editorText, setEditorText] = useState(answer);
 
+
   const welcomeMessage =
-    "Bem-vindo(a) ao Malária Quiz! Aqui você vai testar seus conhecimentos e aprender formas importantes de se proteger dessa doença.";
+  "Bem-vindo(a) ao Malária Quiz! Aqui você vai testar seus conhecimentos e aprender formas importantes de se proteger dessa doença.";
 
   const handleSubmit = () => {
     console.log("Resposta enviada:", answer);
@@ -30,7 +35,11 @@ const QuizPage = () => {
     <View style={style.mainConteiner}>
       {/* Cabeçalho */}
       <View style={style.logoX}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={async () => {
+                      if (logged) {
+                        navigator.navigate('initPage')
+                      }
+                    }}>
           <ArrowLeft size={30} color={"#7F1734"} />
         </TouchableOpacity>
         <Image source={logo} style={style.logoImg} />

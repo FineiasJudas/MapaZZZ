@@ -277,7 +277,7 @@ const initPage = ({ navigation }: any) => {
                     await showAlert(
                       'aviso',
                       'Você precisa estar logado para acessar esta página, tente Logar', 'Atenção'
-                    )
+                    ) 
                   }
                 }}
                 style={{

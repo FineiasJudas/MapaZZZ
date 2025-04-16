@@ -375,11 +375,32 @@ export default function SidebarComponent ({ navigation }: any) {
                     <OctagonAlert size={30} color={'#77767b'} />
                     <Text style={style.menuItemText}>Verificar Relatos</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={style.menuItem}>
+                  <TouchableOpacity   onPress={async () => {
+              if (logged) {
+                navigation.navigate('notifyPage')
+              } else {
+                await showAlert(
+                  'aviso',
+                  'Você precisa estar logado para acessar esta página, tente Logar', 'Aviso'
+                )
+              }
+            }}
+            style={style.menuItem}>
                     <BellRing size={30} color={'#77767b'} />
                     <Text style={style.menuItemText}>Notificações</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={style.menuItem}>
+                  <TouchableOpacity 
+                    onPress={async () => {
+                      if (logged) {
+                        navigation.navigate('GamingPage')
+                      } else {
+                        await showAlert(
+                          'aviso',
+                          'Você precisa estar logado para jogar o Malária Quiz, tente Logar', 'Aviso'
+                        )
+                      }
+                    }}
+                  style={style.menuItem}>
                     <Gamepad2 size={30} color={'#77767b'} />
                     <Text style={style.menuItemText}>Jogos</Text>
                   </TouchableOpacity>
@@ -480,11 +501,22 @@ export default function SidebarComponent ({ navigation }: any) {
           </TouchableOpacity>
 
           <TouchableOpacity
+          onPress={async () => {
+            setActiveTab('notifics')
+            if (logged) {
+              navigation.navigate('notifyPage')
+            } else {
+              await showAlert(
+                'aviso',
+                'Você precisa estar logado para acessar esta página, tente Logar', 'Aviso'
+              )
+              navigation.navigate('Login');
+            }
+          }}
             style={[
               style.bottomBarItem,
               activeTab === 'notifics' && style.activeTabItem
             ]}
-            onPress={() => setActiveTab('notifics')}
           >
             <BellRing
               size={30}

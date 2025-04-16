@@ -9,7 +9,7 @@ export default function MenuBar()
 {
   return (
     <View style={style.Container}>  
-
+      
     </View>
   );
 }
