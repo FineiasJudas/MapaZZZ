@@ -18,6 +18,9 @@ import EvalsPage from './src/pages/evalsPage';
 import initPage from './src/pages/InitPage';
 import notifyPage from './src/pages/notifyPage';
 import GamingPage from './src/pages/gamingPage';
+import helpPage from './src/pages/helpPage';
+import nearHospitalPage from './src/pages/nearHospitalPage';
+
 import { registerForPushNotificationsAsync } from './src/pages/manegeNotification/index';
 
 const Stack = createNativeStackNavigator();
@@ -48,7 +51,7 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <AlertProvider>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="WelcomePage">
+          <Stack.Navigator initialRouteName="nearHospitalPage">
             <Stack.Screen name="GamingPage" component={GamingPage} options={{ headerShown: false }} />
             <Stack.Screen name="notifyPage" component={notifyPage} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
@@ -59,6 +62,8 @@ export default function App() {
             <Stack.Screen name="EvalsPage" component={EvalsPage} options={{ headerShown: false }} />
             <Stack.Screen name="Sign" component={Sign} options={{ headerShown: false }} />
             <Stack.Screen name="MapaPage" component={MapaPage} options={{ headerShown: false }} />
+            <Stack.Screen name="helpPage" component={helpPage} options={{ headerShown: false }} />
+            <Stack.Screen name="nearHospitalPage" component={nearHospitalPage} options={{ headerShown: false }} />
           </Stack.Navigator>
         </NavigationContainer>
       </AlertProvider>

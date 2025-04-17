@@ -408,7 +408,7 @@ export default function SidebarComponent ({ navigation }: any) {
                     <Hospital size={30} color={'#77767b'} />
                     <Text style={style.menuItemText}>Hospitais Próximos</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={style.menuItem}>
+                  <TouchableOpacity style={style.menuItem} onPress={async () => { navigation.navigate('helpPage');}}>
                     <CircleHelp size={30} color={'#77767b'} />
                     <Text style={style.menuItemText}>Ajuda</Text>
                   </TouchableOpacity>

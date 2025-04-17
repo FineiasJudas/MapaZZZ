@@ -143,38 +143,37 @@ export default function Sign ({ navigation }: any) {
         </View>
         {/* Checkbox para aceitar termos */}
         <View style={style.checkboxContainer}>
-  <TouchableOpacity onPress={() => setAcceptedTerms(!acceptedTerms)}>
-    <View style={style.checkbox}>
-      {acceptedTerms && <View style={style.checkboxChecked} />}
-    </View>
-  </TouchableOpacity>
-  <Text style={style.checkboxText}>
-    Concordo com os{' '}
-    <Text style={style.linkText} onPress={() => setShowTermsModal(true)}>
-      termos e condições
-    </Text>
-  </Text>
-</View>
+        <TouchableOpacity onPress={() => setAcceptedTerms(!acceptedTerms)}>
+          <View style={style.checkbox}>
+            {acceptedTerms && <View style={style.checkboxChecked} />}
+            </View>
+            </TouchableOpacity>
+              <Text style={style.checkboxText}>
+               Concordo com os{' '}
+              <Text style={style.linkText} onPress={() => setShowTermsModal(true)}>
+            termos e condições
+          </Text>
+        </Text>
+      </View>
 
 
       <TouchableOpacity
-    style={[
-    style.loginButtonView,
-    (!acceptedTerms || loading) && style.disabledButton
-  ]}
-  onPress={handleSignUp}
-  disabled={!acceptedTerms || loading}
->
-  {loading ? (
-    <ActivityIndicator size='small' color='#7F1734' />
-  ) : (
-    <>
-      <Image source={LoginButton} style={style.loginButtonImage} />
-      <Text style={style.buttonEntrarText}>Cadastrar</Text>
-    </>
-  )}
-</TouchableOpacity>
-
+          style={[
+          style.loginButtonView,
+          (!acceptedTerms || loading) && style.disabledButton
+            ]}
+            onPress={handleSignUp}
+            disabled={!acceptedTerms || loading}
+          >
+            {loading ? (
+              <ActivityIndicator size='small' color='#7F1734' />
+            ) : (
+              <>
+                <Image source={LoginButton} style={style.loginButtonImage} />
+                <Text style={style.buttonEntrarText}>Cadastrar</Text>
+              </>
+            )}
+        </TouchableOpacity> 
 
         <View style={style.signAsGuessView}>
           <TouchableOpacity>
@@ -183,6 +182,13 @@ export default function Sign ({ navigation }: any) {
               onPress={() => navigation.navigate('MapaPage')}
             >
               Entrar como visitante
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{paddingTop: 8}}>
+            <Text
+              style={style.entrarComoGuessButton}
+              onPress={() => navigation.navigate('Login')}>
+              Entrar
             </Text>
           </TouchableOpacity>
         </View>

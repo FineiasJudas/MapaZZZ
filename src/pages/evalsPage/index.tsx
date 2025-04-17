@@ -13,7 +13,7 @@ import like from '../../assets/Like.png'
 import deslike from '../../assets/Deslike.png'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { LogOut } from 'lucide-react-native'
+import { LogOut, X } from 'lucide-react-native'
 import {useAlert} from "../alertProvider/index";
 
 const EvalsPage = ({navigation} : any) => {
@@ -135,9 +135,8 @@ const EvalsPage = ({navigation} : any) => {
           <Image
             source={{ uri: dangerZone.image }}
             style={{
-              width: '95%',
+              width: '100%',
               height: '100%',
-              borderRadius: 10,
               position: 'absolute',
               top: 0,
               flex: 1,
@@ -146,8 +145,13 @@ const EvalsPage = ({navigation} : any) => {
             resizeMode='cover'
             resizeMethod='scale'
           />
-
           {/* Localização da Foto */}
+          <TouchableOpacity
+         onPress={async () => { navigation.navigate('initPage');}}
+          style={{margin: 10, padding: 5, borderRadius: 20, backgroundColor: 'rgba(0, 0, 0, 0.4)', width: 40, height: 40, justifyContent: 'center', alignItems: 'center'}}
+          >
+          <X color="#fff" />
+          </TouchableOpacity>
           <View style={style.locationContainer}>
             <Text style={style.locationText}>
               {getLastTwoAddresses(dangerZone?.address)}
@@ -180,5 +184,4 @@ const EvalsPage = ({navigation} : any) => {
     </View>
   )
 }
-
-export default EvalsPage
+export default EvalsPage;

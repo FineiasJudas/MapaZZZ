@@ -35,11 +35,7 @@ const QuizPage = ({ navigator }: any) =>  {
     <View style={style.mainConteiner}>
       {/* Cabeçalho */}
       <View style={style.logoX}>
-        <TouchableOpacity onPress={async () => {
-                      if (logged) {
-                        navigator.navigate('initPage')
-                      }
-                    }}>
+        <TouchableOpacity onPress={async () => { navigator.navigate('initPage'); }}>
           <ArrowLeft size={30} color={"#7F1734"} />
         </TouchableOpacity>
         <Image source={logo} style={style.logoImg} />

@@ -2,7 +2,7 @@ import { Dimensions, StyleSheet } from "react-native";
 
 export const style = StyleSheet.create({
   mainConteiner: {
-    top: 30,
+    top: 25,
     width: '100%',
     height: '100%',
   },
@@ -18,14 +18,14 @@ export const style = StyleSheet.create({
     marginLeft: 5
   },
   optionsL: {
-    marginBottom: 80,
+    marginBottom: 140,
     width: 60,
     height: 60,
     marginLeft: 50,
     resizeMode: 'contain'
   },
   optionsR: {
-    marginBottom: 80,
+    marginBottom: 140,
     width: 60,
     height: 60,
     marginRight: 50,
@@ -46,16 +46,15 @@ export const style = StyleSheet.create({
     marginBottom: 50,
   },
   locationContainer: {
+    marginLeft: 30,
     flexDirection: 'row',
     width: '80%',
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    borderRadius: 5,
+    borderRadius: 18,
     padding: 3,
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    // position: 'absolute',
-    top: 15,
   },
   locationText: {
     fontSize: 18,

@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from "react-native";
 
 export const style = StyleSheet.create({
     Container:{
-        width: '100%',
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
     }
