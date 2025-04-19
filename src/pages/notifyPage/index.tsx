@@ -177,7 +177,7 @@ const NotifyPage = ({ navigation }) => {
 
 
         {loading ? (
-          <ActivityIndicator size="large" color="#00AA88" />
+          <ActivityIndicator size="large" color="#7F1734" />
         ) : (
           <ScrollView style={style.scroll}>
             {notifications.length === 0 ? (

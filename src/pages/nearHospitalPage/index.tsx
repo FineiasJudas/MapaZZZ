@@ -83,7 +83,10 @@ const HospitalListScreen = ({ navigation }: any) => {
           }}>
             <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 10 }}>Opções</Text>
             <TouchableOpacity onPress={handleCreateTarget}>
-              <Text style={{ fontSize: 16, color: '#007BFF' }}>Criar Target no Mapa</Text>
+              <Text style={{ fontSize: 16, color: '#007BFF', marginVertical: 5}}>Criar Target no Mapa</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleCreateTarget}>
+              <Text style={{ fontSize: 16, color: '#007BFF' }}>Ver detalhes</Text>
             </TouchableOpacity>
           </View>
         </Pressable>

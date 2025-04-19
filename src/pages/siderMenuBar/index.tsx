@@ -81,8 +81,8 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
                     <Star size={16} color="#12ab40" fill="#12ab40" />
                     <Star size={16} color="#12ab40" fill="#12ab40" />
                     <Star size={16} color="#12ab40" fill="#12ab40" />
-                    <Star size={16} color="#cccccc" />
-                    <Star size={16} color="#cccccc" />
+                    <Star size={16} color="#ccc" />
+                    <Star size={16} color="#ccc" />
                   </View>
                 </View>
               </View>
@@ -224,11 +224,11 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   profileHeader: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f8f8f8',
+    borderWidth: 1,
     paddingVertical: 28,
     paddingHorizontal: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: '#ccc',
   },
   profileContainer: {
     flexDirection: 'row',
@@ -238,7 +238,8 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#fff',
+    borderColor: "#ccc",
+    backgroundColor: '#ccc',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 15,
@@ -246,7 +247,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
-    elevation: 2,
   },
   profileIconText: {
     fontSize: 24,
@@ -276,14 +276,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: '#ccc',
   },
   menuItemIconContainer: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#dfdfdf',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 15,
@@ -308,7 +307,7 @@ const styles = StyleSheet.create({
   contactContainer: {
     padding: 15,
     borderTopWidth: 1,
-    borderTopColor: '#e0e0e0',
+    borderTopColor: '#ccc',
     backgroundColor: '#f8f8f8',
   },
   contactHeader: {
