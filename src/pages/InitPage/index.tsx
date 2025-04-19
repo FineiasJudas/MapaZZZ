@@ -29,6 +29,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 import logo from '../../assets/logo.png';
 import bySalonis from '../../assets/bySalōnis.png';
+import { style } from './style';
 
 const HomePage = ({ navigation }: any) => {
   const { showAlert } = useAlert();
@@ -73,12 +74,12 @@ const HomePage = ({ navigation }: any) => {
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Início</Text>
         <View style={styles.headerButtons}>
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity style={styles.iconButton}  >
           <Puzzle color="#7f1734" onPress={async () => { navigation.navigate('GamingPage');}}/>
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconButton}
             onPress={() => navigation.navigate('notifyPage')}>
-            <Bell color="#000" size={24} />
+            <Bell color="#7f1734" />
           </TouchableOpacity>
         </View>
       </View>
@@ -87,14 +88,15 @@ const HomePage = ({ navigation }: any) => {
         {/* Welcome Card */}
         <View style={styles.welcomeCard}>
           <View style={styles.userInfoContainer}>
-            <TouchableOpacity style={styles.userIcon}>
-            <User color="#000" />
+            <TouchableOpacity style={styles.userIcon} onPress={() => navigation.navigate('ProfilePage')}>
+            <User color="#7f1734" />
             </TouchableOpacity>
             <View>
-              <Text style={styles.welcomeText}>Bem-vindo, Justino Soares</Text>
-              <Text style={styles.subtitle}>
-                Restart Metro Bundler: After making the{'\n'}above changes, stop the Metro bundler and restart it.
-              </Text>
+              <Text style={styles.welcomeText}>Bem-vindo, Fineias</Text>
+               <TouchableOpacity style={{alignItems: 'center', flexDirection: 'row'}}>
+                <MapPin color="#7f1734" size={18} style={{marginRight: 6}}/>
+                <Text style={styles.statLabel}>Localizacao...</Text>
+            </TouchableOpacity>
             </View>
           </View>
           <View style={styles.actionButtons}>
@@ -145,11 +147,11 @@ const HomePage = ({ navigation }: any) => {
               style={styles.gameImage}
             />
             <View style={styles.gameTextContainer}>
-              <Text style={styles.gameTitle}>Se divirta respondendo questões e se torne num grande mestre!</Text>
+              <Text style={styles.gameTitle}>Esperimente o Malária Quiz!</Text>
               <Text style={styles.gameSubtitle}>
-                Restart Metro Bundler: After making the above changes, stop!
+                Se divirta respondendo questões sobre a Malária e se torne num grande mestre!
               </Text>
-              <TouchableOpacity style={styles.startButton}>
+              <TouchableOpacity style={styles.startButton} onPress={() => navigation.navigate('GamingPage')}>
                 <Text style={styles.startButtonText}>Iniciar agora</Text>
               </TouchableOpacity>
             </View>
@@ -166,9 +168,9 @@ const HomePage = ({ navigation }: any) => {
             <View style={styles.hospitalTextContainer}>
               <Text style={styles.hospitalTitle}>Encontre hospitais mais próximos de si!</Text>
               <Text style={styles.hospitalSubtitle}>
-                Restart Metro Bundler: After making the above changes, stop!
+                Saiba a que distância estás do unidade hospitalar mais próxima e receba o atendimente o mais rápido possível!
               </Text>
-              <TouchableOpacity style={styles.findButton}>
+              <TouchableOpacity style={styles.findButton} onPress={() => navigation.navigate('nearHospitalPage')}>
                 <Text style={styles.findButtonText}>Encontrar</Text>
               </TouchableOpacity>
             </View>
@@ -178,12 +180,15 @@ const HomePage = ({ navigation }: any) => {
 
       {/* Bottom Navigation */}
       <View style={styles.bottomNav}>
-        <TouchableOpacity style={styles.navButton}>
+        <TouchableOpacity 
+          style={styles.navButton}
+          onPress={() => navigation.navigate('ProfilePage')}
+            >
           <User color="#7f1734" />
           <Text style={styles.navButtonText}>Perfil</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.navButton}
-        onPress={() => navigation.navigate('nearHospitalPage')}
+              onPress={() => navigation.navigate('nearHospitalPage')}
         >
           <Hospital color="#7f1734" />
           <Text style={styles.navButtonText}>Hospitais</Text>
@@ -208,7 +213,9 @@ const HomePage = ({ navigation }: any) => {
           <CheckCheck color="#7f1734" />
           <Text style={styles.navButtonText}>Verificar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navButton}>
+        <TouchableOpacity style={styles.navButton}
+         onPress={() => navigation.navigate('configPage')}
+        >
           <Cog color="#7f1734" />
           <Text style={styles.navButtonText}>Definições</Text>
         </TouchableOpacity>
@@ -220,10 +227,10 @@ const HomePage = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
     backgroundColor: '#f5f5f5',
   },
   header: {
+    paddingTop: 40,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -234,6 +241,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#e0e0e0',
   },
   headerTitle: {
+    color: '#7f1734',
     fontSize: 24,
     fontWeight: 'bold',
   },
@@ -467,6 +475,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#871434',
   },
+  statLabel: {
+    fontSize: 12,
+    color: '#888',
+  }
 });
 
 export default HomePage;

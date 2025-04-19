@@ -36,6 +36,7 @@ import {
   OctagonAlert
 } from 'lucide-react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import ImprovedSideMenu from '../siderMenuBar';
 import {useAlert} from "../alertProvider/index";
 
 const SCREEN_WIDTH = Dimensions.get('window').width // Largura da tela
@@ -295,153 +296,27 @@ export default function SidebarComponent ({ navigation }: any) {
       </MapView>
 
       {/* Aba lateral */}
-
-      {menuOpen && (
-        <TouchableWithoutFeedback onPress={toggleMenu}>
-          <View style={style.overlay}>
-            <TouchableWithoutFeedback>
-              <Animated.View
-                style={[
-                  style.sideMenu,
-                  { transform: [{ translateX: slideAnim }] }
-                ]}
-              >
-                <View style={style.profileContainer}>
-                  <View style={style.profileIcon}>
-                    <Text style={{ fontSize: 25, fontWeight: 'bold' }}>
-                      {userName[0]}
-                    </Text>
-                  </View>
-                  <View style={style.profileTextContainer}>
-                    <Text style={style.profileName}>
-                      {loading ? (
-                        <ActivityIndicator size='small' color='#7F1734' />
-                      ) : (
-                        <Text style={{ fontSize: 20, color: '#77767B' }}>
-                          {userName}
-                        </Text>
-                      )}
-                    </Text>
-                    <View
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        marginTop: 5
-                      }}
-                    >
-                      <Star size={18} color={'#26A269'} />
-                      <Star size={18} color={'#26A269'} />
-                      <Star size={18} color={'#26A269'} />
-                      <Star size={18} color={'#000000'} />
-                      <Star size={18} color={'#000000'} />
-                    </View>
-                  </View>
-                </View>
-
-                <ScrollView style={style.scrollView}>
-                  {/**/}
-                  <TouchableOpacity
-                    style={style.menuItem}
-                    onPress={() => navigation.navigate('initPage')}
-                    activeOpacity={0.1}
-                  >
-                    <Home size={30} color={'#77767b'} />
-                    <Text style={style.menuItemText}>Inicio</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={style.menuItem}
-                    onPress={async () => {
-                      if (logged) {
-                        // Exibe o alerta e, se necessário, aguarda o fechamento
-                        await showAlert(
-                          'aviso',
-                          "Essa página irá mostrar possíveis zonas de risco. Precisamos da sua ajuda para verificar se realmente são zonas de risco. Por favor, clique no botão 'Verificar' para confirmar se a zona de risco é real ou não. Obrigado por sua colaboração!",
-                          'Atenção'
-                        );
-                        // Após fechar o alerta, navega para a página
-                        navigation.navigate('EvalsPage');
-                      } else {
-                        // Se o usuário não estiver logado, espera o alerta ser fechado e então navega
-                        await showAlert(
-                          'aviso',
-                          'Você precisa estar logado para acessar esta página, tente Logar',
-                          'Atenção'
-                        );
-                        navigation.navigate('Login');
-                      }
-                    }}
-                    activeOpacity={0.1}
-                  >
-                    <OctagonAlert size={30} color={'#77767b'} />
-                    <Text style={style.menuItemText}>Verificar Relatos</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity   onPress={async () => {
-              if (logged) {
-                navigation.navigate('notifyPage')
-              } else {
-                await showAlert(
-                  'aviso',
-                  'Você precisa estar logado para acessar esta página, tente Logar', 'Aviso'
-                )
-              }
-            }}
-            style={style.menuItem}>
-                    <BellRing size={30} color={'#77767b'} />
-                    <Text style={style.menuItemText}>Notificações</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity 
-                    onPress={async () => {
-                      if (logged) {
-                        navigation.navigate('GamingPage')
-                      } else {
-                        await showAlert(
-                          'aviso',
-                          'Você precisa estar logado para jogar o Malária Quiz, tente Logar', 'Aviso'
-                        )
-                      }
-                    }}
-                  style={style.menuItem}>
-                    <Gamepad2 size={30} color={'#77767b'} />
-                    <Text style={style.menuItemText}>Jogos</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={style.menuItem}>
-                    <Hospital size={30} color={'#77767b'} />
-                    <Text style={style.menuItemText}>Hospitais Próximos</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={style.menuItem} onPress={async () => { navigation.navigate('helpPage');}}>
-                    <CircleHelp size={30} color={'#77767b'} />
-                    <Text style={style.menuItemText}>Ajuda</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={style.menuItem} onPress={logOut}>
-                    <LogOut size={30} color={'#77767b'} />
-                    <Text style={style.menuItemText}>Sair</Text>
-                  </TouchableOpacity>
-                </ScrollView>
-                <View style={{ marginBottom: 20, marginLeft: 15 }}>
-                  <Text style={{ fontSize: 20 }}>Info de contacto:</Text>
-                  <Text style={{ fontSize: 18, color: '#77767B' }}>
-                    Salonis@gmail.com
-                  </Text>
-                  <Text style={{ fontSize: 18, color: '#77767B' }}>
-                    +244 946671828
-                  </Text>
-                </View>
-              </Animated.View>
-            </TouchableWithoutFeedback>
-          </View>
-        </TouchableWithoutFeedback>
-      )}
-
+      <ImprovedSideMenu
+        menuOpen={menuOpen}
+        toggleMenu={toggleMenu}
+        slideAnim={slideAnim}
+        userName={userName}
+        loading={loading}
+        logged={logged}
+        navigation={navigation}
+        showAlert={showAlert}
+        logOut={logOut}
+      />
       {/* Ícone de Menu */}
       {!menuOpen && (
         <TouchableOpacity style={style.menuButton} onPress={toggleMenu}>
-          <Menu color='#77767b' style={style.menuIcon} />
+          <Menu color='#7f1734' style={style.menuIcon} />
         </TouchableOpacity>
       )}
 
       {/* Ícone para Recentralizar */}
       <TouchableOpacity style={style.recenterButton} onPress={handleRecenter}>
-        <MapPinned color='#77767B' style={style.recenterIcon} />
+        <MapPinned color='#7f1734' style={style.recenterIcon} />
       </TouchableOpacity>
 
       {/* Barra Inferior com opções */}
@@ -450,18 +325,14 @@ export default function SidebarComponent ({ navigation }: any) {
           <TouchableOpacity
             style={[
               style.bottomBarItem,
-              activeTab === 'home' && style.activeTabItem
             ]}
-            onPress={() => setActiveTab('home')}
-          >
+            onPress={() =>{ setActiveTab('home'), navigation.navigate('initPage')}} >
             <House
-              size={30}
-              color={activeTab === 'home' ? '#000' : '#77767B'}
+              color={'#7f1734'}
             />
             <Text
               style={[
                 style.bottomBarText,
-                activeTab === 'home' && style.activeTabText
               ]}
             >
               Home
@@ -471,7 +342,6 @@ export default function SidebarComponent ({ navigation }: any) {
           <TouchableOpacity
             style={[
               style.bottomBarItem,
-              activeTab === 'report' && style.activeTabItem
             ]}
             onPress={async () => {
               if (logged) {
@@ -487,13 +357,11 @@ export default function SidebarComponent ({ navigation }: any) {
             }}
           >
             <Siren
-              size={30}
-              color={activeTab === 'report' ? '#000' : '#77767B'}
+              color={ '#7f1734'}
             />
             <Text
               style={[
                 style.bottomBarText,
-                activeTab === 'report' && style.activeTabText
               ]}
             >
               Reportar
@@ -519,13 +387,11 @@ export default function SidebarComponent ({ navigation }: any) {
             ]}
           >
             <BellRing
-              size={30}
-              color={activeTab === 'notifics' ? '#000' : '#77767B'}
+              color={'#7f1734'}
             />
             <Text
               style={[
                 style.bottomBarText,
-                activeTab === 'notifics' && style.activeTabText
               ]}
             >
               Notifics

@@ -5,6 +5,7 @@ export const style = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: '#f5f5f5'
   },
   smallLogo: {
     width: 50,
@@ -45,20 +46,22 @@ export const style = StyleSheet.create({
     marginBottom: 30,
   },
   boxNameImput: {
+    backgroundColor: '#fff',
     width: "100%",
     height: 45,
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: "#D9D9D9",
+    borderColor: "#DfDfDf",
     marginTop: 10,
     paddingHorizontal: 15,
   },
   boxSenhaImput: {
+    backgroundColor: '#fff',
     width: "100%",
     height: 45,
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: "#D9D9D9",
+    borderColor: "#DfDfDf",
     marginTop: 10,
     paddingHorizontal: 15,
   },

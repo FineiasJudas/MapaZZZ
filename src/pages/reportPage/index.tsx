@@ -12,7 +12,7 @@ import {
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
 import { style } from './style'
-import { CircleX, Import } from 'lucide-react-native'
+import { ArrowLeft, CircleX, Import } from 'lucide-react-native'
 import {useAlert} from "../alertProvider/index";
 import logo from '../../assets/logo.png'
 import esc from '../../assets/esc.png'
@@ -64,6 +64,13 @@ const RegisterRiskZone = ({navigation} : any) => {
 
   return (
     <View style={style.mainConteiner}>
+      {/* Topo */}
+      <View style={style.logoX}>
+        <TouchableOpacity onPress={() => navigation.navigate("MapaPage")}>
+        <ArrowLeft color="#7F1734" size={35} />
+        </TouchableOpacity>
+        <Image source={logo} style={style.logoImg} />
+      </View>
       <View style={style.container}>
         <TouchableOpacity style={style.imagePicker}>
         <Image
@@ -94,7 +101,7 @@ const RegisterRiskZone = ({navigation} : any) => {
       >
         <Image
           source={bySalonis}
-          style={{ width: 80, height: 40, resizeMode: 'contain', marginBottom: 15 }}
+          style={{ width: 80, height: 110, resizeMode: 'contain', marginBottom: 15 }}
         ></Image>
       </View>
     </View>

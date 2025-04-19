@@ -5,20 +5,20 @@ const { width, height } = Dimensions.get('window');
 export const style = StyleSheet.create({
   mainConteiner: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#f5f5f5'
   },
   container: {
+    flex: 1,
     paddingHorizontal: width * 0.05,
     flexDirection: "column",
     alignItems: "center",
-    paddingVertical: height * 0.07,
+    paddingVertical: height * 0.1,
   },
   logoX: {
-    width: '100%',
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginTop: height * 0.03,
+    paddingHorizontal: width * 0.03,
   },
   escImg: {
     width: width * 0.1,

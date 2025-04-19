@@ -30,14 +30,14 @@ const HospitalListScreen = ({ navigation }: any) => {
   return (
     <View style={style.Container}>
       <View style={style.conteinar}>
-        <TouchableOpacity onPress={() => navigation.navigate('MapaPage')}>
+        <TouchableOpacity onPress={() => navigation.navigation()}>
           <ArrowLeft color="#7f1734" size={30} />
         </TouchableOpacity>
         <Image source={Logo} style={style.imgLogo} />
       </View>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <View style={{width: '85%'}}>
-        <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 15, color: '#333', marginLeft: 10}}>
+        <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 15, color: '#7f1734', marginLeft: 10}}>
             Hospitais próximos:
           </Text>
         </View>

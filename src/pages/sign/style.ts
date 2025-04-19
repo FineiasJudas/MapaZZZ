@@ -57,6 +57,7 @@ export const style = StyleSheet.create({
         padding: 30
     },
     boxFullNameImput:{
+      backgroundColor: '#fff',
         width:'100%',
         height: 45,
         borderWidth: 1,
@@ -66,6 +67,7 @@ export const style = StyleSheet.create({
         paddingHorizontal: 15
     },
     boxphoneImput:{
+      backgroundColor: '#fff',
         width:'100%',
         height: 45,
         borderWidth: 1,
@@ -75,6 +77,7 @@ export const style = StyleSheet.create({
         paddingHorizontal: 15
     },
     boxAdressImput:{
+      backgroundColor: '#fff',
         width:'100%',
         height: 45,
         borderWidth: 1,
@@ -84,6 +87,7 @@ export const style = StyleSheet.create({
         paddingHorizontal: 15
     },
     boxSenhaImput:{
+      backgroundColor: '#fff',
         width:'100%',
         height: 45,
         borderWidth: 1,

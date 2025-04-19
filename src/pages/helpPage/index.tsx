@@ -4,22 +4,22 @@ import { style } from "./style";
 import Logo from "../../assets/logo.png";
 import { ArrowLeft } from "lucide-react-native";
 
-export default function MenuBar({ navigation }: any) {
+export default function HelperPage({ navigation }: any) {
   return (
     <KeyboardAvoidingView
       style={style.Container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <View style={style.conteinar}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.navigate('MapaPage')}>
           <ArrowLeft color="#7f1734" size={30} />
         </TouchableOpacity>
         <Image source={Logo} style={style.imgLogo} />
       </View>
 
-      <ScrollView style={style.content} contentContainerStyle={{ paddingBottom: 30 }}>
-        <Text style={{ fontSize: 24, fontWeight: "bold", color: "#7f1734", marginBottom: 20 }}>
-          Suporte e Ajuda
+      <View style={style.content}>
+        <Text style={{ fontSize: 18, fontWeight: "bold", color: "#7f1734", marginBottom: 20, marginLeft: 5 }}>
+          Ajuda e Suporte
         </Text>
 
         <View style={style.boxInput}>
@@ -29,7 +29,8 @@ export default function MenuBar({ navigation }: any) {
             style={style.inputField}
             placeholderTextColor="#aaa"
           />
-        </View>
+          </View>
+        
 
         <View style={style.boxInput}>
           <Text style={style.inputLabel}>Email</Text>
@@ -55,7 +56,7 @@ export default function MenuBar({ navigation }: any) {
         <TouchableOpacity style={style.buttonEnviar}>
           <Text style={style.textEnviar}>Enviar</Text>
         </TouchableOpacity>
-      </ScrollView>
+      </View>
     </KeyboardAvoidingView>
   );
 }

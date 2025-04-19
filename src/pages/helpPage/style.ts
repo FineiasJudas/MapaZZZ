@@ -1,15 +1,17 @@
 import { StyleSheet, Dimensions } from "react-native";
 
+const { width, height } = Dimensions.get("window");
+
 export const style = StyleSheet.create({
     Container:{
         flex: 1,
+        alignItems: 'center'
     },
-    conteinar:{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 15, marginTop: 30},
-    imgLogo:{width: 40, height: 40, resizeMode: 'contain'},
-    content: {flex: 1, paddingHorizontal: 15, alignItems: 'center', justifyContent: 'center', },
-    boxImput: { width: '80%', height: 45,  marginTop: 10, borderWidth: 1, borderRadius: 10, borderColor: '#DFDFDF'},
-    boxImputP: { width: '80%', height: 100,  marginTop: 10, borderWidth: 1, borderRadius: 10, borderColor: '#DFDFDF'},
-    boxInput: {
+    conteinar:{flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingHorizontal: 15, marginTop: 30, marginBottom: 30},
+    imgLogo:{width: width * 0.1,
+    height: width * 0.1, resizeMode: 'contain'},
+    content: {width: '85%'},
+        boxInput: {
         marginBottom: 15,
       },
       
@@ -37,7 +39,7 @@ export const style = StyleSheet.create({
       
       buttonEnviar: {
         backgroundColor: "#7f1734",
-        paddingVertical: 15,
+        paddingVertical: 12,
         borderRadius: 12,
         alignItems: "center",
         marginTop: 20,

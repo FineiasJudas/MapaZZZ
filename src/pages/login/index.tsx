@@ -61,7 +61,7 @@ export default function Login({ navigation }: any) {
 
   return (
     <View style={style.body}>
-      <View style={style.topLeftLogo}>
+      <View>
         <Image source={Logo} style={style.smallLogo} />
       </View>
 

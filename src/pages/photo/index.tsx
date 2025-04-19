@@ -22,7 +22,7 @@ import * as Location from 'expo-location'
 import { style } from '../login/style'
 import {useAlert} from "../alertProvider/index";
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Repeat, X } from 'lucide-react-native'
+import { CircleCheck, CircleX, Repeat, X } from 'lucide-react-native'
 
 export default function App ({ navigation }: any) {
 const { showAlert } = useAlert();
@@ -222,7 +222,7 @@ const { showAlert } = useAlert();
                     style={styles.button}
                     onPress={discardPhoto}
                   >
-                    <Image source={mal} style={styles.descarte} />
+                  <CircleX color={'red'}/>
                   </TouchableOpacity>
                   {/* <Button title="Salvar na Galeria" onPress={saveToGallery} color="red" /> */}
 
@@ -230,7 +230,7 @@ const { showAlert } = useAlert();
                     style={styles.button}
                     onPress={RegisterDangerZone}
                   >
-                    <Image source={bom} style={styles.report} />
+                  <CircleCheck color={'green'}/>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -335,6 +335,5 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-    borderRadius: 10
   }
 })

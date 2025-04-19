@@ -35,14 +35,14 @@ const QuizPage = ({ navigator }: any) =>  {
     <View style={style.mainConteiner}>
       {/* Cabeçalho */}
       <View style={style.logoX}>
-        <TouchableOpacity onPress={async () => { navigator.navigate('initPage'); }}>
+        <TouchableOpacity onPress={async () => { navigator.navigate("initPage") }}>
           <ArrowLeft size={30} color={"#7F1734"} />
         </TouchableOpacity>
         <Image source={logo} style={style.logoImg} />
       </View>
 
       <View style={style.quizContainer}>
-        <View style={{ padding: 15, backgroundColor: "#dfdfdf", borderRadius: 50, elevation: 8 }}>
+        <View style={{ padding: 15, backgroundColor: "#fff", borderRadius: 50, elevation: 4 }}>
           <Gamepad2 size={40} color={"#7F1734"} />
         </View>
         <Text style={style.quizTitle}>Malária Quiz</Text>
@@ -63,8 +63,10 @@ const QuizPage = ({ navigator }: any) =>  {
           }}
         >
           <TextInput
-            style={style.textInput}
-            placeholder="Digite sua resposta aqui..."
+            placeholder="Escreva sua resposta aqui..."
+            multiline
+            numberOfLines={4}
+            style={[style.textInput, { height: 100, textAlignVertical: "top" }]}
             value={answer}
             placeholderTextColor="#888"
             editable={false} // campo somente leitura
@@ -88,9 +90,9 @@ const QuizPage = ({ navigator }: any) =>  {
             <View
               style={{
                 padding: 15,
-                backgroundColor: "#dfdfdf",
+                backgroundColor: "#fff",
                 borderRadius: 50,
-                elevation: 8,
+                elevation: 4,
                 marginBottom: 15,
               }}
             >

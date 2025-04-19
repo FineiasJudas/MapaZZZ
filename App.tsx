@@ -1,12 +1,12 @@
 import 'react-native-gesture-handler';
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { AlertProvider } from './src/pages/alertProvider/index';
+import { StatusBar } from 'expo-status-bar';
 import * as Notifications from 'expo-notifications';
-import { useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { AlertProvider } from './src/pages/alertProvider/index';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useEffect } from 'react';
 
 import Login from './src/pages/login';
 import Sign from './src/pages/sign';
@@ -19,8 +19,9 @@ import initPage from './src/pages/InitPage';
 import notifyPage from './src/pages/notifyPage';
 import GamingPage from './src/pages/gamingPage';
 import helpPage from './src/pages/helpPage';
+import ProfilePage from './src/pages/profilePage';
 import nearHospitalPage from './src/pages/nearHospitalPage';
-
+import configPage from './src/pages/configPage';
 import { registerForPushNotificationsAsync } from './src/pages/manegeNotification/index';
 
 const Stack = createNativeStackNavigator();
@@ -51,7 +52,7 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <AlertProvider>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="nearHospitalPage">
+          <Stack.Navigator initialRouteName="WelcomePage">
             <Stack.Screen name="GamingPage" component={GamingPage} options={{ headerShown: false }} />
             <Stack.Screen name="notifyPage" component={notifyPage} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
@@ -63,14 +64,15 @@ export default function App() {
             <Stack.Screen name="Sign" component={Sign} options={{ headerShown: false }} />
             <Stack.Screen name="MapaPage" component={MapaPage} options={{ headerShown: false }} />
             <Stack.Screen name="helpPage" component={helpPage} options={{ headerShown: false }} />
+            <Stack.Screen name="ProfilePage" component={ProfilePage} options={{ headerShown: false }} />
             <Stack.Screen name="nearHospitalPage" component={nearHospitalPage} options={{ headerShown: false }} />
+            <Stack.Screen name="configPage" component={configPage} options={{ headerShown: false }} />
           </Stack.Navigator>
         </NavigationContainer>
       </AlertProvider>
     </GestureHandlerRootView>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {

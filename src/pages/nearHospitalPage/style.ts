@@ -5,6 +5,7 @@ const { width, height } = Dimensions.get("window");
 export const style = StyleSheet.create({
     Container:{
         flex: 1,
+        backgroundColor: '#f5f5f5'
     },
     conteinar:{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 15, marginTop: 30, paddingTop: 4},
     imgLogo:{width: 40, height: 40, resizeMode: 'contain'},
@@ -13,6 +14,7 @@ export const style = StyleSheet.create({
     textEnviar: {color: '#fff', fontWeight: 'bold', position: 'absolute'},
     infCamp: {
         width: '100%',
+        backgroundColor: '#fff',
         minHeight: height * 0.1,
         borderWidth: 1,
         borderColor: '#D9D9D9',

@@ -147,7 +147,7 @@ const EvalsPage = ({navigation} : any) => {
           />
           {/* Localização da Foto */}
           <TouchableOpacity
-         onPress={async () => { navigation.navigate('initPage');}}
+         onPress={async () => { navigation.navigation.goBack()}}
           style={{margin: 10, padding: 5, borderRadius: 20, backgroundColor: 'rgba(0, 0, 0, 0.4)', width: 40, height: 40, justifyContent: 'center', alignItems: 'center'}}
           >
           <X color="#fff" />

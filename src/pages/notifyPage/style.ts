@@ -6,14 +6,14 @@ export const style = StyleSheet.create({
   mainConteiner: {
     flex: 1,
     paddingTop: 15,
-    backgroundColor: "#fff", // Pode mudar conforme seu tema
+    backgroundColor: "#f5f5f5", // Pode mudar conforme seu tema
   },
   logoX: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: height * 0.02,
-    paddingHorizontal: width * 0.06,
+    paddingHorizontal: width * 0.03,
   },
   escImg: {
     width: width * 0.1,
@@ -35,13 +35,13 @@ export const style = StyleSheet.create({
     maxHeight: height * 0.78, // limita scroll sem ocupar toda tela
   },
   infCamp: {
+    backgroundColor: '#fff',
     width: '100%',
     minHeight: height * 0.1,
     borderWidth: 1,
     borderColor: '#D9D9D9',
     borderRadius: 10,
     flexDirection: 'row',
-    // alignItems: 'center',
     padding: width * 0.03,
     marginBottom: height * 0.015,
   },
