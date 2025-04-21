@@ -8,8 +8,6 @@ export default function useSocketNotification() {
     const socket = io('https://mapazzz.onrender.com', {
       transports: ['websocket'],
       reconnection: true,
-      reconnectionAttempts: 5,
-      reconnectionDelay: 1000,
     });
 
     socket.on('notification', (data) => {

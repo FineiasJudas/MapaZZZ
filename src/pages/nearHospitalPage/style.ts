@@ -23,6 +23,13 @@ export const style = StyleSheet.create({
         padding: width * 0.03,
         marginBottom: height * 0.015,
       },
+      title: {
+        fontSize: 18,
+        fontWeight: "bold",
+        // marginBottom: 15,
+        color: "#7f1734",
+        marginLeft: 0,
+      },
       notyType: {
         width: width * 0.08,
         height: width * 0.08,

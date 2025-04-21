@@ -13,6 +13,26 @@ export const style = StyleSheet.create({
     height: 20,
     resizeMode: "contain",
   },
+  clearRouteButton: {
+    position: 'absolute',
+    top: 35,
+    right: 10,
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 5,
+    elevation: 5,
+  },
+  traceRouteText: {
+    color: '#7f1734',
+    fontWeight: 'bold',
+    position: "absolute",
+    left: 100,
+    top:100,
+  },
+  clearRouteText: {
+    color: '#7f1734',
+    fontWeight: 'bold',
+  },
   menuButton: {
       position: "absolute",
     top: 35,

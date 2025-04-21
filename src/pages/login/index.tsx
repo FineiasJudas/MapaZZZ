@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from "react";
 import {
-  Image, Text, TextInput, View, TouchableOpacity, 
-  Alert, ToastAndroid, ActivityIndicator
+  Image,
+  Text,
+  TextInput,
+  View,
+  TouchableOpacity,
+  Alert,
+  ToastAndroid,
+  ActivityIndicator,
 } from "react-native";
 import { style } from "./style";
 import Logo from "../../assets/logo.png";
 import LoginButton from "../../assets/loginButton.png";
 import GoogleLogo from "../../assets/google.png";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {useAlert} from "../alertProvider/index";
+import { useAlert } from "../alertProvider/index";
 
 export default function Login({ navigation }: any) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [loading, setLoading] = useState(false);  // Estado para controlar o carregamento
+  const [loading, setLoading] = useState(false); // Estado para controlar o carregamento
+  const [user, setUser] = useState({});
   const { showAlert } = useAlert();
   const checkToken = async () => {
     const token = await AsyncStorage.getItem("Token");
@@ -28,34 +35,60 @@ export default function Login({ navigation }: any) {
 
   const handleLogin = async () => {
     if (!email || !senha) {
-      ToastAndroid.show('Preencha todos os campos', ToastAndroid.LONG)
+      ToastAndroid.show("Preencha todos os campos", ToastAndroid.LONG);
       return;
     }
 
-    setLoading(true);  // Ativa o estado de carregamento
+    setLoading(true); // Ativa o estado de carregamento
 
     try {
-      const response = await fetch("https://mapazzz.onrender.com/api/users/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username: email, password: senha }),
-      });
+      const response = await fetch(
+        "https://mapazzz.onrender.com/api/users/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username: email, password: senha }),
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok) {
-        ToastAndroid.show('Login feito com sucesso', ToastAndroid.LONG);
+        ToastAndroid.show("Login feito com sucesso", ToastAndroid.LONG);
         await AsyncStorage.setItem("Token", data.token); // Salva o token no AsyncStorage
+        const resDetalhes = await fetch(
+          "https://mapazzz.onrender.com/api/users/",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization : "Bearer " + data.token,
+            },
+          }
+        );
+        const dataDetalhes = await resDetalhes.json();
+        if (resDetalhes.ok) {
+          const userData = {
+            name: dataDetalhes.data.name,
+            address: dataDetalhes.data.address,
+          };
+          await AsyncStorage.setItem("User",JSON.stringify(userData))
+        }
+        
         navigation.navigate("initPage");
       } else {
-        await showAlert("erro", data.errors[0].message || "Erro ao fazer login", 'Erro');
+        await showAlert(
+          "erro",
+          data.errors[0].message || "Erro ao fazer login",
+          "Erro"
+        );
       }
     } catch (error) {
       await showAlert("erro", "Falha na conexão com o servidor", "Erro");
     } finally {
-      setLoading(false);  // Desativa o estado de carregamento após a resposta
+      setLoading(false); // Desativa o estado de carregamento após a resposta
     }
   };
 
@@ -91,9 +124,9 @@ export default function Login({ navigation }: any) {
         </View>
 
         {/* Exibir o botão de login ou um indicador de carregamento */}
-        <TouchableOpacity 
-          style={style.loginButtonView} 
-          onPress={handleLogin} 
+        <TouchableOpacity
+          style={style.loginButtonView}
+          onPress={handleLogin}
           disabled={loading} // Desativa o botão durante o carregamento
         >
           {loading ? (
@@ -120,7 +153,6 @@ export default function Login({ navigation }: any) {
             </Text>
           </TouchableOpacity>
         </View>
-
       </View>
     </View>
   );

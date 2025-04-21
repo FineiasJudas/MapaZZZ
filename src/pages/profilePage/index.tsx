@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,7 +6,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-} from 'react-native';
+  Alert,
+} from "react-native";
 import {
   User,
   Hospital,
@@ -18,24 +19,36 @@ import {
   Wallet,
   ShoppingBag,
   MapPin,
-  GraduationCap
-} from 'lucide-react-native';
+  GraduationCap,
+} from "lucide-react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ProfilePage = ({ navigation }: any) => {
+  const [name, setName] = useState("Visitante");
+  const [localizacao, setLocalizacao] = useState("Obtendo a Localização...");
+  const DataProfile = async () => {
+    const data = await AsyncStorage.getItem("User");
+    if (data) {
+      const parse = JSON.parse(data);
+      setName(parse.name);
+      setLocalizacao(parse.address);
+    }
+  };
+
+  DataProfile();
+  useEffect(() => {}, []);
   return (
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <View style={styles.headerContent}>
-          
-        </View>
+        <View style={styles.headerContent}></View>
       </View>
 
       {/* Profile Info */}
       <View style={styles.profileInfoContainer}>
         <View style={styles.profileImageContainer}>
-          <Image 
-            source={require('../../assets/pedestre.png')} 
+          <Image
+            source={require("../../assets/pedestre.png")}
             style={styles.profileImage}
           />
         </View>
@@ -43,10 +56,11 @@ const ProfilePage = ({ navigation }: any) => {
         {/* Stats */}
         <View style={styles.statsContainer}>
           <View style={styles.statItem}>
-            <Text style={styles.statNumber}>Finéias Judas João Jilaiassule</Text>
-            <TouchableOpacity style={{alignItems: 'center', flexDirection: 'row'}}>
-                <MapPin color="#7f1734" size={18} style={{marginRight: 6}}/>
-                <Text style={styles.statLabel}>Localizacao...</Text>
+            <Text style={styles.statNumber}>{name}</Text>
+            <TouchableOpacity
+              style={{ alignItems: "center", flexDirection: "row" }}>
+              <MapPin color="#7f1734" size={18} style={{ marginRight: 6 }} />
+              <Text style={styles.statLabel}>{localizacao}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -54,22 +68,36 @@ const ProfilePage = ({ navigation }: any) => {
         {/* Menu Items */}
         <ScrollView style={styles.menuContainer}>
           <TouchableOpacity style={styles.menuItem}>
-            <View style={[styles.menuIconContainer, { backgroundColor: '#f5f5f5' }]}>
+            <View
+              style={[
+                styles.menuIconContainer,
+                { backgroundColor: "#f5f5f5" },
+              ]}>
               <GraduationCap size={20} color="#7f1734" />
             </View>
             <Text style={styles.menuLabel}>Meu ranking</Text>
             <ChevronRight size={20} color="#7f1734" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.menuItem}>
-            <View style={[styles.menuIconContainer, { backgroundColor: '#f5f5f5' }]}>
+            <View
+              style={[
+                styles.menuIconContainer,
+                { backgroundColor: "#f5f5f5" },
+              ]}>
               <ImageIcon size={20} color="#7f1734" />
             </View>
             <Text style={styles.menuLabel}>Meus Registros</Text>
             <ChevronRight size={20} color="#7f1734" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('MapaPage')}>
-            <View style={[styles.menuIconContainer, { backgroundColor: '#f5f5f5' }]}>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => navigation.navigate("MapaPage")}>
+            <View
+              style={[
+                styles.menuIconContainer,
+                { backgroundColor: "#f5f5f5" },
+              ]}>
               <Map size={20} color="#7f1734" />
             </View>
             <Text style={styles.menuLabel}>Zonas de Risco</Text>
@@ -77,7 +105,11 @@ const ProfilePage = ({ navigation }: any) => {
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.menuItem}>
-            <View style={[styles.menuIconContainer, { backgroundColor: '#f5f5f5' }]}>
+            <View
+              style={[
+                styles.menuIconContainer,
+                { backgroundColor: "#f5f5f5" },
+              ]}>
               <ShoppingBag size={20} color="#7f1734" />
             </View>
             <Text style={styles.menuLabel}>Meus Recursos</Text>
@@ -92,10 +124,10 @@ const ProfilePage = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
   },
   header: {
-    backgroundColor: '#7f1734',
+    backgroundColor: "#7f1734",
     paddingTop: 120,
     paddingBottom: 40,
     paddingHorizontal: 20,
@@ -103,16 +135,16 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 25,
   },
   headerContent: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   headerTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
+    fontWeight: "bold",
+    color: "white",
   },
   headerSubtitle: {
     fontSize: 14,
-    color: 'rgba(255,255,255,0.8)',
+    color: "rgba(255,255,255,0.8)",
     marginTop: 5,
   },
   profileInfoContainer: {
@@ -120,32 +152,32 @@ const styles = StyleSheet.create({
     marginTop: -50,
   },
   profileImageContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   profileImage: {
     width: 100,
     height: 100,
     borderRadius: 50,
     borderWidth: 4,
-    borderColor: 'white',
-    backgroundColor: '#ffd7cc',
+    borderColor: "white",
+    backgroundColor: "#ffd7cc",
   },
   statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     paddingVertical: 25,
     paddingHorizontal: 30,
   },
   statItem: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   statNumber: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   statLabel: {
     fontSize: 16,
-    color: '#888',
+    color: "#888",
   },
   menuContainer: {
     flex: 1,
@@ -153,21 +185,20 @@ const styles = StyleSheet.create({
   },
   menuItem: {
     borderWidth: 1,
-        borderColor: '#D9D9D9',
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    borderColor: "#D9D9D9",
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
     borderRadius: 15,
     padding: 15,
     marginBottom: 10,
   },
   menuIconContainer: {
-    
     width: 40,
     height: 40,
     borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 15,
   },
   menuLabel: {
@@ -175,28 +206,28 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   bottomNav: {
-    flexDirection: 'row',
-    backgroundColor: 'white',
+    flexDirection: "row",
+    backgroundColor: "white",
     borderTopWidth: 1,
-    borderTopColor: '#e0e0e0',
+    borderTopColor: "#e0e0e0",
     paddingVertical: 12,
   },
   navButton: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   activeNavButton: {
     borderBottomWidth: 2,
-    borderBottomColor: '#4a86f7',
+    borderBottomColor: "#4a86f7",
   },
   navButtonText: {
     fontSize: 12,
-    color: '#7f1734',
+    color: "#7f1734",
     marginTop: 4,
   },
   activeNavButtonText: {
-    color: '#7f1734',
+    color: "#7f1734",
   },
 });
 

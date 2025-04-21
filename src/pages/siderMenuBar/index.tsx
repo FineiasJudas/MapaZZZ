@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
   ScrollView,
   ActivityIndicator,
   Animated,
-} from 'react-native';
+} from "react-native";
 import {
   Home,
   Star,
@@ -20,8 +20,9 @@ import {
   LogOut,
   Mail,
   Phone,
-} from 'lucide-react-native';
-import {useAlert} from "../alertProvider/index";
+  HeartHandshake,
+} from "lucide-react-native";
+import { useAlert } from "../alertProvider/index";
 
 interface ImprovedSideMenuProps {
   menuOpen: boolean;
@@ -44,11 +45,10 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
   logged,
   navigation,
   showAlert,
-  logOut
+  logOut,
 }) => {
-
   if (!menuOpen) return null;
-  
+
   return (
     <TouchableWithoutFeedback onPress={toggleMenu}>
       <View style={styles.overlay}>
@@ -56,13 +56,14 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
           <Animated.View
             style={[
               styles.sideMenu,
-              { transform: [{ translateX: slideAnim }] }
-            ]}
-          >
+              { transform: [{ translateX: slideAnim }] },
+            ]}>
             {/* Profile Header */}
             <View style={styles.profileHeader}>
               <View style={styles.profileContainer}>
-                <TouchableOpacity style={styles.profileIcon} onPress={() => navigation.navigate('ProfilePage')}>
+                <TouchableOpacity
+                  style={styles.profileIcon}
+                  onPress={() => navigation.navigate("ProfilePage")}>
                   {loading ? (
                     <ActivityIndicator size="small" color="#7F1734" />
                   ) : (
@@ -89,26 +90,37 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
             </View>
 
             {/* Menu Items */}
-            <ScrollView style={styles.menuItems} showsVerticalScrollIndicator={false}>
+            <ScrollView
+              style={styles.menuItems}
+              showsVerticalScrollIndicator={false}>
               {menuItems.map((item, index) => (
                 <TouchableOpacity
                   key={index}
                   style={styles.menuItem}
-                  onPress={() => handleNavigation(item.route, logged, showAlert, navigation)}
-                  activeOpacity={0.7}
-                >
+                  onPress={() =>
+                    handleNavigation(item.route, logged, showAlert, navigation)
+                  }
+                  activeOpacity={0.7}>
                   <View style={styles.menuItemIconContainer}>
                     <item.icon size={22} color="#7F1734" />
                   </View>
                   <Text style={styles.menuItemText}>{item.title}</Text>
                 </TouchableOpacity>
               ))}
-              
-              <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}
+
+              <TouchableOpacity
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginTop: 10,
+                }}
                 onPress={logOut}
-                activeOpacity={0.7}
-              >
-                <View style={[styles.menuItemIconContainer, styles.logoutIconContainer]}>
+                activeOpacity={0.7}>
+                <View
+                  style={[
+                    styles.menuItemIconContainer,
+                    styles.logoutIconContainer,
+                  ]}>
                   <LogOut size={22} color="#ff3b30" />
                 </View>
                 <Text style={styles.logoutText}>Terminar Sessão</Text>
@@ -135,136 +147,156 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
 };
 
 // Helper function to handle navigation with auth checks
-const handleNavigation = (route: string, logged: boolean, showAlert: { (type: string, message: string, title: string): void; (arg0: string, arg1: string, arg2: string): void; }, navigation: { navigate: (arg0: string) => void; }) => {
+const handleNavigation = (
+  route: string,
+  logged: boolean,
+  showAlert: {
+    (type: string, message: string, title: string): void;
+    (arg0: string, arg1: string, arg2: string): void;
+  },
+  navigation: { navigate: (arg0: string) => void }
+) => {
   switch (route) {
-    case 'initPage':
-      navigation.navigate('initPage');
+    case "initPage":
+      navigation.navigate("initPage");
       break;
-    case 'EvalsPage':
+    case "EvalsPage":
       if (logged) {
         showAlert(
-          'aviso',
+          "aviso",
           "Essa página irá mostrar possíveis zonas de risco. Precisamos da sua ajuda para verificar se realmente são zonas de risco. Por favor, clique no botão 'Verificar' para confirmar se a zona de risco é real ou não. Obrigado por sua colaboração!",
-          'Atenção'
+          "Atenção"
         );
-        navigation.navigate('EvalsPage');
+        navigation.navigate("EvalsPage");
       } else {
         showAlert(
-          'aviso',
-          'Você precisa estar logado para acessar esta página, tente Logar',
-          'Atenção'
+          "aviso",
+          "Você precisa estar logado para acessar esta página, tente Logar",
+          "Atenção"
         );
-        navigation.navigate('Login');
+        navigation.navigate("Login");
       }
       break;
-    case 'notifyPage':
+    case "notifyPage":
       if (logged) {
-        navigation.navigate('notifyPage');
+        navigation.navigate("notifyPage");
       } else {
         showAlert(
-          'aviso',
-          'Você precisa estar logado para acessar esta página, tente Logar', 
-          'Aviso'
+          "aviso",
+          "Você precisa estar logado para acessar esta página, tente Logar",
+          "Aviso"
         );
       }
       break;
-    case 'GamingPage':
+    case "GamingPage":
       if (logged) {
-        navigation.navigate('GamingPage');
+        navigation.navigate("GamingPage");
       } else {
         showAlert(
-          'aviso',
-          'Você precisa estar logado para jogar o Malária Quiz, tente Logar', 
-          'Aviso'
+          "aviso",
+          "Você precisa estar logado para jogar o Malária Quiz, tente Logar",
+          "Aviso"
         );
       }
       break;
-    case 'nearHospitalPage':
-      navigation.navigate('nearHospitalPage');
+    case "ongPage":
+      if (logged) {
+        navigation.navigate("ongPage");
+      } else {
+        showAlert(
+          "aviso",
+          "Você precisa estar logado para poder Ajudar, tente Logar",
+          "Aviso"
+        );
+      }
       break;
-    case 'helpPage':
-      navigation.navigate('helpPage');
+    case "nearHospitalPage":
+      navigation.navigate("nearHospitalPage");
+      break;
+    case "helpPage":
+      navigation.navigate("helpPage");
       break;
   }
 };
 
 // Menu items configuration
 const menuItems = [
-  { title: 'Início', icon: Home, route: 'initPage' },
-  { title: 'Verificar Relatos', icon: OctagonAlert, route: 'EvalsPage' },
-  { title: 'Notificações', icon: BellRing, route: 'notifyPage' },
-  { title: 'Jogos', icon: Gamepad2, route: 'GamingPage' },
-  { title: 'Hospitais Próximos', icon: Hospital, route: 'nearHospitalPage' },
-  { title: 'Ajuda e Suporte', icon: CircleHelp, route: 'helpPage' },
+  { title: "Início", icon: Home, route: "initPage" },
+  // { title: 'Verificar Relatos', icon: OctagonAlert, route: 'EvalsPage' },
+  { title: "Notificações", icon: BellRing, route: "notifyPage" },
+  { title: "Jogos", icon: Gamepad2, route: "GamingPage" },
+  { title: "Hospitais Próximos", icon: Hospital, route: "nearHospitalPage" },
+  { title: "Seja um Apoiador", icon: HeartHandshake, route: "ongPage" },
+  { title: "Ajuda e Suporte", icon: CircleHelp, route: "helpPage" },
 ];
 
 const styles = StyleSheet.create({
   overlay: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     zIndex: 1000,
   },
   sideMenu: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
-    width: '80%',
-    height: '100%',
-    backgroundColor: 'white',
+    width: "80%",
+    height: "100%",
+    backgroundColor: "white",
     zIndex: 1001,
-    overflow: 'hidden',
-    shadowColor: '#000',
+    overflow: "hidden",
+    shadowColor: "#000",
     shadowOffset: { width: 2, height: 0 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
   },
   profileHeader: {
-    backgroundColor: '#f8f8f8',
+    backgroundColor: "#f8f8f8",
     borderWidth: 1,
     paddingVertical: 28,
     paddingHorizontal: 15,
-    borderBottomColor: '#ccc',
+    borderBottomColor: "#ccc",
   },
   profileContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   profileIcon: {
     width: 60,
     height: 60,
     borderRadius: 30,
     borderColor: "#ccc",
-    backgroundColor: '#ccc',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#ccc",
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 15,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
   },
   profileIconText: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#7F1734',
+    fontWeight: "bold",
+    color: "#7F1734",
   },
   profileTextContainer: {
     flex: 1,
   },
   profileName: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: "600",
+    color: "#333",
     marginBottom: 5,
   },
   ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 5,
   },
   menuItems: {
@@ -273,57 +305,57 @@ const styles = StyleSheet.create({
     paddingTop: 4,
   },
   menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 10,
-    borderBottomColor: '#ccc',
+    borderBottomColor: "#ccc",
   },
   menuItemIconContainer: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#dfdfdf',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#dfdfdf",
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 15,
   },
   menuItemText: {
     fontSize: 16,
-    color: '#000',
+    color: "#000",
   },
   logoutItem: {
     marginTop: 20,
     borderTopWidth: 1,
-    borderTopColor: '#f0f0f0',
+    borderTopColor: "#f0f0f0",
     borderBottomWidth: 0,
   },
   logoutIconContainer: {
-    backgroundColor: '#fff2f2',
+    backgroundColor: "#fff2f2",
   },
   logoutText: {
     fontSize: 16,
-    color: '#ff3b30',
+    color: "#ff3b30",
   },
   contactContainer: {
     padding: 15,
     borderTopWidth: 1,
-    borderTopColor: '#ccc',
-    backgroundColor: '#f8f8f8',
+    borderTopColor: "#ccc",
+    backgroundColor: "#f8f8f8",
   },
   contactHeader: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
-    color: '#333',
+    color: "#333",
   },
   contactItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 8,
   },
   contactText: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
     marginLeft: 10,
   },
 });

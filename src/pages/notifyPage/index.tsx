@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,29 +8,27 @@ import {
   Modal,
   ActivityIndicator,
   Alert,
-} from 'react-native';
-import {useAlert} from "../alertProvider/index";
-import { ArrowLeft, Clock } from 'lucide-react-native';
-import * as Notifications from 'expo-notifications';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { formatRelativeDate } from '../utils/date_formater';
-import { style } from './style';
+} from "react-native";
+import { useAlert } from "../alertProvider/index";
+import { ArrowLeft, Clock } from "lucide-react-native";
+import * as Notifications from "expo-notifications";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { formatRelativeDate } from "../utils/date_formater";
+import { style } from "./style";
 
-import logo from '../../assets/logo.png';
-import esc from '../../assets/esc.png';
-import alartQuiz from '../../assets/quizAlert.png';
-import alartRain from '../../assets/rainAlarte.png';
-import alertStop from '../../assets/stop.png';
-import alertEdu from '../../assets/goo.png';
-import useSocketNotification from '../utils/socketio';
+import logo from "../../assets/logo.png";
+import esc from "../../assets/esc.png";
+import alartQuiz from "../../assets/quizAlert.png";
+import alartRain from "../../assets/rainAlarte.png";
+import alertStop from "../../assets/stop.png";
+import alertEdu from "../../assets/goo.png";
+import useSocketNotification from "../utils/socketio";
 
 // Configuração do WebSocket com socket.io-client
-import { io } from 'socket.io-client';
-const socket = io('https://mapazzz.onrender.com', {
-  transports: ['websocket'],
+import { io } from "socket.io-client";
+const socket = io("https://mapazzz.onrender.com", {
+  transports: ["websocket"],
   reconnection: true,
-  recombinationAttempts: 5,
-  recombinationDelay: 1000,
 });
 
 // Configuração de notificações
@@ -50,15 +48,31 @@ const NotifyPage = ({ navigation }) => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // const cach = async () => {
+  //   const cachNotify = await AsyncStorage.getItem("cachNotify");
+  //   const data = JSON.parse(cachNotify);
+  //   if (data) {
+  //     console.log("MAISSS " + JSON.stringify(data));
+  //     const notificationsData = Array.isArray(data)
+  //       ? data
+  //       : data.notifications || [];
+  //     const notificationsWithImages = notificationsData.map((item) => ({
+  //       ...item,
+  //       image: getImageByType(item.typeNotification),
+  //     }));
+
+  //     setNotifications(notificationsWithImages);
+  //   }
+  // };
   const getImageByType = (type) => {
     switch (type) {
-      case 'clima':
+      case "clima":
         return alartRain;
-      case 'jogo':
+      case "jogo":
         return alartQuiz;
-      case 'surto':
+      case "surto":
         return alertStop;
-      case 'risco':
+      case "risco":
         return alertStop;
       default:
         return alertEdu;
@@ -68,34 +82,44 @@ const NotifyPage = ({ navigation }) => {
   // Buscar notificações da API
   const fetchNotifications = async () => {
     try {
-      const token = await AsyncStorage.getItem('Token');
+      const token = await AsyncStorage.getItem("Token");
       if (!token) {
-        await showAlert('erro', 'Você precisa estar logado.', 'Erro');
-        navigation.navigate('Login');
+        await showAlert("erro", "Você precisa estar logado.", "Erro");
+        navigation.navigate("Login");
         return;
       }
 
-      const response = await fetch('https://mapazzz.onrender.com/api/notification', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        "https://mapazzz.onrender.com/api/notification",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       const data = await response.json();
 
       if (!response.ok) {
         if (response.status === 401 || response.status === 403) {
-          await showAlert('erro', 'Sessão expirada. Faça login novamente.', 'Erro');
-          await AsyncStorage.removeItem('Token');
-          navigation.navigate('Login');
+          await showAlert(
+            "erro",
+            "Sessão expirada. Faça login novamente.",
+            "Erro"
+          );
+          await AsyncStorage.removeItem("Token");
+          navigation.navigate("Login");
           return;
         }
-        throw new Error('Erro ao buscar notificações');
+        throw new Error("Erro ao buscar notificações");
       }
+      await AsyncStorage.setItem("cachNotify", JSON.stringify(data));
 
-      const notificationsData = Array.isArray(data) ? data : data.notifications || [];
+      const notificationsData = Array.isArray(data)
+        ? data
+        : data.notifications || [];
       const notificationsWithImages = notificationsData.map((item) => ({
         ...item,
         image: getImageByType(item.typeNotification),
@@ -103,36 +127,48 @@ const NotifyPage = ({ navigation }) => {
 
       setNotifications(notificationsWithImages);
     } catch (error) {
-      console.error('Erro ao buscar notificações:', error);
-      await showAlert('erro', 'Não foi possível carregar as notificações.', 'Erro');
+
+      console.error("Erro ao buscar notificações:", error);
+      await showAlert(
+        "erro",
+        "Não foi possível carregar as notificações.",
+        "Erro"
+      );
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
+    // cach();
     // Carregar notificações iniciais
     fetchNotifications();
 
     // Configurar WebSocket
     const handleConnect = () => {
-      console.log('WebSocket conectado');
+      console.log("WebSocket conectado");
     };
 
     const handleNotificationClimate = (event) => {
-      console.log('Evento recebido do WebSocket:', event);
+      console.log("Evento recebido do WebSocket:", event);
       const newNotification = {
         id: Date.now().toString(),
-        describe: event.data.describe || 'Chuva detectada na sua localização!',
+        describe: event.data.describe || "Chuva detectada na sua localização!",
         createdAt: new Date().toISOString(),
-        typeNotification: event.data.typeNotification || 'clima',
-        image: getImageByType(event.data.typeNotification || 'clima'),
+        typeNotification: event.data.typeNotification || "clima",
+        image: getImageByType(event.data.typeNotification || "clima"),
       };
 
       // Adicionar apenas uma notificação
       setNotifications((prev) => {
         // Evitar duplicatas verificando ID ou conteúdo
-        if (prev.some((n) => n.describe === newNotification.describe && n.createdAt === newNotification.createdAt)) {
+        if (
+          prev.some(
+            (n) =>
+              n.describe === newNotification.describe &&
+              n.createdAt === newNotification.createdAt
+          )
+        ) {
           return prev;
         }
         return [newNotification, ...prev];
@@ -140,18 +176,18 @@ const NotifyPage = ({ navigation }) => {
     };
 
     const handleDisconnect = () => {
-      console.log('WebSocket desconectado');
+      console.log("WebSocket desconectado");
     };
 
-    socket.on('connect', handleConnect);
-    socket.on('notification', handleNotificationClimate);
-    socket.on('disconnect', handleDisconnect);
+    socket.on("connect", handleConnect);
+    socket.on("notification", handleNotificationClimate);
+    socket.on("disconnect", handleDisconnect);
 
     // Limpar WebSocket ao desmontar
     return () => {
-      socket.off('connect', handleConnect);
-      socket.off('notification', handleNotificationClimate);
-      socket.off('disconnect', handleDisconnect);
+      socket.off("connect", handleConnect);
+      socket.off("notification", handleNotificationClimate);
+      socket.off("disconnect", handleDisconnect);
     };
   }, [navigation]);
 
@@ -165,38 +201,44 @@ const NotifyPage = ({ navigation }) => {
       {/* Topo */}
       <View style={style.logoX}>
         <TouchableOpacity onPress={() => navigation.navigate("MapaPage")}>
-        <ArrowLeft color="#7F1734" size={35}/>
+          <ArrowLeft color="#7F1734" size={35} />
         </TouchableOpacity>
         <Image source={logo} style={style.logoImg} />
       </View>
 
       <View style={style.container}>
-        <Text style={{ fontSize: 18, fontWeight: "bold", color: "#7f1734", marginBottom: 20, marginLeft: 10 }}>
+        <Text
+          style={{
+            fontSize: 18,
+            fontWeight: "bold",
+            color: "#7f1734",
+            marginBottom: 20,
+            marginLeft: 10,
+          }}>
           Notificações
-          </Text>
-
+        </Text>
 
         {loading ? (
           <ActivityIndicator size="large" color="#7F1734" />
         ) : (
           <ScrollView style={style.scroll}>
             {notifications.length === 0 ? (
-              <Text style={style.notificationText}>Nenhuma notificação disponível</Text>
+              <Text style={style.notificationText}>
+                Nenhuma notificação disponível
+              </Text>
             ) : (
               notifications.map((item) => (
                 <TouchableOpacity
                   key={item.id}
-                  onPress={() => handleNotificationPress(item)}
-                >
+                  onPress={() => handleNotificationPress(item)}>
                   <View style={style.infCamp}>
                     <Image source={item.image} style={style.notyType} />
                     <View style={style.styleText}>
                       <Text
                         numberOfLines={2}
                         ellipsizeMode="tail"
-                        style={style.notificationText}
-                      >
-                        {item.describe || 'Notificação sem descrição'}
+                        style={style.notificationText}>
+                        {item.describe || "Notificação sem descrição"}
                       </Text>
                       <View style={style.timeInfo}>
                         <Clock color="#999" size={14} />
@@ -218,25 +260,32 @@ const NotifyPage = ({ navigation }) => {
         visible={modalVisible}
         transparent
         animationType="slide"
-        onRequestClose={() => setModalVisible(false)}
-      >
+        onRequestClose={() => setModalVisible(false)}>
         <View style={style.modalOverlay}>
           <View style={style.modalContainer}>
             {selectedNotification && (
               <>
-                <Image source={selectedNotification.image} style={style.modalImage} />
-                <Text style={[style.modalText, { fontWeight: '700', fontSize: 18, marginBottom: 8 }]}>
-                  {selectedNotification.title || selectedNotification.describe || 'Notificação'}
+                <Image
+                  source={selectedNotification.image}
+                  style={style.modalImage}
+                />
+                <Text
+                  style={[
+                    style.modalText,
+                    { fontWeight: "700", fontSize: 18, marginBottom: 8 },
+                  ]}>
+                  {selectedNotification.title ||
+                    selectedNotification.describe ||
+                    "Notificação"}
                 </Text>
                 <Text style={style.modalText}>
-                  {selectedNotification.describe || 'Sem detalhes'}
+                  {selectedNotification.describe || "Sem detalhes"}
                 </Text>
               </>
             )}
             <TouchableOpacity
               style={style.closeButton}
-              onPress={() => setModalVisible(false)}
-            >
+              onPress={() => setModalVisible(false)}>
               <Text style={style.closeButtonText}>Fechar</Text>
             </TouchableOpacity>
           </View>

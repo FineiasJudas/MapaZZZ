@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {useAlert} from "../alertProvider/index";
+import React, { useState, useEffect } from "react";
+import { useAlert } from "../alertProvider/index";
 import {
   View,
   Text,
@@ -8,8 +8,8 @@ import {
   ScrollView,
   ActivityIndicator,
   StyleSheet,
-  Settings
-} from 'react-native';
+  Settings,
+} from "react-native";
 import {
   Bell,
   MapPin,
@@ -23,41 +23,116 @@ import {
   TriangleAlert,
   User,
   CheckCheck,
-  Cog
-} from 'lucide-react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Location from 'expo-location';
-import logo from '../../assets/logo.png';
-import bySalonis from '../../assets/bySalōnis.png';
-import { style } from './style';
+  Cog,
+  Split,
+} from "lucide-react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Location from "expo-location";
+import logo from "../../assets/logo.png";
+import bySalonis from "../../assets/bySalōnis.png";
+import { style } from "./style";
+import useSocketNotification from "../utils/socketio";
 
 const HomePage = ({ navigation }: any) => {
   const { showAlert } = useAlert();
-  const [location, setLocation] = useState('Obtendo a localização...');
+  const [location, setLocation] = useState("Obtendo a localização...");
   const [loading, setLoading] = useState(false);
   const [logged, setLogged] = useState(true);
-  
+  const [username, setUsername] = useState("Visitante");
+  const [userPoints, setUserPoints] = useState(0);
+  useSocketNotification();
+  // Tipagem opcional (para TypeScript, mas também ajuda a entender o formato)
+  type DangerZone = {
+    id: string;
+    image: string;
+    address: string;
+  };
+  const [regions, setRegions] = useState<DangerZone[]>([]);
+
+  const getFirstName = (name) => {
+    return name.split(" ")[0];
+  };
+
+  const details = async () => {
+    try {
+      const Token = await AsyncStorage.getItem("Token");
+      if (Token) {
+        const response = await fetch("https://mapazzz.onrender.com/api/users", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${Token}`,
+          },
+        });
+        const result = await response.json();
+        if (response.ok) {
+          setUsername(getFirstName(result.data.name));
+          setUserPoints(result.data.points);
+          setRegions(result.detalhes.danger_zones);
+          await AsyncStorage.setItem(
+            "@cachedUsername",
+            getFirstName(result.data.name)
+          );
+          await AsyncStorage.setItem("@cachedUserPoints", result.data.points);
+        } 
+      }
+    } catch (error) {
+      console.log("Erro ao buscar detalhes:", error);
+      const cachedUsername = await AsyncStorage.getItem("@cachedUsername");
+      const cachedUserPoints = await AsyncStorage.getItem("@cachedUserPoints");
+      if (cachedUsername) {
+        setUsername(cachedUsername);
+      }
+      if (cachedUserPoints) {
+        setUserPoints(Number(cachedUserPoints));
+      }
+    }
+  };
   const getLocation = async () => {
     setLoading(true);
     try {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setLocation('Permissão negada');
-        setLoading(false);
+      if (status !== "granted") {
+        setLocation("Permissão negada");
         return;
       }
 
       let location = await Location.getCurrentPositionAsync({});
-      setLocation('São Paulo, Brasil'); // Simulando localização para demonstração
+      const { latitude, longitude } = location.coords;
+
+      // Reverse geocoding para obter nome da localidade
+      let addressArray = await Location.reverseGeocodeAsync({
+        latitude,
+        longitude,
+      });
+
+      if (addressArray.length > 0) {
+        const address = addressArray[0];
+
+        // Exemplo: "Luanda, Angola"
+        const fullAddress = `${
+          address.district || address.city || address.subregion
+        }, ${address.country || address.region}`;
+        setLocation(fullAddress);
+        await AsyncStorage.setItem("@cachedLocation", fullAddress);
+      } else {
+        setLocation("Localidade não encontrada");
+      }
     } catch (err) {
-      console.error(err);
+      // console.error(err);
+      const cachedLocation = await AsyncStorage.getItem("@cachedLocation");
+      if (cachedLocation) {
+        setLocation(cachedLocation);
+      } else {
+        setLocation("Erro ao obter localização");
+      }
     } finally {
       setLoading(false);
     }
   };
 
   const checkPermission = async () => {
-    const token = await AsyncStorage.getItem('Token');
+    const token = await AsyncStorage.getItem("Token");
     if (token) {
       setLogged(true);
     }
@@ -66,6 +141,7 @@ const HomePage = ({ navigation }: any) => {
   useEffect(() => {
     checkPermission();
     getLocation();
+    details();
   }, []);
 
   return (
@@ -74,11 +150,17 @@ const HomePage = ({ navigation }: any) => {
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Início</Text>
         <View style={styles.headerButtons}>
-          <TouchableOpacity style={styles.iconButton}  >
-          <Puzzle color="#7f1734" onPress={async () => { navigation.navigate('GamingPage');}}/>
+          <TouchableOpacity style={styles.iconButton}>
+            <Puzzle
+              color="#7f1734"
+              onPress={async () => {
+                navigation.navigate("GamingPage");
+              }}
+            />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}
-            onPress={() => navigation.navigate('notifyPage')}>
+          <TouchableOpacity
+            style={styles.iconButton}
+            onPress={() => navigation.navigate("notifyPage")}>
             <Bell color="#7f1734" />
           </TouchableOpacity>
         </View>
@@ -88,24 +170,37 @@ const HomePage = ({ navigation }: any) => {
         {/* Welcome Card */}
         <View style={styles.welcomeCard}>
           <View style={styles.userInfoContainer}>
-            <TouchableOpacity style={styles.userIcon} onPress={() => navigation.navigate('ProfilePage')}>
-            <User color="#7f1734" />
+            <TouchableOpacity
+              style={styles.userIcon}
+              onPress={() => navigation.navigate("ProfilePage")}>
+              <User color="#7f1734" />
             </TouchableOpacity>
             <View>
-              <Text style={styles.welcomeText}>Bem-vindo, Fineias</Text>
-               <TouchableOpacity style={{alignItems: 'center', flexDirection: 'row'}}>
-                <MapPin color="#7f1734" size={18} style={{marginRight: 6}}/>
-                <Text style={styles.statLabel}>Localizacao...</Text>
-            </TouchableOpacity>
+              <Text style={styles.welcomeText}>Bem-vindo, {username}</Text>
+              <TouchableOpacity
+                style={{ alignItems: "center", flexDirection: "row" }}>
+                <MapPin color="#7f1734" size={18} style={{ marginRight: 6 }} />
+                <Text style={styles.statLabel}>{location}</Text>
+              </TouchableOpacity>
             </View>
           </View>
           <View style={styles.actionButtons}>
-            <TouchableOpacity style={styles.actionButton} onPress={async () => { navigation.navigate('reportPage');}}>
-              <Text style={styles.actionButtonText}>Reportar  </Text>
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={async () => {
+                navigation.navigate("reportPage");
+              }}>
+              <Text style={styles.actionButtonText}>Reportar </Text>
               <Camera color="#7f1734" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
-              <Text style={styles.actionButtonText} onPress={async () => { navigation.navigate('MapaPage');}}>Zonas de Risco  </Text>
+              <Text
+                style={styles.actionButtonText}
+                onPress={async () => {
+                  navigation.navigate("MapaPage");
+                }}>
+                Zonas de Risco{" "}
+              </Text>
               <TriangleAlert color="#7f1734" />
             </TouchableOpacity>
           </View>
@@ -114,26 +209,34 @@ const HomePage = ({ navigation }: any) => {
         {/* Cartao de registros */}
         <View style={styles.statsContainer}>
           <TouchableOpacity style={styles.statsCard}>
-            <Text style={styles.statsNumber}>+45</Text>
+            <Text style={styles.statsNumber}>+{userPoints}</Text>
             <View style={styles.statsLabelContainer}>
-              <Text style={styles.statsLabel}>Seus Registros</Text>
+              <Text style={styles.statsLabel}>Pontos acumulados</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity style={styles.statsCard}>
             <Text style={styles.statsNumber}>+115</Text>
             <View style={styles.statsLabelContainer}>
-              <Text style={styles.statsLabel}>Todos Registros</Text>
+              <Text style={styles.statsLabel}>Zonas de Risco</Text>
             </View>
           </TouchableOpacity>
         </View>
 
         {/* Registros recentes */}
         <Text style={styles.sectionTitle}>Registros Recentes</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.recentRecords}>
-          {[1, 2, 3, 4, 5].map((item) => (
-            <View key={item} style={styles.recordCard}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.recentRecords}>
+          {regions.map((item) => (
+            <View key={item.id} style={styles.recordCard}>
+              <Image
+                source={{ uri: item.image }}
+                style={styles.recordImage} // você vai definir essa estilização abaixo
+                resizeMode="cover"
+              />
               <View style={styles.recordTimeLabel}>
-                <Text style={styles.recordTimeLabelText}>Registrado há 1d</Text>
+                <Text style={styles.recordTimeLabelText}>{item.address}</Text>
               </View>
             </View>
           ))}
@@ -143,15 +246,18 @@ const HomePage = ({ navigation }: any) => {
         <View style={styles.gameSection}>
           <View style={styles.gameContent}>
             <Image
-              source={require('../../assets/GameSugeste.png')}
+              source={require("../../assets/GameSugeste.png")}
               style={styles.gameImage}
             />
             <View style={styles.gameTextContainer}>
               <Text style={styles.gameTitle}>Esperimente o Malária Quiz!</Text>
               <Text style={styles.gameSubtitle}>
-                Se divirta respondendo questões sobre a Malária e se torne num grande mestre!
+                Se divirta respondendo questões sobre a Malária e se torne num
+                grande mestre!
               </Text>
-              <TouchableOpacity style={styles.startButton} onPress={() => navigation.navigate('GamingPage')}>
+              <TouchableOpacity
+                style={styles.startButton}
+                onPress={() => navigation.navigate("GamingPage")}>
                 <Text style={styles.startButtonText}>Iniciar agora</Text>
               </TouchableOpacity>
             </View>
@@ -162,15 +268,20 @@ const HomePage = ({ navigation }: any) => {
         <View style={styles.hospitalSection}>
           <View style={styles.hospitalContent}>
             <Image
-              source={require('../../assets/HospitalSugest.png')}
+              source={require("../../assets/HospitalSugest.png")}
               style={styles.hospitalImage}
             />
             <View style={styles.hospitalTextContainer}>
-              <Text style={styles.hospitalTitle}>Encontre hospitais mais próximos de si!</Text>
-              <Text style={styles.hospitalSubtitle}>
-                Saiba a que distância estás do unidade hospitalar mais próxima e receba o atendimente o mais rápido possível!
+              <Text style={styles.hospitalTitle}>
+                Encontre hospitais mais próximos de si!
               </Text>
-              <TouchableOpacity style={styles.findButton} onPress={() => navigation.navigate('nearHospitalPage')}>
+              <Text style={styles.hospitalSubtitle}>
+                Saiba a que distância estás do unidade hospitalar mais próxima e
+                receba o atendimente o mais rápido possível!
+              </Text>
+              <TouchableOpacity
+                style={styles.findButton}
+                onPress={() => navigation.navigate("nearHospitalPage")}>
                 <Text style={styles.findButtonText}>Encontrar</Text>
               </TouchableOpacity>
             </View>
@@ -180,42 +291,45 @@ const HomePage = ({ navigation }: any) => {
 
       {/* Bottom Navigation */}
       <View style={styles.bottomNav}>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.navButton}
-          onPress={() => navigation.navigate('ProfilePage')}
-            >
+          onPress={() => navigation.navigate("ProfilePage")}>
           <User color="#7f1734" />
           <Text style={styles.navButtonText}>Perfil</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navButton}
-              onPress={() => navigation.navigate('nearHospitalPage')}
-        >
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => navigation.navigate("nearHospitalPage")}>
           <Hospital color="#7f1734" />
           <Text style={styles.navButtonText}>Hospitais</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navButton} onPress={async () => {
-                  if (logged) {
-                    navigation.navigate('EvalsPage')
-                   await showAlert(
-                      'aviso',
-                      "Essa página irá mostrar possíveis zonas de risco. \
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={async () => {
+            if (logged) {
+              navigation.navigate("EvalsPage");
+              await showAlert(
+                "aviso",
+                "Essa página irá mostrar possíveis zonas de risco. \
                                                           precisamos da sua ajuda para verificar se realmente são zonas de risco. Por favor, clique no botão 'Verificar' para confirmar se a zona de risco é real ou não. \
-                                                          Obrigado por sua colaboração!", 'Atenção'
-                    )
-                  } else {
-                    navigation.navigate('Login')
-                    await showAlert(
-                      'aviso',
-                      'Você precisa estar logado para acessar esta página, tente Logar', 'Atenção'
-                    ) 
-                  }
-                }}>
+                                                          Obrigado por sua colaboração!",
+                "Atenção"
+              );
+            } else {
+              navigation.navigate("Login");
+              await showAlert(
+                "aviso",
+                "Você precisa estar logado para acessar esta página, tente Logar",
+                "Atenção"
+              );
+            }
+          }}>
           <CheckCheck color="#7f1734" />
           <Text style={styles.navButtonText}>Verificar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navButton}
-         onPress={() => navigation.navigate('configPage')}
-        >
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => navigation.navigate("configPage")}>
           <Cog color="#7f1734" />
           <Text style={styles.navButtonText}>Definições</Text>
         </TouchableOpacity>
@@ -227,27 +341,27 @@ const HomePage = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
   },
   header: {
     paddingTop: 40,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: "#e0e0e0",
   },
   headerTitle: {
-    color: '#7f1734',
+    color: "#7f1734",
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   headerButtons: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   iconButton: {
     marginLeft: 16,
@@ -255,14 +369,14 @@ const styles = StyleSheet.create({
   puzzleIcon: {
     width: 24,
     height: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#871434',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#871434",
     borderRadius: 4,
   },
   puzzleText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
   content: {
     flex: 1,
@@ -270,20 +384,20 @@ const styles = StyleSheet.create({
   welcomeCard: {
     margin: 16,
     padding: 16,
-    backgroundColor: '#dfdfdf',
+    backgroundColor: "#dfdfdf",
     borderRadius: 12,
   },
   userInfoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   userIcon: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#FFFFFF',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 12,
   },
   userIconText: {
@@ -291,61 +405,61 @@ const styles = StyleSheet.create({
   },
   welcomeText: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   subtitle: {
     fontSize: 12,
-    color: '#666',
+    color: "#666",
     marginTop: 4,
-    width: '90%',
+    width: "90%",
   },
   actionButtons: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 16,
     gap: 8,
   },
   actionButton: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingHorizontal: 16,
     paddingVertical: 8,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#e0e0e0',
+    borderColor: "#e0e0e0",
   },
   actionButtonText: {
     fontSize: 14,
-    color: '#7f1734'
+    color: "#7f1734",
   },
   statsContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     margin: 16,
     gap: 16,
   },
   statsCard: {
     flex: 1,
-    backgroundColor: '#871434',
+    backgroundColor: "#871434",
     borderRadius: 12,
     padding: 16,
     height: 120,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   statsNumber: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: 'white',
+    fontWeight: "bold",
+    color: "white",
   },
   statsLabelContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   statsLabel: {
-    color: 'white',
+    color: "white",
     fontSize: 14,
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginHorizontal: 16,
     marginBottom: 8,
   },
@@ -355,130 +469,136 @@ const styles = StyleSheet.create({
   recordCard: {
     width: 120,
     height: 180,
-    backgroundColor: '#ccc',
+    backgroundColor: "#ccc",
     borderRadius: 12,
     marginRight: 8,
-    position: 'relative',
-    overflow: 'hidden',
+    position: "relative",
+    overflow: "hidden",
   },
   recordTimeLabel: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: "rgba(0,0,0,0.5)",
     paddingVertical: 4,
     paddingHorizontal: 8,
   },
+  recordImage: {
+    width: 120,
+    height: 200,
+    borderRadius: 10,
+    marginBottom: 5,
+  },
   recordTimeLabelText: {
-    color: 'white',
+    color: "white",
     fontSize: 12,
   },
   gameSection: {
     margin: 16,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 12,
-    overflow: 'hidden',
+    overflow: "hidden",
     borderWidth: 1,
-    borderColor: '#e0e0e0',
+    borderColor: "#e0e0e0",
   },
   gameContent: {
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 16,
   },
   gameImage: {
     width: 80,
     height: 80,
     marginRight: 16,
-    resizeMode: 'contain'
+    resizeMode: "contain",
   },
   gameTextContainer: {
     flex: 1,
   },
   gameTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   gameSubtitle: {
     fontSize: 12,
-    color: '#666',
+    color: "#666",
     marginTop: 4,
   },
   startButton: {
-    backgroundColor: '#871434',
+    backgroundColor: "#871434",
     borderRadius: 20,
     paddingVertical: 8,
     paddingHorizontal: 16,
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     marginTop: 12,
   },
   startButtonText: {
-    color: 'white',
+    color: "white",
     fontSize: 14,
   },
   hospitalSection: {
     margin: 16,
     marginTop: 0,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 12,
-    overflow: 'hidden',
+    overflow: "hidden",
     borderWidth: 1,
-    borderColor: '#e0e0e0',
+    borderColor: "#e0e0e0",
   },
   hospitalContent: {
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 16,
   },
   hospitalImage: {
     width: 80,
     height: 80,
     marginRight: 16,
-    resizeMode: 'contain'
+    resizeMode: "contain",
   },
   hospitalTextContainer: {
     flex: 1,
   },
   hospitalTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   hospitalSubtitle: {
     fontSize: 12,
-    color: '#666',
+    color: "#666",
     marginTop: 4,
   },
   findButton: {
-    backgroundColor: '#871434',
+    backgroundColor: "#871434",
     borderRadius: 20,
     paddingVertical: 8,
     paddingHorizontal: 16,
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     marginTop: 12,
   },
   findButtonText: {
-    color: 'white',
+    color: "white",
     fontSize: 14,
   },
   bottomNav: {
-    flexDirection: 'row',
-    backgroundColor: 'white',
+    flexDirection: "row",
+    backgroundColor: "white",
     borderTopWidth: 1,
-    borderTopColor: '#e0e0e0',
+    borderTopColor: "#e0e0e0",
     paddingVertical: 12,
   },
   navButton: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   navButtonText: {
     fontSize: 12,
-    color: '#871434',
+    color: "#871434",
   },
   statLabel: {
     fontSize: 12,
-    color: '#888',
-  }
+    color: "#888",
+  },
 });
 
 export default HomePage;

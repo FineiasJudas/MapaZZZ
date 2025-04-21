@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import { StyleSheet } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import { NavigationContainer } from '@react-navigation/native';
 import { AlertProvider } from './src/pages/alertProvider/index';
@@ -22,6 +22,7 @@ import helpPage from './src/pages/helpPage';
 import ProfilePage from './src/pages/profilePage';
 import nearHospitalPage from './src/pages/nearHospitalPage';
 import configPage from './src/pages/configPage';
+import ongPage from './src/pages/ongPage';
 import { registerForPushNotificationsAsync } from './src/pages/manegeNotification/index';
 
 const Stack = createNativeStackNavigator();
@@ -50,6 +51,7 @@ export default function App() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
+       <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
       <AlertProvider>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="WelcomePage">
@@ -67,6 +69,8 @@ export default function App() {
             <Stack.Screen name="ProfilePage" component={ProfilePage} options={{ headerShown: false }} />
             <Stack.Screen name="nearHospitalPage" component={nearHospitalPage} options={{ headerShown: false }} />
             <Stack.Screen name="configPage" component={configPage} options={{ headerShown: false }} />
+            <Stack.Screen name="ongPage" component={ongPage} options={{ headerShown: false }} />
+            
           </Stack.Navigator>
         </NavigationContainer>
       </AlertProvider>

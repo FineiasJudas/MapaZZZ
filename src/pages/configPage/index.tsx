@@ -23,11 +23,22 @@ import {
   Globe,
   Languages
 } from 'lucide-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SettingsPage = ({ navigation }: any) => {
   const [notifications, setNotifications] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [locationServices, setLocationServices] = useState(true);
+
+  const logOut = async () => {
+    try {
+      await AsyncStorage.removeItem("Token");
+      await AsyncStorage.removeItem("User");
+      navigation.navigate("Login");
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -143,7 +154,7 @@ const SettingsPage = ({ navigation }: any) => {
         </View>
 
         {/* Logout */}
-        <TouchableOpacity style={styles.logoutButton}>
+        <TouchableOpacity onPress={()=> logOut() } style={styles.logoutButton}>
           <LogOut size={22} color="#ff3b30" style={styles.logoutIcon} />
           <Text style={styles.logoutText}>Terminar Sessão</Text>
         </TouchableOpacity>
