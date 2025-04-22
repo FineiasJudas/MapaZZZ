@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Switch,
   ScrollView,
-} from 'react-native';
+} from "react-native";
 import {
   User,
   Hospital,
@@ -21,19 +21,29 @@ import {
   LogOut,
   Moon,
   Globe,
-  Languages
-} from 'lucide-react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+  Languages,
+} from "lucide-react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SettingsPage = ({ navigation }: any) => {
   const [notifications, setNotifications] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [locationServices, setLocationServices] = useState(true);
+  const [logged, setLogged] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const Token = await AsyncStorage.getItem("Token");
+      if (Token) setLogged(true);
+      else setLogged(false);
+    })();
+  });
 
   const logOut = async () => {
     try {
       await AsyncStorage.removeItem("Token");
       await AsyncStorage.removeItem("User");
+      setLogged(false);
       navigation.navigate("Login");
     } catch (error) {
       console.error("Erro ao fazer logout:", error);
@@ -58,7 +68,7 @@ const SettingsPage = ({ navigation }: any) => {
             </View>
             <ChevronRight size={20} color="#7f1734" />
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.settingItem}>
             <View style={styles.settingInfo}>
               <Lock size={22} color="#7f1734" style={styles.settingIcon} />
@@ -66,7 +76,7 @@ const SettingsPage = ({ navigation }: any) => {
             </View>
             <ChevronRight size={20} color="#7f1734" />
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.settingItem}>
             <View style={styles.settingInfo}>
               <Shield size={22} color="#7f1734" style={styles.settingIcon} />
@@ -85,36 +95,36 @@ const SettingsPage = ({ navigation }: any) => {
               <Text style={styles.settingLabel}>Notificações Push</Text>
             </View>
             <Switch
-              trackColor={{ false: '#e0e0e0', true: '#7f1734' }}
-              thumbColor={notifications ? '#fff' : '#fff'}
+              trackColor={{ false: "#e0e0e0", true: "#7f1734" }}
+              thumbColor={notifications ? "#fff" : "#fff"}
               ios_backgroundColor="#e0e0e0"
               onValueChange={() => setNotifications(!notifications)}
               value={notifications}
             />
           </View>
-          
+
           <View style={styles.settingItem}>
             <View style={styles.settingInfo}>
               <Moon size={22} color="#7f1734" style={styles.settingIcon} />
               <Text style={styles.settingLabel}>Modo Escuro</Text>
             </View>
             <Switch
-              trackColor={{ false: '#e0e0e0', true: '#7f1734' }}
-              thumbColor={darkMode ? '#fff' : '#fff'}
+              trackColor={{ false: "#e0e0e0", true: "#7f1734" }}
+              thumbColor={darkMode ? "#fff" : "#fff"}
               ios_backgroundColor="#e0e0e0"
               onValueChange={() => setDarkMode(!darkMode)}
               value={darkMode}
             />
           </View>
-          
+
           <View style={styles.settingItem}>
             <View style={styles.settingInfo}>
               <Globe size={22} color="#7f1734" style={styles.settingIcon} />
               <Text style={styles.settingLabel}>Serviços de Localização</Text>
             </View>
             <Switch
-              trackColor={{ false: '#e0e0e0', true: '#7f1734' }}
-              thumbColor={locationServices ? '#fff' : '#fff'}
+              trackColor={{ false: "#e0e0e0", true: "#7f1734" }}
+              thumbColor={locationServices ? "#fff" : "#fff"}
               ios_backgroundColor="#e0e0e0"
               onValueChange={() => setLocationServices(!locationServices)}
               value={locationServices}
@@ -135,15 +145,21 @@ const SettingsPage = ({ navigation }: any) => {
               <ChevronRight size={20} color="#7f1734" />
             </View>
           </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('helpPage')}>
+
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => navigation.navigate("helpPage")}>
             <View style={styles.settingInfo}>
-              <HelpCircle size={22} color="#7f1734" style={styles.settingIcon} />
+              <HelpCircle
+                size={22}
+                color="#7f1734"
+                style={styles.settingIcon}
+              />
               <Text style={styles.settingLabel}>Ajuda e Suporte</Text>
             </View>
             <ChevronRight size={20} color="#7f1734" />
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.settingItem}>
             <View style={styles.settingInfo}>
               <Info size={22} color="#7f1734" style={styles.settingIcon} />
@@ -154,11 +170,11 @@ const SettingsPage = ({ navigation }: any) => {
         </View>
 
         {/* Logout */}
-        <TouchableOpacity onPress={()=> logOut() } style={styles.logoutButton}>
+        <TouchableOpacity onPress={() => logOut()} style={styles.logoutButton}>
           <LogOut size={22} color="#ff3b30" style={styles.logoutIcon} />
           <Text style={styles.logoutText}>Terminar Sessão</Text>
         </TouchableOpacity>
-        
+
         <Text style={styles.versionText}>Versão 1.0.0</Text>
       </ScrollView>
     </View>
@@ -168,20 +184,20 @@ const SettingsPage = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
   },
   header: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     paddingTop: 60,
     paddingBottom: 15,
     paddingHorizontal: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: "#e0e0e0",
   },
   headerTitle: {
-    color: '#7f1734',
+    color: "#7f1734",
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   settingsContainer: {
     flex: 1,
@@ -189,31 +205,31 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#666',
+    fontWeight: "600",
+    color: "#666",
     marginTop: 24,
     marginBottom: 8,
     paddingLeft: 8,
   },
   settingsGroup: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 12,
-    borderColor: '#dfdfdf',
+    borderColor: "#dfdfdf",
     borderWidth: 1,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   settingItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingVertical: 16,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: "#f0f0f0",
   },
   settingInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   settingIcon: {
     marginRight: 16,
@@ -222,21 +238,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   valueContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   valueText: {
     fontSize: 14,
-    color: '#888',
+    color: "#888",
     marginRight: 8,
   },
   logoutButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
     borderWidth: 1,
-    borderColor: '#dfdfdf',
+    borderColor: "#dfdfdf",
     borderRadius: 12,
     marginTop: 24,
     padding: 16,
@@ -246,38 +262,38 @@ const styles = StyleSheet.create({
   },
   logoutText: {
     fontSize: 16,
-    fontWeight: '500',
-    color: '#ff3b30',
+    fontWeight: "500",
+    color: "#ff3b30",
   },
   versionText: {
-    textAlign: 'center',
-    color: '#888',
+    textAlign: "center",
+    color: "#888",
     marginVertical: 24,
     fontSize: 14,
   },
   bottomNav: {
-    flexDirection: 'row',
-    backgroundColor: 'white',
+    flexDirection: "row",
+    backgroundColor: "white",
     borderTopWidth: 1,
-    borderTopColor: '#e0e0e0',
+    borderTopColor: "#e0e0e0",
     paddingVertical: 12,
   },
   navButton: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   activeNavButton: {
     borderBottomWidth: 2,
-    borderBottomColor: '#4a86f7',
+    borderBottomColor: "#4a86f7",
   },
   navButtonText: {
     fontSize: 12,
-    color: '#871434',
+    color: "#871434",
     marginTop: 4,
   },
   activeNavButtonText: {
-    color: '#4a86f7',
+    color: "#4a86f7",
   },
 });
 

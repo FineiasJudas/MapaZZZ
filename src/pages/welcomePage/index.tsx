@@ -27,7 +27,7 @@ const WelcomePage = ({navigation} : any) => {
     const checkLogin = async () => {
       const token = await AsyncStorage.getItem("Token");
       if (token) {
-        navigation.navigate("MapaPage");
+        navigation.navigate("initPage");
       }
     }
     checkLogin();

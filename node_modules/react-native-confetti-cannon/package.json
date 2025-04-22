@@ -1,0 +1,68 @@
+{
+  "name": "react-native-confetti-cannon",
+  "version": "1.5.2",
+  "description": "React Native confetti explosion and fall like iOS does.",
+  "homepage": "https://github.com/vincentcatillon/react-native-confetti-cannon",
+  "bugs": {
+    "url": "https://github.com/vincentcatillon/react-native-confetti-cannon/issues",
+    "email": "contact@vincent-catillon.fr"
+  },
+  "keywords": [
+    "react",
+    "react-native",
+    "react-native-web",
+    "confetti",
+    "cannon",
+    "explosion",
+    "fall",
+    "animation",
+    "animated",
+    "particles",
+    "ios",
+    "android"
+  ],
+  "main": "src/index.js",
+  "types": "./src/index.d.ts",
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "npm run lint && npm run flow && npm run test:unit",
+    "lint": "eslint src --ext .js,.json",
+    "flow": "flow src",
+    "test:unit": "jest src",
+    "prepare": "npm run build:js && npm run build:types",
+    "build:js": "babel src --out-dir lib -s --copy-files",
+    "build:types": "flow-copy-source src lib"
+  },
+  "contributors": [
+    "Vincent Catillon <contact@vincent-catillon.fr>",
+    "Alan Langlois <alan@etaminstudio.com>",
+    "Junho Yeo <hanaro0704@naver.com>",
+    "Lee Zumstein <lee.zumstein@gmail.com>"
+  ],
+  "author": "Vincent Catillon",
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.0.0",
+    "@babel/generator": "^7.5.0",
+    "@babel/runtime": "^7.0.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.12.1",
+    "eslint-config-i-am-meticulous": "^11.0.0",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-flowtype": "2.50.3",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jest": "22.4.1",
+    "eslint-plugin-react": "7.12.4",
+    "eslint-plugin-react-native": "3.8.1",
+    "flow-bin": "^0.113.0",
+    "flow-copy-source": "^2.0.2",
+    "jest": "^24.8.0",
+    "metro-react-native-babel-preset": "^0.51.1",
+    "react": "16.11.0",
+    "react-native": "0.62.2",
+    "react-test-renderer": "16.11.0"
+  }
+}

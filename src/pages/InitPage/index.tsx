@@ -37,7 +37,7 @@ const HomePage = ({ navigation }: any) => {
   const { showAlert } = useAlert();
   const [location, setLocation] = useState("Obtendo a localização...");
   const [loading, setLoading] = useState(false);
-  const [logged, setLogged] = useState(true);
+  const [logged, setLogged] = useState(false);
   const [username, setUsername] = useState("Visitante");
   const [userPoints, setUserPoints] = useState(0);
   useSocketNotification();
@@ -74,7 +74,7 @@ const HomePage = ({ navigation }: any) => {
             getFirstName(result.data.name)
           );
           await AsyncStorage.setItem("@cachedUserPoints", result.data.points);
-        } 
+        }
       }
     } catch (error) {
       console.log("Erro ao buscar detalhes:", error);
@@ -188,7 +188,15 @@ const HomePage = ({ navigation }: any) => {
             <TouchableOpacity
               style={styles.actionButton}
               onPress={async () => {
-                navigation.navigate("reportPage");
+                if (logged) navigation.navigate("reportPage");
+                else {
+                  navigation.navigate("Login");
+                  await showAlert(
+                    "aviso",
+                    "Você precisa estar logado para acessar esta página, tente Logar",
+                    "Atenção"
+                  );
+                }
               }}>
               <Text style={styles.actionButtonText}>Reportar </Text>
               <Camera color="#7f1734" />
@@ -197,7 +205,15 @@ const HomePage = ({ navigation }: any) => {
               <Text
                 style={styles.actionButtonText}
                 onPress={async () => {
-                  navigation.navigate("MapaPage");
+                  if (logged) navigation.navigate("MapaPage");
+                  else {
+                    navigation.navigate("Login");
+                    await showAlert(
+                      "aviso",
+                      "Você precisa estar logado para acessar esta página, tente Logar",
+                      "Atenção"
+                    );
+                  }
                 }}>
                 Zonas de Risco{" "}
               </Text>
@@ -257,7 +273,17 @@ const HomePage = ({ navigation }: any) => {
               </Text>
               <TouchableOpacity
                 style={styles.startButton}
-                onPress={() => navigation.navigate("GamingPage")}>
+                onPress={async () => {
+                  if (logged) navigation.navigate("GamingPage");
+                  else {
+                    navigation.navigate("Login");
+                    await showAlert(
+                      "aviso",
+                      "Você precisa estar logado para acessar esta página, tente Logar",
+                      "Atenção"
+                    );
+                  }
+                }}>
                 <Text style={styles.startButtonText}>Iniciar agora</Text>
               </TouchableOpacity>
             </View>
@@ -293,7 +319,17 @@ const HomePage = ({ navigation }: any) => {
       <View style={styles.bottomNav}>
         <TouchableOpacity
           style={styles.navButton}
-          onPress={() => navigation.navigate("ProfilePage")}>
+          onPress={async () => {
+            if (logged) navigation.navigate("ProfilePage");
+            else {
+              navigation.navigate("Login");
+              await showAlert(
+                "aviso",
+                "Você precisa estar logado para acessar esta página, tente Logar",
+                "Atenção"
+              );
+            }
+          }}>
           <User color="#7f1734" />
           <Text style={styles.navButtonText}>Perfil</Text>
         </TouchableOpacity>
