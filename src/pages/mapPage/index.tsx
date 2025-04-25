@@ -88,7 +88,7 @@ export default function SidebarComponent({ navigation }: any) {
         } else {
           setUserName("Visitante...!!");
           setLoading(false);
-          console.error("Erro ao buscar nome do usuário:", data);
+          console.log("Erro ao buscar nome do usuário:", data);
         }
       } else {
         setUserName("Visitante...");
@@ -97,7 +97,7 @@ export default function SidebarComponent({ navigation }: any) {
     } catch (error) {
       setUserName("Visitante...");
       setLoading(false);
-      console.error("Erro ao buscar nome do usuário:", error);
+      console.log("Erro ao buscar nome do usuário:", error);
     }
   };
 
@@ -116,7 +116,7 @@ export default function SidebarComponent({ navigation }: any) {
 
   const fetchRoute = async (origin, destination) => {
     try {
-      const apiKey = "AIzaSyCivJhl0nsq59DaUWyaD-AxEIwFmB9XRtc";
+      const apiKey = "AIzaSyDmPoY5d5PmuG-U_CBzx-5ZsL_mDiyLSZg";
       const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude},${origin.longitude}&destination=${destination.latitude},${destination.longitude}&key=${apiKey}&mode=walking`;
 
       const response = await axios.get(url);
@@ -126,12 +126,12 @@ export default function SidebarComponent({ navigation }: any) {
         const points = decodePolyline(data.routes[0].overview_polyline.points);
         setRouteCoordinates(points);
       }
-      // else {
-      // console.log("Erro ao buscar rota:", data.status);
+       else {
+       console.log("Erro ao buscar rota:", data);
       // showAlert("erro", "Não foi possível traçar a rota.", "Erro");
-      // }
+       }
     } catch (error) {
-      console.error("Erro ao buscar rota:", error);
+      console.log("Erro ao buscar rota:", error);
       showAlert("erro", "Erro ao conectar com o serviço de rotas.", "Erro");
     }
   };
@@ -182,6 +182,7 @@ export default function SidebarComponent({ navigation }: any) {
     const GEO = await AsyncStorage.getItem("GEO");
     const parse = JSON.parse(GEO);
 
+
     const FIXED_DESTINATION = {
       latitude: parse.latitude,
       longitude: parse.longitude,
@@ -210,7 +211,7 @@ export default function SidebarComponent({ navigation }: any) {
       await AsyncStorage.removeItem("User");
       navigation.navigate("Login");
     } catch (error) {
-      console.error("Erro ao fazer logout:", error);
+      console.log("Erro ao fazer logout:", error);
     }
   };
 
@@ -241,13 +242,13 @@ export default function SidebarComponent({ navigation }: any) {
     }
     let location = await Location.getCurrentPositionAsync({});
     setLocation(location);
-    const callGEO = async () => {
-      const GEO = await AsyncStorage.getItem("GEO");
-      if (GEO) {
-        handleTraceRoute();
-      }
-    };
-    if (destination) callGEO();
+
+    const GEO = await AsyncStorage.getItem("GEO");
+    const parse = JSON.parse(GEO);
+    //console.log("Localização GO:", parse);
+   
+    if (parse)
+      handleTraceRoute();
   };
   LocalizaçãoActual();
 
@@ -288,7 +289,7 @@ export default function SidebarComponent({ navigation }: any) {
           );
           setDangerZones(data.dangerZones || []);
         } else {
-          console.error("Erro ao buscar zonas de perigo:", data.message);
+          console.log("Erro ao buscar zonas de perigo:", data.message);
         }
       } catch (error) {
         try {
@@ -301,7 +302,7 @@ export default function SidebarComponent({ navigation }: any) {
             setDangerZones([]);
           }
         } catch (storageError) {
-          console.error("Erro ao ler dados salvos localmente:", storageError);
+          console.log("Erro ao ler dados salvos localmente:", storageError);
           setDangerZones([]);
         }
       }
@@ -401,13 +402,12 @@ export default function SidebarComponent({ navigation }: any) {
                 }}
                 anchor={{ x: 0.5, y: 0.5 }}
                 pinColor={color}
-                title={`Zona de perigo ${
-                  zone.level === "high"
+                title={`Zona de perigo ${zone.level === "high"
                     ? "alta"
                     : zone.level === "medium"
-                    ? "média"
-                    : "baixa"
-                }`}
+                      ? "média"
+                      : "baixa"
+                  }`}
                 description={`${zone.description}`}>
                 <Image
                   source={dangerIcon}
@@ -441,9 +441,9 @@ export default function SidebarComponent({ navigation }: any) {
         <TouchableOpacity
           style={style.clearRouteButton}
           onPress={async () => {
-            setRouteCoordinates([]);
-            setDestination(null);
-            await AsyncStorage.removeItem("GEO");
+            //setRouteCoordinates([]);
+            //setDestination(null);
+            //await AsyncStorage.removeItem("GEO");
           }}>
           <Text style={style.clearRouteText}>Limpar Rota</Text>
         </TouchableOpacity>

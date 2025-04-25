@@ -4,7 +4,7 @@
     "slug": "MapaZZZ",
     "notification": {
       "icon": "./src/assets/flash.png",
-      "color": "#00FF00" 
+      "color": "#00FF00"
     },
     "version": "1.0.0",
     "orientation": "portrait",
@@ -22,10 +22,13 @@
       "bundleIdentifier": "com.jsoares256.MapaZZZ",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
+      },
+      "config": {
+        "googleMapsApiKey": "AIzaSyDmPoY5d5PmuG-U_CBzx-5ZsL_mDiyLSZg"
       }
     },
     "android": {
-      "icon": "./assets/favicon.png", 
+      "icon": "./assets/favicon.png",
       "permissions": [
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION"
@@ -34,7 +37,12 @@
         "foregroundImage": "./assets/favicon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.jsoares256.MapaZZZ"
+      "package": "com.jsoares256.MapaZZZ",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDmPoY5d5PmuG-U_CBzx-5ZsL_mDiyLSZg"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
