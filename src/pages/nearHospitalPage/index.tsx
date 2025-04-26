@@ -87,19 +87,20 @@ const HospitalListScreen = ({ navigation }: any) => {
         <Image source={Logo} style={style.imgLogo} />
       </View>
 
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <View style={{ width: "85%" }}>
+      <View style={{ width: "85%" }}>
           <Text
             style={{
               fontSize: 18,
               fontWeight: "bold",
               marginBottom: 15,
               color: "#7f1734",
-              marginLeft: 10,
+              marginLeft: 30,
             }}>
             Hospitais próximos:
           </Text>
         </View>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        
         {loading ? (
           <ScrollView style={style.content}>
             {hospitals.map((hospital) => (
@@ -146,7 +147,10 @@ const HospitalListScreen = ({ navigation }: any) => {
             ))}
           </ScrollView>
         ) : (
+          <>
           <ActivityIndicator size="large" color="#7F1734" />
+          <Text>Procurando hospitais próximos...</Text>
+          </>
         )}
       </View>
 

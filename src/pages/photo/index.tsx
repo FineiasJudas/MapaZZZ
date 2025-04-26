@@ -209,8 +209,9 @@ const { showAlert } = useAlert();
         <>
           {loading ? (
             <View style={styles.loadingContainer}>
-              <ActivityIndicator size='large' color='#7F1734' />
-              <Text style={styles.message}>Aguarde um pouco...</Text>
+
+              <ActivityIndicator size='large' color='#fff'/>
+              <Text style={{color:"#fff"}}>Aguarde um pouco...</Text>
               {/* <Text style={styles.message}>Carregando...</Text> */}
             </View>
           ) : (
@@ -257,6 +258,7 @@ const styles = StyleSheet.create({
   },
   loadingContainer: {
     flex: 1,
+    color: "#fff",
     justifyContent: 'center',
     alignItems: 'center'
   },

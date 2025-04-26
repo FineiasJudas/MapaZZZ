@@ -98,9 +98,22 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
                 <TouchableOpacity
                   key={index}
                   style={styles.menuItem}
-                  onPress={() =>
-                    handleNavigation(item.route, logged, showAlert, navigation)
-                  }
+                  onPress={ async() => {
+                    if (item.title === "Jogos") {
+                      await showAlert(
+                        "aviso",
+                        "Essa página está em construção...",
+                        "Atenção"
+                      );
+                      
+                    } else
+                      handleNavigation(
+                        item.route,
+                        logged,
+                        showAlert,
+                        navigation
+                      );
+                  }}
                   activeOpacity={0.7}>
                   <View style={styles.menuItemIconContainer}>
                     <item.icon size={22} color="#7F1734" />

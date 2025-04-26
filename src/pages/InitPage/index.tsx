@@ -154,13 +154,36 @@ const HomePage = ({ navigation }: any) => {
             <Puzzle
               color="#7f1734"
               onPress={async () => {
-                navigation.navigate("GamingPage");
+                await showAlert(
+                  "aviso",
+                  "Essa página está em construção...",
+                  "Atenção"
+                );
+                // if (logged) navigation.navigate("GamingPage");
+                // else {
+                //   navigation.navigate("Login");
+                //   await showAlert(
+                //     "aviso",
+                //     "Você precisa estar logado para acessar esta página, tente Logar",
+                //     "Atenção"
+                //   );
+                // }
               }}
             />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.iconButton}
-            onPress={() => navigation.navigate("notifyPage")}>
+            onPress={async () => {
+              if (logged) navigation.navigate("notifyPage");
+              else {
+                navigation.navigate("Login");
+                await showAlert(
+                  "aviso",
+                  "Você precisa estar logado para acessar esta página, tente Logar",
+                  "Atenção"
+                );
+              }
+            }}>
             <Bell color="#7f1734" />
           </TouchableOpacity>
         </View>
@@ -205,15 +228,7 @@ const HomePage = ({ navigation }: any) => {
               <Text
                 style={styles.actionButtonText}
                 onPress={async () => {
-                  if (logged) navigation.navigate("MapaPage");
-                  else {
-                    navigation.navigate("Login");
-                    await showAlert(
-                      "aviso",
-                      "Você precisa estar logado para acessar esta página, tente Logar",
-                      "Atenção"
-                    );
-                  }
+                  navigation.navigate("MapaPage");
                 }}>
                 Zonas de Risco{" "}
               </Text>
@@ -274,15 +289,20 @@ const HomePage = ({ navigation }: any) => {
               <TouchableOpacity
                 style={styles.startButton}
                 onPress={async () => {
-                  if (logged) navigation.navigate("GamingPage");
-                  else {
-                    navigation.navigate("Login");
-                    await showAlert(
-                      "aviso",
-                      "Você precisa estar logado para acessar esta página, tente Logar",
-                      "Atenção"
-                    );
-                  }
+                  await showAlert(
+                    "aviso",
+                    "Essa página está em construção...",
+                    "Atenção"
+                  );
+                  // if (logged) navigation.navigate("GamingPage");
+                  // else {
+                  //   navigation.navigate("Login");
+                  //   await showAlert(
+                  //     "aviso",
+                  //     "Você precisa estar logado para acessar esta página, tente Logar",
+                  //     "Atenção"
+                  //   );
+                  // }
                 }}>
                 <Text style={styles.startButtonText}>Iniciar agora</Text>
               </TouchableOpacity>
@@ -475,7 +495,7 @@ const styles = StyleSheet.create({
   statsCard: {
     flex: 1,
     backgroundColor: "#871434",
-    
+
     borderRadius: 12,
     padding: 16,
     height: 120,

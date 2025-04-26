@@ -7,7 +7,6 @@ export default function useSocketNotification() {
   useEffect(() => {
     const socket = io('https://mapazzz.onrender.com', {
       transports: ['websocket'],
-      reconnection: true,
     });
 
     socket.on('notification', (data) => {

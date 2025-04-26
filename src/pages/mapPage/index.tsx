@@ -247,7 +247,7 @@ export default function SidebarComponent({ navigation }: any) {
     const parse = JSON.parse(GEO);
     //console.log("Localização GO:", parse);
    
-    if (parse)
+    if (false)
       handleTraceRoute();
   };
   LocalizaçãoActual();
@@ -453,15 +453,7 @@ export default function SidebarComponent({ navigation }: any) {
           <TouchableOpacity
             style={styles.navButton}
             onPress={async () => {
-              if (logged) navigation.navigate("initPage");
-              else {
-                navigation.navigate("Login");
-                await showAlert(
-                  "aviso",
-                  "Você precisa estar logado para acessar esta página, tente Logar",
-                  "Atenção"
-                );
-              }
+              navigation.navigate("initPage");
             }}>
             <Home color="#7f1734" />
             <Text style={styles.navButtonText}>Início</Text>

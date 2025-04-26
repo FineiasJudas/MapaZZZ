@@ -27,8 +27,7 @@ import useSocketNotification from "../utils/socketio";
 // Configuração do WebSocket com socket.io-client
 import { io } from "socket.io-client";
 const socket = io("https://mapazzz.onrender.com", {
-  transports: ["websocket"],
-  reconnection: true,
+  transports: ["websocket"]
 });
 
 // Configuração de notificações
@@ -153,6 +152,7 @@ const NotifyPage = ({ navigation }) => {
       console.log("Evento recebido do WebSocket:", event);
       const newNotification = {
         id: Date.now().toString(),
+        title : event.data.title,
         describe: event.data.describe || "Chuva detectada na sua localização!",
         createdAt: new Date().toISOString(),
         typeNotification: event.data.typeNotification || "clima",

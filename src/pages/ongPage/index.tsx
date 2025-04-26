@@ -113,7 +113,7 @@ export default function HelperPage({ navigation }: any) {
           }}>
           Seja um apoiador
         </Text>
-        <Text style={{ textAlign: "justify" }}>
+        <Text>
           Você pode ser um ajudador na luta contra a malária! Ao se juntar a
           nós, vai receber notificações sobre áreas de risco e como pode ajudar
           nessas regiões. Com pequenas ações, você pode fazer uma grande
