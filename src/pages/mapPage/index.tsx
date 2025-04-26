@@ -64,7 +64,7 @@ export default function SidebarComponent({ navigation }: any) {
   const [routeCoordinates, setRouteCoordinates] = useState([]);
   const [destination, setDestination] = useState(null);
   const { showAlert } = useAlert();
-  
+
   useSocketNotification();
   const getUserName = async () => {
     try {
@@ -88,7 +88,7 @@ export default function SidebarComponent({ navigation }: any) {
         } else {
           setUserName("Visitante...!!");
           setLoading(false);
-          console.error("Erro ao buscar nome do usuário:", data);
+          console.log("Erro ao buscar nome do usuário:", data);
         }
       } else {
         setUserName("Visitante...");
@@ -97,7 +97,7 @@ export default function SidebarComponent({ navigation }: any) {
     } catch (error) {
       setUserName("Visitante...");
       setLoading(false);
-      console.error("Erro ao buscar nome do usuário:", error);
+      console.log("Erro ao buscar nome do usuário:", error);
     }
   };
 
@@ -116,7 +116,7 @@ export default function SidebarComponent({ navigation }: any) {
 
   const fetchRoute = async (origin, destination) => {
     try {
-      const apiKey = "AIzaSyD5z9XkSGLQvbWJ27yZ2CPlJMvwcmFEQho";
+      const apiKey = "AIzaSyDmPoY5d5PmuG-U_CBzx-5ZsL_mDiyLSZg";
       const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude},${origin.longitude}&destination=${destination.latitude},${destination.longitude}&key=${apiKey}&mode=walking`;
 
       const response = await axios.get(url);
@@ -125,13 +125,13 @@ export default function SidebarComponent({ navigation }: any) {
       if (data.status === "OK") {
         const points = decodePolyline(data.routes[0].overview_polyline.points);
         setRouteCoordinates(points);
-      } 
-      // else {
-        // console.log("Erro ao buscar rota:", data.status);
-        // showAlert("erro", "Não foi possível traçar a rota.", "Erro");
-      // }
+      }
+       else {
+       console.log("Erro ao buscar rota:", data);
+      // showAlert("erro", "Não foi possível traçar a rota.", "Erro");
+       }
     } catch (error) {
-      console.error("Erro ao buscar rota:", error);
+      console.log("Erro ao buscar rota:", error);
       showAlert("erro", "Erro ao conectar com o serviço de rotas.", "Erro");
     }
   };
@@ -178,18 +178,18 @@ export default function SidebarComponent({ navigation }: any) {
       // showAlert("erro", "Localização atual não disponível.", "Erro");
       return;
     }
-  
+
     const GEO = await AsyncStorage.getItem("GEO");
     const parse = JSON.parse(GEO);
-  
+
+
     const FIXED_DESTINATION = {
       latitude: parse.latitude,
       longitude: parse.longitude,
-    };  
+    };
     setDestination(FIXED_DESTINATION);
     fetchRoute(location.coords, FIXED_DESTINATION);
   };
-  
 
   const handleRecenter = async () => {
     if (!location || !mapRef.current) return;
@@ -211,7 +211,7 @@ export default function SidebarComponent({ navigation }: any) {
       await AsyncStorage.removeItem("User");
       navigation.navigate("Login");
     } catch (error) {
-      console.error("Erro ao fazer logout:", error);
+      console.log("Erro ao fazer logout:", error);
     }
   };
 
@@ -234,27 +234,22 @@ export default function SidebarComponent({ navigation }: any) {
     }
   };
 
-  const LocalizaçãoActual = async () =>{
+  const LocalizaçãoActual = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        showAlert(
-          "erro",
-          "Permissão negada para acessar a localização.",
-          "Erro"
-        );
-        return;
-      }
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-      const callGEO = async () => {
-        const GEO = await AsyncStorage.getItem("GEO");
-        if (GEO) {
-          handleTraceRoute();
-        }
-      };
-      if (destination)
-        callGEO();
-  }
+    if (status !== "granted") {
+      showAlert("erro", "Permissão negada para acessar a localização.", "Erro");
+      return;
+    }
+    let location = await Location.getCurrentPositionAsync({});
+    setLocation(location);
+
+    const GEO = await AsyncStorage.getItem("GEO");
+    const parse = JSON.parse(GEO);
+    //console.log("Localização GO:", parse);
+   
+    if (parse)
+      handleTraceRoute();
+  };
   LocalizaçãoActual();
 
   useEffect(() => {
@@ -288,16 +283,31 @@ export default function SidebarComponent({ navigation }: any) {
         );
         const data = await response.json();
         if (response.ok) {
+          await AsyncStorage.setItem(
+            "dangerZone",
+            JSON.stringify(data.dangerZones)
+          );
           setDangerZones(data.dangerZones || []);
         } else {
-          console.error("Erro ao buscar zonas de perigo:", data.message);
+          console.log("Erro ao buscar zonas de perigo:", data.message);
         }
       } catch (error) {
-        console.error("Erro ao buscar zonas de perigo:", error);
+        try {
+          const dangerZonesOff = await AsyncStorage.getItem("dangerZone");
+          if (dangerZonesOff) {
+            setDangerZones(JSON.parse(dangerZonesOff));
+            console.log("Zonas de perigo carregadas do cache (offline).");
+          } else {
+            console.log("Nenhuma zona de perigo salva localmente.");
+            setDangerZones([]);
+          }
+        } catch (storageError) {
+          console.log("Erro ao ler dados salvos localmente:", storageError);
+          setDangerZones([]);
+        }
       }
     })();
     getUserName();
-    
   }, []);
 
   const MapStyle = [
@@ -392,13 +402,12 @@ export default function SidebarComponent({ navigation }: any) {
                 }}
                 anchor={{ x: 0.5, y: 0.5 }}
                 pinColor={color}
-                title={`Zona de perigo ${
-                  zone.level === "high"
+                title={`Zona de perigo ${zone.level === "high"
                     ? "alta"
                     : zone.level === "medium"
-                    ? "média"
-                    : "baixa"
-                }`}
+                      ? "média"
+                      : "baixa"
+                  }`}
                 description={`${zone.description}`}>
                 <Image
                   source={dangerIcon}
@@ -432,59 +441,89 @@ export default function SidebarComponent({ navigation }: any) {
         <TouchableOpacity
           style={style.clearRouteButton}
           onPress={async () => {
-            setRouteCoordinates([]);
-            setDestination(null);
-            await AsyncStorage.removeItem("GEO");
+            //setRouteCoordinates([]);
+            //setDestination(null);
+            //await AsyncStorage.removeItem("GEO");
           }}>
           <Text style={style.clearRouteText}>Limpar Rota</Text>
         </TouchableOpacity>
       )}
       {showBottomBar && (
-      <View style={styles.bottomNav}>
-      <TouchableOpacity
-        style={styles.navButton}
-        onPress={() => navigation.navigate("ProfilePage")}>
-        <User color="#7f1734" />
-        <Text style={styles.navButtonText}>Perfil</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.navButton}
-        onPress={() => navigation.navigate("reportPage")}>
-        <Siren color="#7f1734" />
-        <Text style={styles.navButtonText}>Reportar</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.navButton}
-        onPress={async () => {
-          if (logged) {
-            navigation.navigate("EvalsPage");
-            await showAlert(
-              "aviso",
-              "Essa página irá mostrar possíveis zonas de risco. \
+        <View style={styles.bottomNav}>
+          <TouchableOpacity
+            style={styles.navButton}
+            onPress={async () => {
+              if (logged) navigation.navigate("initPage");
+              else {
+                navigation.navigate("Login");
+                await showAlert(
+                  "aviso",
+                  "Você precisa estar logado para acessar esta página, tente Logar",
+                  "Atenção"
+                );
+              }
+            }}>
+            <Home color="#7f1734" />
+            <Text style={styles.navButtonText}>Início</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.navButton}
+            onPress={async () => {
+              if (logged) navigation.navigate("reportPage");
+              else {
+                navigation.navigate("Login");
+                await showAlert(
+                  "aviso",
+                  "Você precisa estar logado para acessar esta página, tente Logar",
+                  "Atenção"
+                );
+              }
+            }}>
+            <Siren color="#7f1734" />
+            <Text style={styles.navButtonText}>Reportar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.navButton}
+            onPress={async () => {
+              if (logged) {
+                navigation.navigate("EvalsPage");
+                await showAlert(
+                  "aviso",
+                  "Essa página irá mostrar possíveis zonas de risco. \
                                                         precisamos da sua ajuda para verificar se realmente são zonas de risco. Por favor, clique no botão 'Verificar' para confirmar se a zona de risco é real ou não. \
                                                         Obrigado por sua colaboração!",
-              "Atenção"
-            );
-          } else {
-            navigation.navigate("Login");
-            await showAlert(
-              "aviso",
-              "Você precisa estar logado para acessar esta página, tente Logar",
-              "Atenção"
-            );
-          }
-        }}>
-        <CheckCheck color="#7f1734" />
-        <Text style={styles.navButtonText}>Verificar</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.navButton}
-        onPress={() => navigation.navigate("configPage")}>
-        <Cog color="#7f1734" />
-        <Text style={styles.navButtonText}>Definições</Text>
-      </TouchableOpacity>
-    </View>
-  // </View>
+                  "Atenção"
+                );
+              } else {
+                navigation.navigate("Login");
+                await showAlert(
+                  "aviso",
+                  "Você precisa estar logado para acessar esta página, tente Logar",
+                  "Atenção"
+                );
+              }
+            }}>
+            <CheckCheck color="#7f1734" />
+            <Text style={styles.navButtonText}>Verificar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.navButton}
+            onPress={async () => {
+              if (logged) navigation.navigate("configPage");
+              else {
+                navigation.navigate("Login");
+                await showAlert(
+                  "aviso",
+                  "Você precisa estar logado para acessar esta página, tente Logar",
+                  "Atenção"
+                );
+              }
+            }}>
+            <Cog color="#7f1734" />
+            <Text style={styles.navButtonText}>Definições</Text>
+          </TouchableOpacity>
+        </View>
+        // </View>
       )}
     </View>
   );

@@ -475,6 +475,7 @@ const styles = StyleSheet.create({
   statsCard: {
     flex: 1,
     backgroundColor: "#871434",
+    
     borderRadius: 12,
     padding: 16,
     height: 120,

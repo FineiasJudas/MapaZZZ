@@ -21,6 +21,7 @@ import {
   Mail,
   Phone,
   HeartHandshake,
+  LogIn,
 } from "lucide-react-native";
 import { useAlert } from "../alertProvider/index";
 
@@ -114,16 +115,27 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
                   alignItems: "center",
                   marginTop: 10,
                 }}
-                onPress={logOut}
+                onPress={() => {
+                  if (logged) logOut;
+                  else navigation.navigate("Login");
+                }}
                 activeOpacity={0.7}>
                 <View
                   style={[
                     styles.menuItemIconContainer,
                     styles.logoutIconContainer,
                   ]}>
-                  <LogOut size={22} color="#ff3b30" />
+                  {logged ? (
+                    <LogOut size={22} color="#ff3b30" />
+                  ) : (
+                    <LogIn size={22} color="#000" />
+                  )}
                 </View>
-                <Text style={styles.logoutText}>Terminar Sessão</Text>
+                {logged ? (
+                  <Text style={styles.logoutText}>Terminar Sessão</Text>
+                ) : (
+                  <Text style={styles.loginText}>Fazer Login</Text>
+                )}
               </TouchableOpacity>
             </ScrollView>
 
@@ -335,6 +347,10 @@ const styles = StyleSheet.create({
   logoutText: {
     fontSize: 16,
     color: "#ff3b30",
+  },
+  loginText: {
+    fontSize: 16,
+    color: "#000",
   },
   contactContainer: {
     padding: 15,
