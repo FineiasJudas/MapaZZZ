@@ -46,9 +46,7 @@ const { showAlert } = useAlert();
     MediaLibrary.usePermissions()
   const cameraRef = useRef<any>(null)
 
-  useEffect(() => {
-   
-  }, [])
+ 
 
   const checkPermission = async () => {
     const token = await AsyncStorage.getItem('Token')

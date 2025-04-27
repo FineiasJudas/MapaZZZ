@@ -230,7 +230,7 @@ const HomePage = ({ navigation }: any) => {
                 onPress={async () => {
                   navigation.navigate("MapaPage");
                 }}>
-                Zonas de Risco{" "}
+                Zonas de Risco
               </Text>
               <TriangleAlert color="#7f1734" />
             </TouchableOpacity>
@@ -476,6 +476,9 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     flexDirection: "row",
+    justifyContent:"center",
+    alignItems: "center",
+    gap : 3,
     paddingHorizontal: 16,
     paddingVertical: 8,
     backgroundColor: "white",

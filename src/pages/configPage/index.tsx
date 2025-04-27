@@ -37,7 +37,7 @@ const SettingsPage = ({ navigation }: any) => {
       if (Token) setLogged(true);
       else setLogged(false);
     })();
-  });
+  }, []);
 
   const logOut = async () => {
     try {

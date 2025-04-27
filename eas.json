@@ -2,7 +2,8 @@
   "build": {
     "production": {
       "android": {
-        "buildType": "apk"
+        "buildType": "apk",
+        "developmentClient": false
       }
     }
   }

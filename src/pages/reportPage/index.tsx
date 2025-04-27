@@ -40,7 +40,7 @@ const RegisterRiskZone = ({navigation} : any) => {
   }
   useEffect(() => {
     checkPermission();
-  })
+  }, [])
   // Função para capturar foto da galeria ou câmera
   const pickImage = async () => {
     let result = await ImagePicker.launchCameraAsync({

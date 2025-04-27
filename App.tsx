@@ -70,7 +70,6 @@ export default function App() {
             <Stack.Screen name="nearHospitalPage" component={nearHospitalPage} options={{ headerShown: false }} />
             <Stack.Screen name="configPage" component={configPage} options={{ headerShown: false }} />
             <Stack.Screen name="ongPage" component={ongPage} options={{ headerShown: false }} />
-            
           </Stack.Navigator>
         </NavigationContainer>
       </AlertProvider>

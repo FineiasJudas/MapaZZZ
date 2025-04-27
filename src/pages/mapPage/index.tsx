@@ -6,11 +6,8 @@ import {
   Animated,
   Text,
   Image,
-  ScrollView,
-  TouchableWithoutFeedback,
   Dimensions,
   ActivityIndicator,
-  Alert,
 } from "react-native";
 import * as Location from "expo-location";
 import MapView, { Marker, Circle, Polyline } from "react-native-maps";
@@ -42,16 +39,13 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ImprovedSideMenu from "../siderMenuBar";
 import { useAlert } from "../alertProvider/index";
-import { useRoute } from "@react-navigation/native";
 import useSocketNotification from "../utils/socketio";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
-export default function SidebarComponent({ navigation }: any) {
-  const [location, setLocation] = useState<Location.LocationObject | null>(
-    null
-  );
-  const mapRef = useRef<MapView | null>(null);
+export default function SidebarComponent({ navigation }) {
+  const [location, setLocation] = useState(null);
+  const mapRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const slideAnim = useRef(new Animated.Value(-SCREEN_WIDTH * 0.6)).current;
   const [is3D, setIs3D] = useState(false);
@@ -64,44 +58,39 @@ export default function SidebarComponent({ navigation }: any) {
   const [routeCoordinates, setRouteCoordinates] = useState([]);
   const [destination, setDestination] = useState(null);
   const { showAlert } = useAlert();
+  const lastLocationRef = useRef(null); // Track last significant location
 
   useSocketNotification();
+
   const getUserName = async () => {
     try {
       const token = await AsyncStorage.getItem("Token");
       if (token) {
         setLoading(true);
         setLogged(true);
-        const response = await fetch(
-          "https://mapazzz.onrender.com/api/users/",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch("https://mapazzz.onrender.com/api/users/", {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
+        });
         const data = await response.json();
         if (response.ok) {
           setUserName(data.data.name);
-          setLoading(false);
         } else {
-          setUserName("Visitante...!!");
-          setLoading(false);
+          setUserName("Visitante...");
           console.log("Erro ao buscar nome do usuário:", data);
         }
       } else {
         setUserName("Visitante...");
       }
-      setLoading(false);
     } catch (error) {
       setUserName("Visitante...");
-      setLoading(false);
       console.log("Erro ao buscar nome do usuário:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const getZoneStyle = (level: string) => {
+  const getZoneStyle = (level) => {
     switch (level) {
       case "low":
         return { color: "#26A269", radius: 350 };
@@ -118,18 +107,15 @@ export default function SidebarComponent({ navigation }: any) {
     try {
       const apiKey = "AIzaSyDmPoY5d5PmuG-U_CBzx-5ZsL_mDiyLSZg";
       const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude},${origin.longitude}&destination=${destination.latitude},${destination.longitude}&key=${apiKey}&mode=walking`;
-
       const response = await axios.get(url);
       const data = response.data;
 
       if (data.status === "OK") {
         const points = decodePolyline(data.routes[0].overview_polyline.points);
         setRouteCoordinates(points);
+      } else {
+        console.log("Erro ao buscar rota:", data);
       }
-       else {
-       console.log("Erro ao buscar rota:", data);
-      // showAlert("erro", "Não foi possível traçar a rota.", "Erro");
-       }
     } catch (error) {
       console.log("Erro ao buscar rota:", error);
       showAlert("erro", "Erro ao conectar com o serviço de rotas.", "Erro");
@@ -175,14 +161,12 @@ export default function SidebarComponent({ navigation }: any) {
 
   const handleTraceRoute = async () => {
     if (!location) {
-      // showAlert("erro", "Localização atual não disponível.", "Erro");
+      showAlert("erro", "Localização atual não disponível.", "Erro");
       return;
     }
 
     const GEO = await AsyncStorage.getItem("GEO");
     const parse = JSON.parse(GEO);
-
-
     const FIXED_DESTINATION = {
       latitude: parse.latitude,
       longitude: parse.longitude,
@@ -191,7 +175,7 @@ export default function SidebarComponent({ navigation }: any) {
     fetchRoute(location.coords, FIXED_DESTINATION);
   };
 
-  const handleRecenter = async () => {
+  const handleRecenter = () => {
     if (!location || !mapRef.current) return;
     mapRef.current.animateCamera({
       center: {
@@ -234,49 +218,76 @@ export default function SidebarComponent({ navigation }: any) {
     }
   };
 
-  const LocalizaçãoActual = async () => {
+  // Calculate distance between two coordinates (in meters)
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371e3; // Earth's radius in meters
+    const φ1 = (lat1 * Math.PI) / 180;
+    const φ2 = (lat2 * Math.PI) / 180;
+    const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+    const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+
+    const a =
+      Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+      Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return R * c;
+  };
+
+  const startLocationTracking = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
       showAlert("erro", "Permissão negada para acessar a localização.", "Erro");
       return;
     }
-    let location = await Location.getCurrentPositionAsync({});
-    setLocation(location);
 
-    const GEO = await AsyncStorage.getItem("GEO");
-    const parse = JSON.parse(GEO);
-    //console.log("Localização GO:", parse);
-   
-    if (false)
-      handleTraceRoute();
+    // Watch position with throttled updates
+    Location.watchPositionAsync(
+      {
+        accuracy: Location.Accuracy.High,
+        distanceInterval: 10, // Update only if moved 10 meters
+        timeInterval: 5000, // Update every 5 seconds
+      },
+      (newLocation) => {
+        const { latitude, longitude } = newLocation.coords;
+
+        // Check if location has changed significantly
+        if (lastLocationRef.current) {
+          const last = lastLocationRef.current.coords;
+          const distance = calculateDistance(
+            last.latitude,
+            last.longitude,
+            latitude,
+            longitude
+          );
+          if (distance < 5) return; // Ignore updates less than 5 meters
+        }
+
+        setLocation(newLocation);
+        lastLocationRef.current = newLocation;
+
+        // Only animate camera if significant movement
+        if (mapRef.current) {
+          mapRef.current.animateCamera(
+            {
+              center: { latitude, longitude },
+              pitch: 60,
+              heading: 0,
+              altitude: 1000,
+              zoom: 18,
+            },
+            { duration: 1000 } // Smooth animation
+          );
+        }
+      }
+    );
   };
-  LocalizaçãoActual();
 
   useEffect(() => {
+    startLocationTracking();
+
+    // Fetch danger zones
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        showAlert(
-          "erro",
-          "Permissão negada para acessar a localização.",
-          "Erro"
-        );
-        return;
-      }
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-      if (mapRef.current) {
-        mapRef.current.animateCamera({
-          center: {
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-          },
-          pitch: 60,
-          heading: 0,
-          altitude: 1000,
-          zoom: 10,
-        });
-      }
       try {
         const response = await fetch(
           "https://mapazzz.onrender.com/api/danger_zone/all"
@@ -307,7 +318,13 @@ export default function SidebarComponent({ navigation }: any) {
         }
       }
     })();
+
     getUserName();
+
+    // Cleanup on unmount
+    return () => {
+      Location.watchPositionAsync({}, () => {}).remove();
+    };
   }, []);
 
   const MapStyle = [
@@ -362,7 +379,8 @@ export default function SidebarComponent({ navigation }: any) {
         customMapStyle={MapStyle}
         showsUserLocation
         showsCompass={false}
-        showsMyLocationButton={false}>
+        showsMyLocationButton={false}
+      >
         {location && (
           <Marker coordinate={location.coords}>
             <PersonStanding color="#77767B" style={style.meIcon} />
@@ -402,13 +420,15 @@ export default function SidebarComponent({ navigation }: any) {
                 }}
                 anchor={{ x: 0.5, y: 0.5 }}
                 pinColor={color}
-                title={`Zona de perigo ${zone.level === "high"
+                title={`Zona de perigo ${
+                  zone.level === "high"
                     ? "alta"
                     : zone.level === "medium"
-                      ? "média"
-                      : "baixa"
-                  }`}
-                description={`${zone.description}`}>
+                    ? "média"
+                    : "baixa"
+                }`}
+                description={`${zone.description}`}
+              >
                 <Image
                   source={dangerIcon}
                   style={{ width: 20, height: 20, resizeMode: "contain" }}
@@ -441,10 +461,11 @@ export default function SidebarComponent({ navigation }: any) {
         <TouchableOpacity
           style={style.clearRouteButton}
           onPress={async () => {
-            //setRouteCoordinates([]);
-            //setDestination(null);
-            //await AsyncStorage.removeItem("GEO");
-          }}>
+            setRouteCoordinates([]);
+            setDestination(null);
+            await AsyncStorage.removeItem("GEO");
+          }}
+        >
           <Text style={style.clearRouteText}>Limpar Rota</Text>
         </TouchableOpacity>
       )}
@@ -452,9 +473,8 @@ export default function SidebarComponent({ navigation }: any) {
         <View style={styles.bottomNav}>
           <TouchableOpacity
             style={styles.navButton}
-            onPress={async () => {
-              navigation.navigate("initPage");
-            }}>
+            onPress={() => navigation.navigate("initPage")}
+          >
             <Home color="#7f1734" />
             <Text style={styles.navButtonText}>Início</Text>
           </TouchableOpacity>
@@ -470,7 +490,8 @@ export default function SidebarComponent({ navigation }: any) {
                   "Atenção"
                 );
               }
-            }}>
+            }}
+          >
             <Siren color="#7f1734" />
             <Text style={styles.navButtonText}>Reportar</Text>
           </TouchableOpacity>
@@ -482,8 +503,8 @@ export default function SidebarComponent({ navigation }: any) {
                 await showAlert(
                   "aviso",
                   "Essa página irá mostrar possíveis zonas de risco. \
-                                                        precisamos da sua ajuda para verificar se realmente são zonas de risco. Por favor, clique no botão 'Verificar' para confirmar se a zona de risco é real ou não. \
-                                                        Obrigado por sua colaboração!",
+                  Precisamos da sua ajuda para verificar se realmente são zonas de risco. Por favor, clique no botão 'Verificar' para confirmar se a zona de risco é real ou não. \
+                  Obrigado por sua colaboração!",
                   "Atenção"
                 );
               } else {
@@ -494,7 +515,8 @@ export default function SidebarComponent({ navigation }: any) {
                   "Atenção"
                 );
               }
-            }}>
+            }}
+          >
             <CheckCheck color="#7f1734" />
             <Text style={styles.navButtonText}>Verificar</Text>
           </TouchableOpacity>
@@ -510,12 +532,12 @@ export default function SidebarComponent({ navigation }: any) {
                   "Atenção"
                 );
               }
-            }}>
+            }}
+          >
             <Cog color="#7f1734" />
             <Text style={styles.navButtonText}>Definições</Text>
           </TouchableOpacity>
         </View>
-        // </View>
       )}
     </View>
   );
@@ -525,242 +547,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f5f5f5",
-  },
-  header: {
-    paddingTop: 40,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: "white",
-    borderBottomWidth: 1,
-    borderBottomColor: "#e0e0e0",
-  },
-  headerTitle: {
-    color: "#7f1734",
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  headerButtons: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  iconButton: {
-    marginLeft: 16,
-  },
-  puzzleIcon: {
-    width: 24,
-    height: 24,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#871434",
-    borderRadius: 4,
-  },
-  puzzleText: {
-    color: "white",
-    fontWeight: "bold",
-  },
-  content: {
-    flex: 1,
-  },
-  welcomeCard: {
-    margin: 16,
-    padding: 16,
-    backgroundColor: "#dfdfdf",
-    borderRadius: 12,
-  },
-  userInfoContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  userIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#FFFFFF",
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 12,
-  },
-  userIconText: {
-    fontSize: 20,
-  },
-  welcomeText: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  subtitle: {
-    fontSize: 12,
-    color: "#666",
-    marginTop: 4,
-    width: "90%",
-  },
-  actionButtons: {
-    flexDirection: "row",
-    marginTop: 16,
-    gap: 8,
-  },
-  actionButton: {
-    flexDirection: "row",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    backgroundColor: "white",
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: "#e0e0e0",
-  },
-  actionButtonText: {
-    fontSize: 14,
-    color: "#7f1734",
-  },
-  statsContainer: {
-    flexDirection: "row",
-    margin: 16,
-    gap: 16,
-  },
-  statsCard: {
-    flex: 1,
-    backgroundColor: "#871434",
-    borderRadius: 12,
-    padding: 16,
-    height: 120,
-    justifyContent: "space-between",
-  },
-  statsNumber: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "white",
-  },
-  statsLabelContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  statsLabel: {
-    color: "white",
-    fontSize: 14,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginHorizontal: 16,
-    marginBottom: 8,
-  },
-  recentRecords: {
-    paddingLeft: 16,
-  },
-  recordCard: {
-    width: 120,
-    height: 180,
-    backgroundColor: "#ccc",
-    borderRadius: 12,
-    marginRight: 8,
-    position: "relative",
-    overflow: "hidden",
-  },
-  recordTimeLabel: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-  },
-  recordImage: {
-    width: 120,
-    height: 200,
-    borderRadius: 10,
-    marginBottom: 5,
-  },
-  recordTimeLabelText: {
-    color: "white",
-    fontSize: 12,
-  },
-  gameSection: {
-    margin: 16,
-    backgroundColor: "white",
-    borderRadius: 12,
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "#e0e0e0",
-  },
-  gameContent: {
-    flexDirection: "row",
-    padding: 16,
-  },
-  gameImage: {
-    width: 80,
-    height: 80,
-    marginRight: 16,
-    resizeMode: "contain",
-  },
-  gameTextContainer: {
-    flex: 1,
-  },
-  gameTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  gameSubtitle: {
-    fontSize: 12,
-    color: "#666",
-    marginTop: 4,
-  },
-  startButton: {
-    backgroundColor: "#871434",
-    borderRadius: 20,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    alignSelf: "flex-start",
-    marginTop: 12,
-  },
-  startButtonText: {
-    color: "white",
-    fontSize: 14,
-  },
-  hospitalSection: {
-    margin: 16,
-    marginTop: 0,
-    backgroundColor: "white",
-    borderRadius: 12,
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "#e0e0e0",
-  },
-  hospitalContent: {
-    flexDirection: "row",
-    padding: 16,
-  },
-  hospitalImage: {
-    width: 80,
-    height: 80,
-    marginRight: 16,
-    resizeMode: "contain",
-  },
-  hospitalTextContainer: {
-    flex: 1,
-  },
-  hospitalTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  hospitalSubtitle: {
-    fontSize: 12,
-    color: "#666",
-    marginTop: 4,
-  },
-  findButton: {
-    backgroundColor: "#871434",
-    borderRadius: 20,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    alignSelf: "flex-start",
-    marginTop: 12,
-  },
-  findButtonText: {
-    color: "white",
-    fontSize: 14,
   },
   bottomNav: {
     position: "absolute",
@@ -779,9 +565,5 @@ const styles = StyleSheet.create({
   navButtonText: {
     fontSize: 12,
     color: "#871434",
-  },
-  statLabel: {
-    fontSize: 12,
-    color: "#888",
   },
 });
