@@ -321,10 +321,10 @@ export default function SidebarComponent({ navigation }) {
 
     getUserName();
 
-    // Cleanup on unmount
+    /*// Cleanup on unmount
     return () => {
       Location.watchPositionAsync({}, () => {}).remove();
-    };
+    };*/
   }, []);
 
   const MapStyle = [
@@ -553,9 +553,9 @@ const styles = StyleSheet.create({
     bottom: 0,
     flexDirection: "row",
     backgroundColor: "white",
-    borderTopWidth: 1,
     borderTopColor: "#e0e0e0",
-    paddingVertical: 20,
+    elevation: 8,
+    paddingVertical: 10,
   },
   navButton: {
     flex: 1,

@@ -98,22 +98,9 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
                 <TouchableOpacity
                   key={index}
                   style={styles.menuItem}
-                  onPress={ async() => {
-                    if (item.title === "Jogos") {
-                      await showAlert(
-                        "aviso",
-                        "Essa página está em construção...",
-                        "Atenção"
-                      );
-                      
-                    } else
-                      handleNavigation(
-                        item.route,
-                        logged,
-                        showAlert,
-                        navigation
-                      );
-                  }}
+                  onPress={() =>
+                    handleNavigation(item.route, logged, showAlert, navigation)
+                  }
                   activeOpacity={0.7}>
                   <View style={styles.menuItemIconContainer}>
                     <item.icon size={22} color="#7F1734" />
@@ -271,7 +258,7 @@ const styles = StyleSheet.create({
     left: 0,
     width: "80%",
     height: "100%",
-    backgroundColor: "white",
+    backgroundColor: "#f8f8f8",
     zIndex: 1001,
     overflow: "hidden",
     shadowColor: "#000",
@@ -282,9 +269,9 @@ const styles = StyleSheet.create({
   },
   profileHeader: {
     backgroundColor: "#f8f8f8",
-    borderWidth: 1,
-    paddingVertical: 28,
-    paddingHorizontal: 15,
+    borderBottomWidth: 1,
+    paddingVertical: 14,
+    paddingHorizontal: 12,
     borderBottomColor: "#ccc",
   },
   profileContainer: {
@@ -332,7 +319,7 @@ const styles = StyleSheet.create({
   menuItem: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 10,
+    paddingVertical: 8,
     borderBottomColor: "#ccc",
   },
   menuItemIconContainer: {
@@ -360,10 +347,6 @@ const styles = StyleSheet.create({
   logoutText: {
     fontSize: 16,
     color: "#ff3b30",
-  },
-  loginText: {
-    fontSize: 16,
-    color: "#000",
   },
   contactContainer: {
     padding: 15,

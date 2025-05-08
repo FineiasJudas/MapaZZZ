@@ -80,21 +80,21 @@ const HospitalListScreen = ({ navigation }: any) => {
 
   return (
     <View style={style.Container}>
-      <View style={style.conteinar}>
+      <View style={style.logoX}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ArrowLeft color="#7f1734" size={30} />
+          <ArrowLeft color="#7f1734" size={35} />
         </TouchableOpacity>
         <Image source={Logo} style={style.imgLogo} />
       </View>
 
-      <View style={{ width: "85%" }}>
+      <View style={style.conteinar}>
           <Text
             style={{
               fontSize: 18,
               fontWeight: "bold",
-              marginBottom: 15,
               color: "#7f1734",
-              marginLeft: 30,
+              marginBottom: 20,
+              marginLeft: 10,
             }}>
             Hospitais próximos:
           </Text>
@@ -149,7 +149,7 @@ const HospitalListScreen = ({ navigation }: any) => {
         ) : (
           <>
           <ActivityIndicator size="large" color="#7F1734" />
-          <Text>Procurando hospitais próximos...</Text>
+          <Text >Procurando hospitais próximos...</Text>
           </>
         )}
       </View>

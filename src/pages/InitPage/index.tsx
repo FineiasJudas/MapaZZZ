@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   StyleSheet,
   Settings,
+  BackHandler,
 } from "react-native";
 import {
   Bell,
@@ -34,7 +35,7 @@ import { style } from "./style";
 import useSocketNotification from "../utils/socketio";
 
 const HomePage = ({ navigation }: any) => {
-  const { showAlert } = useAlert();
+  const { showAlert, showConfirmAlert } = useAlert();
   const [location, setLocation] = useState("Obtendo a localização...");
   const [loading, setLoading] = useState(false);
   const [logged, setLogged] = useState(false);
@@ -144,6 +145,34 @@ const HomePage = ({ navigation }: any) => {
     details();
   }, []);
 
+  useEffect(() => {
+  const backAction = () => {
+    if (navigation.isFocused()) {
+      handleBackPress();
+      return true; // Impede o comportamento padrão
+    }
+    return false;
+  };
+
+  const backHandler = BackHandler.addEventListener(
+    "hardwareBackPress",
+    backAction
+  );
+
+  return () => backHandler.remove();
+}, []);
+
+const handleBackPress = async () => {
+  const confirmed = await showConfirmAlert(
+    "Deseja terminar a sessão?", 
+    "Confirmação"
+  );
+  
+  if (confirmed) {
+    BackHandler.exitApp(); // Ou sua lógica para terminar sessão
+  }
+};
+
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -239,18 +268,18 @@ const HomePage = ({ navigation }: any) => {
 
         {/* Cartao de registros */}
         <View style={styles.statsContainer}>
-          <TouchableOpacity style={styles.statsCard}>
+          <View style={styles.statsCard}>
             <Text style={styles.statsNumber}>+{userPoints}</Text>
             <View style={styles.statsLabelContainer}>
               <Text style={styles.statsLabel}>Pontos acumulados</Text>
             </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.statsCard}>
+          </View>
+          <View style={styles.statsCard}>
             <Text style={styles.statsNumber}>+115</Text>
             <View style={styles.statsLabelContainer}>
               <Text style={styles.statsLabel}>Zonas de Risco</Text>
             </View>
-          </TouchableOpacity>
+          </View>
         </View>
 
         {/* Registros recentes */}
@@ -400,15 +429,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
   },
   header: {
-    paddingTop: 40,
+    paddingTop: 18,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
     backgroundColor: "white",
-    borderBottomWidth: 1,
     borderBottomColor: "#e0e0e0",
+    elevation: 2
   },
   headerTitle: {
     color: "#7f1734",
@@ -642,9 +671,9 @@ const styles = StyleSheet.create({
   bottomNav: {
     flexDirection: "row",
     backgroundColor: "white",
-    borderTopWidth: 1,
     borderTopColor: "#e0e0e0",
-    paddingVertical: 12,
+    paddingVertical: 10,
+    elevation: 10
   },
   navButton: {
     flex: 1,

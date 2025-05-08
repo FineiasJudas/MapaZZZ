@@ -38,4 +38,10 @@ export const style = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
   },
+  modalButtonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 10,
+    marginTop: 20,
+  },
 });

@@ -5,14 +5,13 @@ const { width, height } = Dimensions.get("window");
 export const style = StyleSheet.create({
   mainConteiner: {
     flex: 1,
-    paddingTop: 15,
     backgroundColor: "#f5f5f5", // Pode mudar conforme seu tema
   },
   logoX: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: height * 0.02,
+    marginTop: height * 0.01,
     paddingHorizontal: width * 0.03,
   },
   escImg: {
@@ -26,8 +25,8 @@ export const style = StyleSheet.create({
     resizeMode: 'contain',
   },
   container: {
-    marginTop: height * 0.02,
-    paddingHorizontal: width * 0.06,
+    marginTop: height * 0.03,
+    paddingHorizontal: width * 0.08,
     flex: 1,
   },
   scroll: {
@@ -56,6 +55,7 @@ export const style = StyleSheet.create({
     justifyContent: 'space-between',
   },
   notificationText: {
+    left: 12,
     fontSize: width * 0.04,
     color: '#333',
   },
