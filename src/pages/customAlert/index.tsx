@@ -30,7 +30,7 @@ export default function CustomAlert({
     erro: "#B00020",
     sucesso: "#007E33",
     aviso: "#FF8800",
-    confirmacao: "#7f1734", // Cor para confirmação
+    confirmacao: "#FF8800", // Cor para confirmação
   };
 
   return (
@@ -45,24 +45,24 @@ export default function CustomAlert({
           {type === "confirmacao" ? (
             <View style={style.modalButtonsContainer}>
               <TouchableOpacity 
-                style={[style.modalButton, { backgroundColor: colorMap[type] }]}
+                style={[style.modalButtonCancel]}
                 onPress={() => onClose(false)}
               >
-                <Text style={style.modalButtonText}>Cancelar</Text>
+                <Text style={style.modalButtonTextCancel}>Cancelar</Text>
               </TouchableOpacity>
               <TouchableOpacity 
-                style={[style.modalButton, { backgroundColor: colorMap[type] }]}
+                style={[style.modalButtonYes]}
                 onPress={() => onClose(true)}
               >
-                <Text style={style.modalButtonText}>Sim</Text>
+                <Text style={style.modalButtonTextYes}>Sim</Text>
               </TouchableOpacity>
             </View>
           ) : (
             <TouchableOpacity 
-              style={[style.modalButton, { backgroundColor: colorMap[type] }]}
+              style={[style.modalButton]}
               onPress={() => onClose(false)}
             >
-              <Text style={style.modalButtonText}>OK</Text>
+              <Text style={style.modalButtonTextYes}>OK</Text>
             </TouchableOpacity>
           )}
         </View>

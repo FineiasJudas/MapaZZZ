@@ -92,7 +92,7 @@ export default function HelperPage({ navigation }: any) {
       behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <View style={style.conteinar}>
         <TouchableOpacity onPress={() => navigation.navigate("MapaPage")}>
-          <ArrowLeft color="#7f1734" size={30} />
+          <ArrowLeft color="#7f1734" size={35} />
         </TouchableOpacity>
 
         <Image

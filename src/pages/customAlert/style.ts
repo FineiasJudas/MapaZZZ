@@ -33,8 +33,27 @@ export const style = StyleSheet.create({
     paddingHorizontal: 30,
     borderRadius: 10,
   },
-  modalButtonText: {
-    color: "white",
+   modalButtonCancel: {
+    backgroundColor: "#f5f5f5",
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    borderWidth: 1,
+    borderColor: "#7F1734",
+    borderRadius: 10,
+  },
+  modalButtonYes: {
+    backgroundColor: "#7F1734",
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    borderRadius: 10,
+  },
+  modalButtonTextCancel: {
+    color: "#7F1734",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  modalButtonTextYes: {
+    color: "#fff",
     fontWeight: "bold",
     fontSize: 16,
   },

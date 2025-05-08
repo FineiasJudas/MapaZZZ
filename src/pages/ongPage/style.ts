@@ -7,14 +7,14 @@ export const style = StyleSheet.create({
     flex: 1,
     alignItems: 'center'
   },
-  conteinar: { flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingHorizontal: 15, marginTop: 30, marginBottom: 30 },
+  conteinar: { flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingHorizontal: 15, marginBottom: 30 },
   imgLogo: {
     width: width * 0.1,
     height: width * 0.1, resizeMode: 'contain'
   },
-  content: { width: '85%' },
+  content: { width: '80%' },
   boxInput: {
-    marginBottom: 15,
+    marginBottom: 10,
   },
 
   inputLabel: {
@@ -47,7 +47,7 @@ export const style = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 12,
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 10,
   },
 
   textEnviar: {
