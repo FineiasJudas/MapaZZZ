@@ -82,7 +82,7 @@ const HospitalListScreen = ({ navigation }: any) => {
     <View style={style.Container}>
       <View style={style.logoX}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ArrowLeft color="#7f1734" size={35} />
+          <ArrowLeft color="#6D122C" size={35} />
         </TouchableOpacity>
         <Image source={Logo} style={style.imgLogo} />
       </View>
@@ -92,8 +92,7 @@ const HospitalListScreen = ({ navigation }: any) => {
             style={{
               fontSize: 18,
               fontWeight: "bold",
-              color: "#7f1734",
-              marginBottom: 20,
+              color: "#6D122C",
               marginLeft: 10,
             }}>
             Hospitais próximos:
@@ -112,7 +111,7 @@ const HospitalListScreen = ({ navigation }: any) => {
                 }}>
                 <View style={style.infCamp}>
                   <Hospital
-                    color="#7f1734"
+                    color="#6D122C"
                     style={{ margin: 5, marginRight: 8 }}
                   />
                   <View style={style.styleText}>
@@ -148,7 +147,7 @@ const HospitalListScreen = ({ navigation }: any) => {
           </ScrollView>
         ) : (
           <>
-          <ActivityIndicator size="large" color="#7F1734" />
+          <ActivityIndicator size="large" color="#6D122C" />
           <Text >Procurando hospitais próximos...</Text>
           </>
         )}

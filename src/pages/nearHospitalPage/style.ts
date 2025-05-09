@@ -11,7 +11,7 @@ export const style = StyleSheet.create({
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginTop: height * 0.01,
+      marginTop: height * 0.001,
       paddingHorizontal: width * 0.03,
     },
     conteinar:{marginTop: height * 0.03,
@@ -19,7 +19,7 @@ export const style = StyleSheet.create({
     imgLogo:{width: width * 0.1,
       height: width * 0.1, resizeMode: 'contain'},
       content: {width: '85%', maxHeight: height * 0.78},
-      buttonEnviar: { width: '80%', height: 45, backgroundColor: '#7F1734', borderRadius: 10, justifyContent: 'center', padding: 12, alignItems: 'center', marginTop: 30},
+      buttonEnviar: { width: '80%', height: 45, backgroundColor: '#6D122C', borderRadius: 10, justifyContent: 'center', padding: 12, alignItems: 'center', marginTop: 30},
     infCamp: {
         width: '100%',
         backgroundColor: '#fff',
@@ -35,7 +35,7 @@ export const style = StyleSheet.create({
         fontSize: 18,
         fontWeight: "bold",
         // marginBottom: 15,
-        color: "#7f1734",
+        color: "#6D122C",
         marginLeft: 0,
       },
       notyType: {

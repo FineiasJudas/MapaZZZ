@@ -135,7 +135,7 @@ export const style = StyleSheet.create({
     marginBottom: 20,
   },
   modalButton: {
-    backgroundColor: "#7F1734",
+    backgroundColor: "#6D122C",
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 10,

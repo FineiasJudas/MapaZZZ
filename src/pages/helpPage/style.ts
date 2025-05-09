@@ -7,10 +7,17 @@ export const style = StyleSheet.create({
         flex: 1,
         alignItems: 'center'
     },
-    conteinar:{flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingHorizontal: 15, marginTop: 30, marginBottom: 30},
+    conteinar:{
+      width: '100%',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginTop: height * 0.001,
+      paddingHorizontal: width * 0.03,
+    },
     imgLogo:{width: width * 0.1,
     height: width * 0.1, resizeMode: 'contain'},
-    content: {width: '85%'},
+    content: {width: '85%', marginTop: 30},
         boxInput: {
         marginBottom: 15,
       },
@@ -38,7 +45,7 @@ export const style = StyleSheet.create({
       },
       
       buttonEnviar: {
-        backgroundColor: "#7f1734",
+        backgroundColor: "#6D122C",
         paddingVertical: 12,
         borderRadius: 12,
         alignItems: "center",

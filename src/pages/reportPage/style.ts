@@ -82,7 +82,7 @@ export const style = StyleSheet.create({
     marginTop: height * 0.01,
   },
   buttonReportar: {
-    backgroundColor: "#7F1734",
+    backgroundColor: "#6D122C",
     paddingVertical: height * 0.015,
     paddingHorizontal: width * 0.1,
     borderRadius: 8,

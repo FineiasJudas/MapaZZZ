@@ -63,26 +63,26 @@ const SettingsPage = ({ navigation }: any) => {
         <View style={styles.settingsGroup}>
           <TouchableOpacity style={styles.settingItem}>
             <View style={styles.settingInfo}>
-              <User size={22} color="#7f1734" style={styles.settingIcon} />
+              <User size={22} color="#6D122C" style={styles.settingIcon} />
               <Text style={styles.settingLabel}>Informações Pessoais</Text>
             </View>
-            <ChevronRight size={20} color="#7f1734" />
+            <ChevronRight size={20} color="#6D122C" />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.settingItem}>
             <View style={styles.settingInfo}>
-              <Lock size={22} color="#7f1734" style={styles.settingIcon} />
+              <Lock size={22} color="#6D122C" style={styles.settingIcon} />
               <Text style={styles.settingLabel}>Segurança e Privacidade</Text>
             </View>
-            <ChevronRight size={20} color="#7f1734" />
+            <ChevronRight size={20} color="#6D122C" />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.settingItem}>
             <View style={styles.settingInfo}>
-              <Shield size={22} color="#7f1734" style={styles.settingIcon} />
+              <Shield size={22} color="#6D122C" style={styles.settingIcon} />
               <Text style={styles.settingLabel}>Verificação de Conta</Text>
             </View>
-            <ChevronRight size={20} color="#7f1734" />
+            <ChevronRight size={20} color="#6D122C" />
           </TouchableOpacity>
         </View>
 
@@ -91,11 +91,11 @@ const SettingsPage = ({ navigation }: any) => {
         <View style={styles.settingsGroup}>
           <View style={styles.settingItem}>
             <View style={styles.settingInfo}>
-              <Bell size={22} color="#7f1734" style={styles.settingIcon} />
+              <Bell size={22} color="#6D122C" style={styles.settingIcon} />
               <Text style={styles.settingLabel}>Notificações Push</Text>
             </View>
             <Switch
-              trackColor={{ false: "#e0e0e0", true: "#7f1734" }}
+              trackColor={{ false: "#e0e0e0", true: "#6D122C" }}
               thumbColor={notifications ? "#fff" : "#fff"}
               ios_backgroundColor="#e0e0e0"
               onValueChange={() => setNotifications(!notifications)}
@@ -105,11 +105,11 @@ const SettingsPage = ({ navigation }: any) => {
 
           <View style={styles.settingItem}>
             <View style={styles.settingInfo}>
-              <Moon size={22} color="#7f1734" style={styles.settingIcon} />
+              <Moon size={22} color="#6D122C" style={styles.settingIcon} />
               <Text style={styles.settingLabel}>Modo Escuro</Text>
             </View>
             <Switch
-              trackColor={{ false: "#e0e0e0", true: "#7f1734" }}
+              trackColor={{ false: "#e0e0e0", true: "#6D122C" }}
               thumbColor={darkMode ? "#fff" : "#fff"}
               ios_backgroundColor="#e0e0e0"
               onValueChange={() => setDarkMode(!darkMode)}
@@ -119,11 +119,11 @@ const SettingsPage = ({ navigation }: any) => {
 
           <View style={styles.settingItem}>
             <View style={styles.settingInfo}>
-              <Globe size={22} color="#7f1734" style={styles.settingIcon} />
+              <Globe size={22} color="#6D122C" style={styles.settingIcon} />
               <Text style={styles.settingLabel}>Serviços de Localização</Text>
             </View>
             <Switch
-              trackColor={{ false: "#e0e0e0", true: "#7f1734" }}
+              trackColor={{ false: "#e0e0e0", true: "#6D122C" }}
               thumbColor={locationServices ? "#fff" : "#fff"}
               ios_backgroundColor="#e0e0e0"
               onValueChange={() => setLocationServices(!locationServices)}
@@ -137,12 +137,12 @@ const SettingsPage = ({ navigation }: any) => {
         <View style={styles.settingsGroup}>
           <TouchableOpacity style={styles.settingItem}>
             <View style={styles.settingInfo}>
-              <Languages size={22} color="#7f1734" style={styles.settingIcon} />
+              <Languages size={22} color="#6D122C" style={styles.settingIcon} />
               <Text style={styles.settingLabel}>Idioma</Text>
             </View>
             <View style={styles.valueContainer}>
               <Text style={styles.valueText}>Português</Text>
-              <ChevronRight size={20} color="#7f1734" />
+              <ChevronRight size={20} color="#6D122C" />
             </View>
           </TouchableOpacity>
 
@@ -152,17 +152,17 @@ const SettingsPage = ({ navigation }: any) => {
             <View style={styles.settingInfo}>
               <HelpCircle
                 size={22}
-                color="#7f1734"
+                color="#6D122C"
                 style={styles.settingIcon}
               />
               <Text style={styles.settingLabel}>Ajuda e Suporte</Text>
             </View>
-            <ChevronRight size={20} color="#7f1734" />
+            <ChevronRight size={20} color="#6D122C" />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.settingItem}>
             <View style={styles.settingInfo}>
-              <Info size={22} color="#7f1734" style={styles.settingIcon} />
+              <Info size={22} color="#6D122C" style={styles.settingIcon} />
               <Text style={styles.settingLabel}>Sobre o App</Text>
             </View>
             <ChevronRight size={20} color="#" />
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#e0e0e0",
   },
   headerTitle: {
-    color: "#7f1734",
+    color: "#6D122C",
     fontSize: 24,
     fontWeight: "bold",
   },

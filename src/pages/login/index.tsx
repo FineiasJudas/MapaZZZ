@@ -130,7 +130,7 @@ export default function Login({ navigation }: any) {
           disabled={loading} // Desativa o botão durante o carregamento
         >
           {loading ? (
-            <ActivityIndicator size="small" color="#7F1734" />
+            <ActivityIndicator size="small" color="#6D122C" />
           ) : (
             <>
               <Image source={LoginButton} style={style.loginButtonImage} />

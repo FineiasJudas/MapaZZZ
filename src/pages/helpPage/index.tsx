@@ -12,13 +12,13 @@ export default function HelperPage({ navigation }: any) {
     >
       <View style={style.conteinar}>
         <TouchableOpacity onPress={() => navigation.navigate('MapaPage')}>
-          <ArrowLeft color="#7f1734" size={30} />
+          <ArrowLeft color="#6D122C" size={35} />
         </TouchableOpacity>
         <Image source={Logo} style={style.imgLogo} />
       </View>
 
       <View style={style.content}>
-        <Text style={{ fontSize: 18, fontWeight: "bold", color: "#7f1734", marginBottom: 20, marginLeft: 5 }}>
+        <Text style={{ fontSize: 18, fontWeight: "bold", color: "#6D122C", marginBottom: 20, marginLeft: 5 }}>
           Ajuda e Suporte
         </Text>
 

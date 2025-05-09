@@ -23,7 +23,10 @@ import ProfilePage from './src/pages/profilePage';
 import nearHospitalPage from './src/pages/nearHospitalPage';
 import configPage from './src/pages/configPage';
 import ongPage from './src/pages/ongPage';
+import QuestionPage from './src/pages/gamingPage/questionPage';
+
 import { registerForPushNotificationsAsync } from './src/pages/manegeNotification/index';
+import { Import } from 'lucide-react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -55,6 +58,7 @@ export default function App() {
       <AlertProvider>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="WelcomePage">
+            <Stack.Screen name="QuestionPage" component={QuestionPage} options={{ headerShown: false }} />
             <Stack.Screen name="GamingPage" component={GamingPage} options={{ headerShown: false }} />
             <Stack.Screen name="notifyPage" component={notifyPage} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+/*import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -146,13 +146,13 @@ const QuizPage = ({ navigation }: any) => {
 
   return (
     <View style={style.mainConteiner}>
-      {/* Cabeçalho */}
+      {/* Cabeçalho }
       <View style={style.logoX}>
         <TouchableOpacity
           onPress={async () => {
             navigation.navigate("initPage");
           }}>
-          <ArrowLeft size={30} color={"#7F1734"} />
+          <ArrowLeft size={30} color={"#6D122C"} />
         </TouchableOpacity>
         <Image source={logo} style={style.logoImg} />
       </View>
@@ -165,19 +165,19 @@ const QuizPage = ({ navigation }: any) => {
             borderRadius: 50,
             elevation: 4,
           }}>
-          <Gamepad2 size={40} color={"#7F1734"} />
+          <Gamepad2 size={40} color={"#6D122C"} />
         </View>
         <Text style={style.quizTitle}>Malária Quiz</Text>
 
         <View style={style.quizDivider}>
           {loadingQuestion ? (
-            <ActivityIndicator size="large" color="#7F1734" />
+            <ActivityIndicator size="large" color="#6D122C" />
           ) : (
             <Text style={style.quizQuestion}>{question}</Text>
           )}
         </View>
 
-        {/* Campo de resposta: inativo para edição direta; ao tocar, abre o modal editor */}
+        {/* Campo de resposta: inativo para edição direta; ao tocar, abre o modal editor }
         <TouchableOpacity
           style={style.inputContainer}
           onPress={() => {
@@ -205,7 +205,7 @@ const QuizPage = ({ navigation }: any) => {
         </TouchableOpacity>
       </View>
 
-      {/* Modal de Boas-Vindas */}
+      {/* Modal de Boas-Vindas }
       <Modal
         visible={modalVisible}
         transparent
@@ -221,7 +221,7 @@ const QuizPage = ({ navigation }: any) => {
                 elevation: 4,
                 marginBottom: 15,
               }}>
-              <Gamepad2 size={40} color={"#7F1734"} />
+              <Gamepad2 size={40} color={"#6D122C"} />
             </View>
             <Text style={style.modalText}>{welcomeMessage}</Text>
             <TouchableOpacity
@@ -240,7 +240,7 @@ const QuizPage = ({ navigation }: any) => {
         </View>
       </Modal>
 
-      {/* Modal Editor de Resposta */}
+      {/* Modal Editor de Resposta }
       <Modal
         visible={editorVisible}
         transparent
@@ -276,7 +276,7 @@ const QuizPage = ({ navigation }: any) => {
         </View>
       </Modal>
 
-      {/* Modal Editor de Resposta */}
+      {/* Modal Editor de Resposta }
       <Modal
         visible={responseAlert}
         transparent
@@ -286,7 +286,7 @@ const QuizPage = ({ navigation }: any) => {
           <View style={style.modalContainer}>
             {loadingResponse ? (
               <>
-                <ActivityIndicator size="large" color="#7F1734" />
+                <ActivityIndicator size="large" color="#6D122C" />
                 <Text>Analisando a sua resposta...</Text>
               </>
             ) : (
@@ -346,4 +346,135 @@ const QuizPage = ({ navigation }: any) => {
   );
 };
 
-export default QuizPage;
+export default QuizPage; */
+
+import React from 'react';
+import { SafeAreaView, Text, TouchableOpacity, View, StyleSheet, StatusBar, Image } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Puzzle } from 'lucide-react-native';
+
+const QuizStartScreen = ({ navigation }: any) => {
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor="#f0f0f0" barStyle="dark-content" />
+      
+      {/* Exit Button */}
+      <TouchableOpacity 
+        style={styles.exitButton}
+      >
+        <Text style={styles.exitText}>Sair</Text>
+      </TouchableOpacity>
+      
+      {/* Main Content */}
+      <View style={styles.content}>
+        {/* Puzzle Icon */}
+        <Puzzle color="#6D122C" size={45} />
+        
+        {/* Title */}
+        <Text style={styles.title}>Jogue Connosco</Text>
+        
+        {/* Subtitle */}
+        <Text style={styles.subtitle}>
+          Acerte as perguntas do nosso Quiz educativo e acumule pontos para poder usá-los quando for preciso!
+        </Text>
+        
+        {/* Start Button */}
+        <TouchableOpacity 
+          style={styles.startButton}
+          onPress={() => navigation.navigate("QuestionPage")}
+        >
+          <LinearGradient
+            colors={['#6D122C', '#8A1538']}
+            style={styles.gradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+          >
+            <Text style={styles.buttonText}>Iniciar</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </View>
+      
+      <Image
+        source={require('../../assets/quiz-background.png.png')} // Altere para o caminho correto
+        style={styles.backgroundImage}
+        resizeMode="contain"
+      />
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f0f0f0',
+  },
+  exitButton: {
+    position: 'absolute',
+    top: 2,
+    right: 14,
+    borderWidth: 1,
+    borderColor: '#6D122C',
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    borderRadius: 20,
+    marginTop: 20,
+  },
+  backgroundImage: {
+    position: 'absolute',
+    bottom: -80,
+    width: '100%',
+    height: 300,
+  },
+  exitText: {
+    color: '#6D122C',
+    fontSize: 16,
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 30,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#6F132C",
+    marginBottom: 16,
+    marginTop: 24,
+  },
+  subtitle: {
+    fontSize: 18,
+    color: '#333333',
+    textAlign: 'center',
+    lineHeight: 24,
+    marginBottom: 40,
+    paddingHorizontal: 8,
+    maxWidth: 350,
+  },
+  startButton: {
+    borderRadius: 10,
+    overflow: 'hidden',
+    width: '60%',
+    maxWidth: 300,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    marginBottom: 70,
+  },
+  gradient: {
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
+  }
+});
+
+export default QuizStartScreen;

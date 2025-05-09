@@ -166,7 +166,7 @@ export default function Sign ({ navigation }: any) {
             disabled={!acceptedTerms || loading}
           >
             {loading ? (
-              <ActivityIndicator size='small' color='#7F1734' />
+              <ActivityIndicator size='small' color='#6D122C' />
             ) : (
               <>
                 <Image source={LoginButton} style={style.loginButtonImage} />

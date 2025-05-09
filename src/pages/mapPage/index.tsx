@@ -388,13 +388,13 @@ export default function SidebarComponent({ navigation }) {
         )}
         {destination && (
           <Marker coordinate={destination} title="Destino">
-            <Hospital color="#7f1734" />
+            <Hospital color="#6D122C" />
           </Marker>
         )}
         {routeCoordinates.length > 0 && (
           <Polyline
             coordinates={routeCoordinates}
-            strokeColor="#7f1734"
+            strokeColor="#6D122C"
             strokeWidth={4}
           />
         )}
@@ -451,11 +451,11 @@ export default function SidebarComponent({ navigation }) {
       />
       {!menuOpen && (
         <TouchableOpacity style={style.menuButton} onPress={toggleMenu}>
-          <Menu color="#7f1734" style={style.menuIcon} />
+          <Menu color="#6D122C" style={style.menuIcon} />
         </TouchableOpacity>
       )}
       <TouchableOpacity style={style.recenterButton} onPress={handleRecenter}>
-        <MapPinned color="#7f1734" style={style.recenterIcon} />
+        <MapPinned color="#6D122C" style={style.recenterIcon} />
       </TouchableOpacity>
       {routeCoordinates.length > 0 && (
         <TouchableOpacity
@@ -475,7 +475,7 @@ export default function SidebarComponent({ navigation }) {
             style={styles.navButton}
             onPress={() => navigation.navigate("initPage")}
           >
-            <Home color="#7f1734" />
+            <Home color="#6D122C" />
             <Text style={styles.navButtonText}>Início</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -492,7 +492,7 @@ export default function SidebarComponent({ navigation }) {
               }
             }}
           >
-            <Siren color="#7f1734" />
+            <Siren color="#6D122C" />
             <Text style={styles.navButtonText}>Reportar</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -517,7 +517,7 @@ export default function SidebarComponent({ navigation }) {
               }
             }}
           >
-            <CheckCheck color="#7f1734" />
+            <CheckCheck color="#6D122C" />
             <Text style={styles.navButtonText}>Verificar</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -534,7 +534,7 @@ export default function SidebarComponent({ navigation }) {
               }
             }}
           >
-            <Cog color="#7f1734" />
+            <Cog color="#6D122C" />
             <Text style={styles.navButtonText}>Definições</Text>
           </TouchableOpacity>
         </View>

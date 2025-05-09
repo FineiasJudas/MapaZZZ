@@ -59,7 +59,7 @@ const ProfilePage = ({ navigation }: any) => {
             <Text style={styles.statNumber}>{name}</Text>
             <TouchableOpacity
               style={{ alignItems: "center", flexDirection: "row" }}>
-              <MapPin color="#7f1734" size={18} style={{ marginRight: 6 }} />
+              <MapPin color="#6D122C" size={18} style={{ marginRight: 6 }} />
               <Text style={styles.statLabel}>{localizacao}</Text>
             </TouchableOpacity>
           </View>
@@ -73,10 +73,10 @@ const ProfilePage = ({ navigation }: any) => {
                 styles.menuIconContainer,
                 { backgroundColor: "#f5f5f5" },
               ]}>
-              <GraduationCap size={20} color="#7f1734" />
+              <GraduationCap size={20} color="#6D122C" />
             </View>
             <Text style={styles.menuLabel}>Meu ranking</Text>
-            <ChevronRight size={20} color="#7f1734" />
+            <ChevronRight size={20} color="#6D122C" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.menuItem}>
             <View
@@ -84,10 +84,10 @@ const ProfilePage = ({ navigation }: any) => {
                 styles.menuIconContainer,
                 { backgroundColor: "#f5f5f5" },
               ]}>
-              <ImageIcon size={20} color="#7f1734" />
+              <ImageIcon size={20} color="#6D122C" />
             </View>
             <Text style={styles.menuLabel}>Meus Registros</Text>
-            <ChevronRight size={20} color="#7f1734" />
+            <ChevronRight size={20} color="#6D122C" />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -98,10 +98,10 @@ const ProfilePage = ({ navigation }: any) => {
                 styles.menuIconContainer,
                 { backgroundColor: "#f5f5f5" },
               ]}>
-              <Map size={20} color="#7f1734" />
+              <Map size={20} color="#6D122C" />
             </View>
             <Text style={styles.menuLabel}>Zonas de Risco</Text>
-            <ChevronRight size={20} color="#7f1734" />
+            <ChevronRight size={20} color="#6D122C" />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.menuItem}>
@@ -110,10 +110,10 @@ const ProfilePage = ({ navigation }: any) => {
                 styles.menuIconContainer,
                 { backgroundColor: "#f5f5f5" },
               ]}>
-              <ShoppingBag size={20} color="#7f1734" />
+              <ShoppingBag size={20} color="#6D122C" />
             </View>
             <Text style={styles.menuLabel}>Meus Recursos</Text>
-            <ChevronRight size={20} color="#7f1734" />
+            <ChevronRight size={20} color="#6D122C" />
           </TouchableOpacity>
         </ScrollView>
       </View>
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
   },
   header: {
-    backgroundColor: "#7f1734",
+    backgroundColor: "#6D122C",
     paddingTop: 120,
     paddingBottom: 40,
     paddingHorizontal: 20,
@@ -223,11 +223,11 @@ const styles = StyleSheet.create({
   },
   navButtonText: {
     fontSize: 12,
-    color: "#7f1734",
+    color: "#6D122C",
     marginTop: 4,
   },
   activeNavButtonText: {
-    color: "#7f1734",
+    color: "#6D122C",
   },
 });
 

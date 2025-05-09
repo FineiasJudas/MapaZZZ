@@ -66,7 +66,7 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
                   style={styles.profileIcon}
                   onPress={() => navigation.navigate("ProfilePage")}>
                   {loading ? (
-                    <ActivityIndicator size="small" color="#7F1734" />
+                    <ActivityIndicator size="small" color="#6D122C" />
                   ) : (
                     <Text style={styles.profileIconText}>
                       {userName ? userName[0] : "U"}
@@ -75,7 +75,7 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
                 </TouchableOpacity>
                 <View style={styles.profileTextContainer}>
                   {loading ? (
-                    <ActivityIndicator size="small" color="#7F1734" />
+                    <ActivityIndicator size="small" color="#6D122C" />
                   ) : (
                     <Text style={styles.profileName}>{userName}</Text>
                   )}
@@ -103,7 +103,7 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
                   }
                   activeOpacity={0.7}>
                   <View style={styles.menuItemIconContainer}>
-                    <item.icon size={22} color="#7F1734" />
+                    <item.icon size={22} color="#6D122C" />
                   </View>
                   <Text style={styles.menuItemText}>{item.title}</Text>
                 </TouchableOpacity>
@@ -143,11 +143,11 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
             <View style={styles.contactContainer}>
               <Text style={styles.contactHeader}>Informações de Contacto:</Text>
               <View style={styles.contactItem}>
-                <Mail size={16} color="#7F1734" />
+                <Mail size={16} color="#6D122C" />
                 <Text style={styles.contactText}>Salonis@gmail.com</Text>
               </View>
               <View style={styles.contactItem}>
-                <Phone size={16} color="#7F1734" />
+                <Phone size={16} color="#6D122C" />
                 <Text style={styles.contactText}>+244 946671828</Text>
               </View>
             </View>
@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
   profileIconText: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#7F1734",
+    color: "#6D122C",
   },
   profileTextContainer: {
     flex: 1,

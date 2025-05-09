@@ -181,7 +181,7 @@ const handleBackPress = async () => {
         <View style={styles.headerButtons}>
           <TouchableOpacity style={styles.iconButton}>
             <Puzzle
-              color="#7f1734"
+              color="#6D122C"
               onPress={async () => {
                 await showAlert(
                   "aviso",
@@ -213,7 +213,7 @@ const handleBackPress = async () => {
                 );
               }
             }}>
-            <Bell color="#7f1734" />
+            <Bell color="#6D122C" />
           </TouchableOpacity>
         </View>
       </View>
@@ -225,13 +225,13 @@ const handleBackPress = async () => {
             <TouchableOpacity
               style={styles.userIcon}
               onPress={() => navigation.navigate("ProfilePage")}>
-              <User color="#7f1734" />
+              <User color="#6D122C" />
             </TouchableOpacity>
             <View>
               <Text style={styles.welcomeText}>Bem-vindo, {username}</Text>
               <TouchableOpacity
                 style={{ alignItems: "center", flexDirection: "row" }}>
-                <MapPin color="#7f1734" size={18} style={{ marginRight: 6 }} />
+                <MapPin color="#6D122C" size={18} style={{ marginRight: 6 }} />
                 <Text style={styles.statLabel}>{location}</Text>
               </TouchableOpacity>
             </View>
@@ -251,7 +251,7 @@ const handleBackPress = async () => {
                 }
               }}>
               <Text style={styles.actionButtonText}>Reportar </Text>
-              <Camera color="#7f1734" />
+              <Camera color="#6D122C" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
               <Text
@@ -261,7 +261,7 @@ const handleBackPress = async () => {
                 }}>
                 Zonas de Risco
               </Text>
-              <TriangleAlert color="#7f1734" />
+              <TriangleAlert color="#6D122C" />
             </TouchableOpacity>
           </View>
         </View>
@@ -379,13 +379,13 @@ const handleBackPress = async () => {
               );
             }
           }}>
-          <User color="#7f1734" />
+          <User color="#6D122C" />
           <Text style={styles.navButtonText}>Perfil</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.navButton}
           onPress={() => navigation.navigate("nearHospitalPage")}>
-          <Hospital color="#7f1734" />
+          <Hospital color="#6D122C" />
           <Text style={styles.navButtonText}>Hospitais</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -409,13 +409,13 @@ const handleBackPress = async () => {
               );
             }
           }}>
-          <CheckCheck color="#7f1734" />
+          <CheckCheck color="#6D122C" />
           <Text style={styles.navButtonText}>Verificar</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.navButton}
           onPress={() => navigation.navigate("configPage")}>
-          <Cog color="#7f1734" />
+          <Cog color="#6D122C" />
           <Text style={styles.navButtonText}>Definições</Text>
         </TouchableOpacity>
       </View>
@@ -440,7 +440,7 @@ const styles = StyleSheet.create({
     elevation: 2
   },
   headerTitle: {
-    color: "#7f1734",
+    color: "#6D122C",
     fontSize: 24,
     fontWeight: "bold",
   },
@@ -517,7 +517,7 @@ const styles = StyleSheet.create({
   },
   actionButtonText: {
     fontSize: 14,
-    color: "#7f1734",
+    color: "#6D122C",
   },
   statsContainer: {
     flexDirection: "row",
@@ -526,7 +526,7 @@ const styles = StyleSheet.create({
   },
   statsCard: {
     flex: 1,
-    backgroundColor: "#871434",
+    backgroundColor: "#6D122C",
 
     borderRadius: 12,
     padding: 16,
@@ -614,7 +614,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   startButton: {
-    backgroundColor: "#871434",
+    backgroundColor: "#6D122C",
     borderRadius: 20,
     paddingVertical: 8,
     paddingHorizontal: 16,
@@ -657,7 +657,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   findButton: {
-    backgroundColor: "#871434",
+    backgroundColor: "#6D122C",
     borderRadius: 20,
     paddingVertical: 8,
     paddingHorizontal: 16,
@@ -682,7 +682,7 @@ const styles = StyleSheet.create({
   },
   navButtonText: {
     fontSize: 12,
-    color: "#871434",
+    color: "#6D122C",
   },
   statLabel: {
     fontSize: 12,

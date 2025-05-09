@@ -43,7 +43,7 @@ export const style = StyleSheet.create({
   },
 
   buttonEnviar: {
-    backgroundColor: "#7f1734",
+    backgroundColor: "#6D122C",
     paddingVertical: 12,
     borderRadius: 12,
     alignItems: "center",

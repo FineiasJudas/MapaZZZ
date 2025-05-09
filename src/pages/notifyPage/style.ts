@@ -11,13 +11,8 @@ export const style = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: height * 0.01,
-    paddingHorizontal: width * 0.03,
-  },
-  escImg: {
-    width: width * 0.1,
-    height: width * 0.1,
-    resizeMode: 'contain',
+    marginTop: height * 0.001,
+    paddingHorizontal: width * 0.03
   },
   logoImg: {
     width: width * 0.1,
@@ -27,11 +22,11 @@ export const style = StyleSheet.create({
   container: {
     marginTop: height * 0.03,
     paddingHorizontal: width * 0.08,
-    flex: 1,
   },
   scroll: {
     width: '100%',
     maxHeight: height * 0.78, // limita scroll sem ocupar toda tela
+    
   },
   infCamp: {
     backgroundColor: '#fff',
@@ -52,10 +47,11 @@ export const style = StyleSheet.create({
   },
   styleText: {
     flex: 1,
+    margin: 1,
     justifyContent: 'space-between',
   },
   notificationText: {
-    left: 12,
+    left: 1,
     fontSize: width * 0.04,
     color: '#333',
   },
@@ -97,7 +93,7 @@ export const style = StyleSheet.create({
     marginBottom: 20,
   },
   closeButton: {
-    backgroundColor: '#7F1734',
+    backgroundColor: '#6D122C',
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 8,

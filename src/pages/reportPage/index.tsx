@@ -67,7 +67,7 @@ const RegisterRiskZone = ({navigation} : any) => {
       {/* Topo */}
       <View style={style.logoX}>
         <TouchableOpacity onPress={() => navigation.navigate("MapaPage")}>
-        <ArrowLeft color="#7F1734" size={35} />
+        <ArrowLeft color="#6D122C" size={35} />
         </TouchableOpacity>
         <Image source={logo} style={style.logoImg} />
       </View>

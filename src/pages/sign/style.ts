@@ -33,7 +33,7 @@ export const style = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 10,
-        borderColor: '#7F1734',
+        borderColor: '#6D122C',
         elevation: 3,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
@@ -140,7 +140,7 @@ export const style = StyleSheet.create({
         width: 20,
         height: 20,
         borderWidth: 2,
-        borderColor: '#7F1734',
+        borderColor: '#6D122C',
         alignItems: 'center',
         justifyContent: 'center',
         marginRight: 8
@@ -148,7 +148,7 @@ export const style = StyleSheet.create({
       checkboxChecked: {
         width: 12,
         height: 12,
-        backgroundColor: '#7F1734'
+        backgroundColor: '#6D122C'
       },
       checkboxText: {
         fontSize: 14
@@ -184,7 +184,7 @@ export const style = StyleSheet.create({
         alignSelf: 'flex-end',
         paddingVertical: 8,
         paddingHorizontal: 16,
-        backgroundColor: '#7F1734',
+        backgroundColor: '#6D122C',
         borderRadius: 8
       },
       closeModalButtonText: {
@@ -192,7 +192,7 @@ export const style = StyleSheet.create({
         fontWeight: 'bold'
       },
       linkText: {
-        color: '#7F1734',
+        color: '#6D122C',
         textDecorationLine: 'underline',
         fontWeight: 'bold'
       },
