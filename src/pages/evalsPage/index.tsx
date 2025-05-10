@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
-  Alert
+  Alert,
+  BackHandler
 } from 'react-native'
 import { style } from './style'
 import esc from '../../assets/esc.png'
@@ -71,6 +72,20 @@ const EvalsPage = ({navigation} : any) => {
   useEffect(() => {
     fetchData()
   }, [])
+  
+  useEffect(() => {
+    const backAction = () => {
+      navigation.goBack()
+      return true // Impede o comportamento padrão do botão voltar
+    }
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    )
+
+    return () => backHandler.remove() // Limpeza ao desmontar
+  }, [navigation])
 
   // funcao para pegar os dois ultimos endereços
   const getLastTwoAddresses = (address) => {

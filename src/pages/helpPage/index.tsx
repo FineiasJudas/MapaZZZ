@@ -1,17 +1,30 @@
-import React from "react";
-import { Image, Text, TextInput, View, TouchableOpacity, Dimensions, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import React, { useEffect } from "react";
+import { Image, Text, TextInput, View, TouchableOpacity, Dimensions, BackHandler, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { style } from "./style";
 import Logo from "../../assets/logo.png";
 import { ArrowLeft } from "lucide-react-native";
 
 export default function HelperPage({ navigation }: any) {
+  useEffect(() => {
+    const backAction = () => {
+      navigation.goBack()
+      return true // Impede o comportamento padrão do botão voltar
+    }
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    )
+
+    return () => backHandler.remove() // Limpeza ao desmontar
+  }, [navigation])
   return (
     <KeyboardAvoidingView
       style={style.Container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <View style={style.conteinar}>
-        <TouchableOpacity onPress={() => navigation.navigate('MapaPage')}>
+        <TouchableOpacity onPress={() =>  navigation.goBack()}>
           <ArrowLeft color="#6D122C" size={35} />
         </TouchableOpacity>
         <Image source={Logo} style={style.imgLogo} />

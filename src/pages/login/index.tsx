@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Image,
   Text,
@@ -8,6 +8,7 @@ import {
   Alert,
   ToastAndroid,
   ActivityIndicator,
+  BackHandler,
 } from "react-native";
 import { style } from "./style";
 import Logo from "../../assets/logo.png";
@@ -15,6 +16,7 @@ import LoginButton from "../../assets/loginButton.png";
 import GoogleLogo from "../../assets/google.png";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAlert } from "../alertProvider/index";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function Login({ navigation }: any) {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,6 +31,26 @@ export default function Login({ navigation }: any) {
       navigation.navigate("initPage");
     }
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        const state = navigation.getState();
+        const { routes, index } = state;
+        const prevRoute = index > 0 ? routes[index - 1].name : null;
+
+        if (prevRoute !== "Sign" && prevRoute !== "WelcomePage") {
+          showAlert("aviso", "Voltar para a página anterior significa logar ou entrar novamente como visitante.", "Atenção");
+          return true;
+        }
+        // retorna false para deixar o React Navigation tratar o back normalmente
+        return false;
+      };
+
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+      return () =>
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+    }, [navigation]));
 
   useEffect(() => {
     checkToken();

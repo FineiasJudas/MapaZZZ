@@ -183,20 +183,15 @@ const handleBackPress = async () => {
             <Puzzle
               color="#6D122C"
               onPress={async () => {
-                await showAlert(
-                  "aviso",
-                  "Essa página está em construção...",
-                  "Atenção"
-                );
-                // if (logged) navigation.navigate("GamingPage");
-                // else {
-                //   navigation.navigate("Login");
-                //   await showAlert(
-                //     "aviso",
-                //     "Você precisa estar logado para acessar esta página, tente Logar",
-                //     "Atenção"
-                //   );
-                // }
+                 if (logged) navigation.navigate("GamingPage");
+                 else {
+                   navigation.navigate("Login");
+                   await showAlert(
+                     "aviso",
+                     "Você precisa estar logado para acessar esta página, tente Logar",
+                     "Atenção"
+                   );
+                 }
               }}
             />
           </TouchableOpacity>

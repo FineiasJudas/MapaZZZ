@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   Image,
   Alert,
+  BackHandler,
   Dimensions
 } from 'react-native'
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
@@ -41,6 +42,21 @@ const RegisterRiskZone = ({navigation} : any) => {
   useEffect(() => {
     checkPermission();
   }, [])
+
+  useEffect(() => {
+    const backAction = () => {
+      navigation.goBack()
+      return true // Impede o comportamento padrão do botão voltar
+    }
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    )
+
+    return () => backHandler.remove() // Limpeza ao desmontar
+  }, [navigation])
+
   // Função para capturar foto da galeria ou câmera
   const pickImage = async () => {
     let result = await ImagePicker.launchCameraAsync({
@@ -66,7 +82,7 @@ const RegisterRiskZone = ({navigation} : any) => {
     <View style={style.mainConteiner}>
       {/* Topo */}
       <View style={style.logoX}>
-        <TouchableOpacity onPress={() => navigation.navigate("MapaPage")}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
         <ArrowLeft color="#6D122C" size={35} />
         </TouchableOpacity>
         <Image source={logo} style={style.logoImg} />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import {
   Image,
   Text,
@@ -9,7 +9,8 @@ import {
   TextInputProps,
   ToastAndroid,
   ActivityIndicator,
-  Modal
+  Modal,
+  BackHandler
 } from 'react-native'
 import { style } from './style'
 import Logo from '../../assets/logo.png'
@@ -19,6 +20,7 @@ import Toast from 'react-native-toast-message'
 import {useAlert} from "../alertProvider/index";
 import { BoxSelectIcon, ScrollText } from 'lucide-react-native'
 import { ScrollView } from 'react-native-gesture-handler'
+import { useFocusEffect } from '@react-navigation/native'
 
 export default function Sign ({ navigation }: any) {
   const [showPassword, setShowPassword] = useState(false);
@@ -31,6 +33,26 @@ export default function Sign ({ navigation }: any) {
   const [loading, setLoading] = useState(false) // Estado para controlar o carregamento
   const [addressSuggestions, setAddressSuggestions] = useState<string[]>([])
   const [acceptedTerms, setAcceptedTerms] = useState(false)
+
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        const state = navigation.getState();
+        const { routes, index } = state;
+        const prevRoute = index > 0 ? routes[index - 1].name : null;
+
+        if (prevRoute !== "Login" && prevRoute !== "WelcomePage") {
+          showAlert("aviso", "Voltar para a página anterior significa logar ou entrar novamente como visitante.", "Atenção");
+          return true;
+        }
+        // retorna false para deixar o React Navigation tratar o back normalmente
+        return false;
+      };
+
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+      return () =>
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+    }, [navigation]));
 
   // Função para cadastrar usuário
   const handleSignUp = async () => {

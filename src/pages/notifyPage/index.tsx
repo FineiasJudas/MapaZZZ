@@ -8,6 +8,7 @@ import {
   Modal,
   ActivityIndicator,
   Alert,
+  BackHandler,
 } from "react-native";
 import { useAlert } from "../alertProvider/index";
 import { ArrowLeft, Clock } from "lucide-react-native";
@@ -191,6 +192,20 @@ const NotifyPage = ({ navigation }) => {
     };
   }, [navigation]);
 
+   useEffect(() => {
+    const backAction = () => {
+      navigation.goBack()
+      return true // Impede o comportamento padrão do botão voltar
+    }
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    )
+
+    return () => backHandler.remove() // Limpeza ao desmontar
+  }, [navigation])
+
   const handleNotificationPress = (notification) => {
     setSelectedNotification(notification);
     setModalVisible(true);
@@ -200,7 +215,7 @@ const NotifyPage = ({ navigation }) => {
     <View style={style.mainConteiner}>
       {/* Topo */}
       <View style={style.logoX}>
-        <TouchableOpacity onPress={() => navigation.navigate("MapaPage")}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <ArrowLeft color="#6D122C" size={35} />
         </TouchableOpacity>
         <Image source={logo} style={style.logoImg} />
