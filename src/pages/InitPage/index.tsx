@@ -225,7 +225,7 @@ const handleBackPress = async () => {
             <TouchableOpacity
               style={styles.userIcon}
               onPress={() => navigation.navigate("ProfilePage")}>
-              <User color="#6D122C" />
+              <User color="#6D122C" size={30}/>
             </TouchableOpacity>
             <View>
               <Text style={styles.welcomeText}>Bem-vindo, {username}</Text>
@@ -477,13 +477,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   userIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 45,
+    height: 45,
+    borderRadius: 30,
     backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",
     marginRight: 12,
+    padding: 30
   },
   userIconText: {
     fontSize: 20,
@@ -512,8 +513,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     backgroundColor: "white",
     borderRadius: 20,
-    borderWidth: 1,
-    borderColor: "#e0e0e0",
+    elevation: 4
   },
   actionButtonText: {
     fontSize: 14,

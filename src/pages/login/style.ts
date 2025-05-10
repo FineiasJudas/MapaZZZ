@@ -56,6 +56,7 @@ export const style = StyleSheet.create({
     paddingHorizontal: 15,
   },
   boxSenhaImput: {
+    position: 'relative',
     backgroundColor: '#fff',
     width: "100%",
     height: 45,
@@ -70,6 +71,21 @@ export const style = StyleSheet.create({
     fontSize: 16,
     color: "#333",
   },
+  inputSenhaText: {
+    paddingRight: 60,
+    flex: 1,
+    fontSize: 16,
+    color: "#333",
+  },
+showPasswordButton: {
+  position: 'absolute',
+  right: 10,
+  top: '30%', // Ajuste conforme necessário para alinhar verticalmente
+},
+showPasswordText: {
+  color: '#6D122C', // Cor do tema
+  fontSize: 14,
+},
   loginButtonView: {
     width: "100%",
     alignItems: "center",

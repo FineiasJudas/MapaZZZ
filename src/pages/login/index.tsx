@@ -17,6 +17,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAlert } from "../alertProvider/index";
 
 export default function Login({ navigation }: any) {
+  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [loading, setLoading] = useState(false); // Estado para controlar o carregamento
@@ -115,12 +116,21 @@ export default function Login({ navigation }: any) {
 
         <View style={style.boxSenhaImput}>
           <TextInput
-            style={style.inputText}
+            style={style.inputSenhaText}
             placeholder="Digite sua senha"
-            secureTextEntry
+            secureTextEntry={!showPassword}
             value={senha}
             onChangeText={setSenha}
           />
+          <TouchableOpacity
+            style={style.showPasswordButton}
+            onPress={() => setShowPassword(!showPassword)}
+            hitSlop={{ top: 20, bottom: 20, left: 10, right: 10 }}
+          >
+            <Text style={style.showPasswordText}>
+              {showPassword ? "Esconder" : "Mostrar"}
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* Exibir o botão de login ou um indicador de carregamento */}

@@ -72,11 +72,11 @@ const RegisterRiskZone = ({navigation} : any) => {
         <Image source={logo} style={style.logoImg} />
       </View>
       <View style={style.container}>
-        <TouchableOpacity style={style.imagePicker}>
+        <View style={style.imagePicker}>
         <Image
           source={reportCamera}
             style={{ width: width * 0.4, height: width * 0.4, resizeMode: 'contain' }}/>
-        </TouchableOpacity>
+        </View>
 
         <View
           style={style.reportButton}

@@ -12,13 +12,15 @@ export const style = StyleSheet.create({
     paddingHorizontal: width * 0.05,
     flexDirection: "column",
     alignItems: "center",
-    paddingVertical: height * 0.1,
+    paddingVertical: height * 0.01,
+    paddingTop: height * 0.08
   },
   logoX: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: height * 0.03,
-    paddingHorizontal: width * 0.03,
+    marginTop: height * 0.001,
+    paddingHorizontal: width * 0.03
   },
   escImg: {
     width: width * 0.1,
@@ -40,7 +42,7 @@ export const style = StyleSheet.create({
     borderRadius: width * 0.3,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: height * 0.07,
+    marginBottom: height * 0.04,
   },
   pikerView: {
     height: height * 0.25,

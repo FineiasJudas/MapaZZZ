@@ -86,21 +86,36 @@ export const style = StyleSheet.create({
         marginTop: 10,
         paddingHorizontal: 15
     },
-    boxSenhaImput:{
-      backgroundColor: '#fff',
-        width:'100%',
-        height: 45,
-        borderWidth: 1,
-        borderRadius: 10,
-        borderColor: '#D9D9D9',
-        marginTop: 10,
-        paddingHorizontal: 15
-    },
-    inputText: {
-        flex: 1,
-        fontSize: 15,
-        color: '#333000'
-    },
+     boxSenhaImput: {
+    backgroundColor: '#fff',
+    width: "100%",
+    height: 45,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: "#DfDfDf",
+    marginTop: 10,
+    paddingHorizontal: 15,
+  },
+  inputText: {
+    flex: 1,
+    fontSize: 16,
+    color: "#333",
+  },
+  inputSenhaText: {
+    paddingRight: 60,
+    flex: 1,
+    fontSize: 16,
+    color: "#333",
+  },
+showPasswordButton: {
+  position: 'absolute',
+  right: 10,
+  top: '30%', // Ajuste conforme necessário para alinhar verticalmente
+},
+showPasswordText: {
+  color: '#6D122C', // Cor do tema
+  fontSize: 14,
+},
     // Botões de login e cadastro
     loginButtonView:{
         width: '100%',

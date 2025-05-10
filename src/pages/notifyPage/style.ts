@@ -52,6 +52,7 @@ export const style = StyleSheet.create({
   },
   notificationText: {
     left: 1,
+    marginLeft: 8,
     fontSize: width * 0.04,
     color: '#333',
   },

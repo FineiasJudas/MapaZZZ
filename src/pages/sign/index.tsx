@@ -21,6 +21,7 @@ import { BoxSelectIcon, ScrollText } from 'lucide-react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 
 export default function Sign ({ navigation }: any) {
+  const [showPassword, setShowPassword] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false)
   const { showAlert } = useAlert();
   const [fullName, setFullName] = useState('')
@@ -134,12 +135,20 @@ export default function Sign ({ navigation }: any) {
 
         <View style={style.boxSenhaImput}>
           <TextInput
-            style={style.inputText}
+            style={style.inputSenhaText}
             placeholder='Digite sua senha'
-            secureTextEntry
+            secureTextEntry={!showPassword}
             value={password}
             onChangeText={setPassword}
           />
+          <TouchableOpacity
+            style={style.showPasswordButton}
+            onPress={() => setShowPassword(!showPassword)}
+          >
+            <Text style={style.showPasswordText}>
+              {showPassword ? "Esconder" : "Mostrar"}
+            </Text>
+          </TouchableOpacity>
         </View>
         {/* Checkbox para aceitar termos */}
         <View style={style.checkboxContainer}>
