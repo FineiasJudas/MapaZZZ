@@ -8,8 +8,7 @@ import {
   TouchableOpacity,
   View,
   Alert,
-  ActivityIndicator,
-  BackHandler
+  ActivityIndicator
 } from 'react-native'
 import * as MediaLibrary from 'expo-media-library'
 import mudar_camera from '../../assets/mudar-camera.png'
@@ -190,26 +189,12 @@ const { showAlert } = useAlert();
     }
   }
 
-     useEffect(() => {
-    const backAction = () => {
-      navigation.goBack()
-      return true // Impede o comportamento padrão do botão voltar
-    }
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction
-    )
-
-    return () => backHandler.remove() // Limpeza ao desmontar
-  }, [navigation])
-
   return (
     <SafeAreaView style={styles.container}>
       {!photo && (
         <TouchableOpacity
           style={styles.topLeftLogo}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate('reportPage')}
         >
           <X color="#ffffff" size={35}/>
           <TouchableOpacity onPress={toggleCameraFacing}>
@@ -299,7 +284,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'absolute',
-    top: 30,
     left: 0,
     right: 0,
     bottom: 0,

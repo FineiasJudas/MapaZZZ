@@ -24,6 +24,8 @@ import nearHospitalPage from './src/pages/nearHospitalPage';
 import configPage from './src/pages/configPage';
 import ongPage from './src/pages/ongPage';
 import QuestionPage from './src/pages/gamingPage/questionPage';
+import CorretctA from './src/pages/gamingPage/correctAnwser';
+import WrongA from './src/pages/gamingPage/wrongAnwser';
 
 import { registerForPushNotificationsAsync } from './src/pages/manegeNotification/index';
 import { Import } from 'lucide-react-native';
@@ -60,6 +62,8 @@ export default function App() {
           <Stack.Navigator initialRouteName="WelcomePage">
             <Stack.Screen name="QuestionPage" component={QuestionPage} options={{ headerShown: false }} />
             <Stack.Screen name="GamingPage" component={GamingPage} options={{ headerShown: false }} />
+            <Stack.Screen name="CorretctA" component={CorretctA} options={{ headerShown: false }} />
+            <Stack.Screen name="WrongA" component={WrongA} options={{ headerShown: false }} />
             <Stack.Screen name="notifyPage" component={notifyPage} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name="initPage" component={initPage} options={{ headerShown: false }} />

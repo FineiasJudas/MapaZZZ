@@ -61,7 +61,7 @@ const QuizQuestionScreen = ({ navigation }: any) => {
           {/* Overlay content on top of the background image */}
           <View style={styles.topContentOverlay}>
             {/* Logo/Puzzle icon */}
-            <Puzzle size={40} color="#FFFFFF" style={styles.puzzleIcon} />
+            <Puzzle size={35} color="#FFFFFF" style={styles.puzzleIcon} />
 
             {/* Exit button */}
             <TouchableOpacity onPress={() => navigation.navigate("GamingPage")}
@@ -75,7 +75,7 @@ const QuizQuestionScreen = ({ navigation }: any) => {
         <View style={styles.questionContainer}>
           <Text style={styles.questionNumber}>Questão 1</Text>
           <Text style={styles.questionText}>
-            Qual o animal que mais alimenta-se de mosquitos, ajudando a reduzir a sua proliferação
+            Qual o animal que mais alimenta-se de mosquitos, ajudando a reduzir a sua proliferação?
           </Text>
         </View>
 
@@ -87,7 +87,7 @@ const QuizQuestionScreen = ({ navigation }: any) => {
               onPress={handleResponder}
             >
               <Text style={styles.responderText}>Responder</Text>
-               <CheckCheck size={25} color={'white'}
+               <CheckCheck size={22} color={'white'}
                
               />
             </TouchableOpacity>
@@ -111,11 +111,11 @@ const QuizQuestionScreen = ({ navigation }: any) => {
             />
             
             <View style={styles.buttonRow}>
-              <TouchableOpacity style={styles.actionButton} onPress={handleSubmit}>
+              <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("CorretctA")}>
                 <Text style={styles.buttonText}>Enviar</Text>
               </TouchableOpacity>
               
-              <TouchableOpacity style={styles.actionButton} onPress={handleSkip}>
+              <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("WrongA")}>
                 <Text style={styles.buttonText}>Pular</Text>
               </TouchableOpacity>
             </View>
@@ -158,9 +158,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   exitButton: {
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.3)',
     backgroundColor: "rgba(255,255,255,0.3)",
-    paddingHorizontal: 18,
-    paddingVertical: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
     borderRadius: 20,
     marginTop: 20,
   },
@@ -174,13 +176,13 @@ const styles = StyleSheet.create({
     marginTop: -5,
   },
   questionNumber: {
-    fontSize: 28,
+    fontSize: 25,
     fontWeight: "bold",
     color: "#6F132C",
     marginBottom: 16,
   },
   questionText: {
-    fontSize: 20,
+    fontSize: 18,
     textAlign: "center",
     color: "#333333",
     lineHeight: 30,
@@ -202,7 +204,7 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   responderText: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
     color: "#FFFFFF",
     marginRight: 10,
@@ -218,13 +220,14 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: "#6F132C",
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-    padding: 15,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    padding: 8,
   },
   cancelHeaderContainer: {
     alignItems: "flex-end",
     marginBottom: 8,
+    marginRight: 8
   },
   cancelText: {
     color: "#FFFFFF",

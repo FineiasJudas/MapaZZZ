@@ -313,20 +313,15 @@ const handleBackPress = async () => {
               <TouchableOpacity
                 style={styles.startButton}
                 onPress={async () => {
-                  await showAlert(
-                    "aviso",
-                    "Essa página está em construção...",
-                    "Atenção"
-                  );
-                  // if (logged) navigation.navigate("GamingPage");
-                  // else {
-                  //   navigation.navigate("Login");
-                  //   await showAlert(
-                  //     "aviso",
-                  //     "Você precisa estar logado para acessar esta página, tente Logar",
-                  //     "Atenção"
-                  //   );
-                  // }
+                   if (logged) navigation.navigate("GamingPage");
+                   else {
+                     navigation.navigate("Login");
+                     await showAlert(
+                       "aviso",
+                       "Você precisa estar logado para acessar esta página, tente Logar",
+                       "Atenção"
+                     );
+                   }
                 }}>
                 <Text style={styles.startButtonText}>Iniciar agora</Text>
               </TouchableOpacity>

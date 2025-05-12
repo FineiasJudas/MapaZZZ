@@ -1,23 +1,9 @@
-import React, { useEffect } from 'react';
-import { SafeAreaView, Text, TouchableOpacity, View, StyleSheet, StatusBar, Image, BackHandler } from 'react-native';
+import React from 'react';
+import { SafeAreaView, Text, TouchableOpacity, View, StyleSheet, StatusBar, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Puzzle } from 'lucide-react-native';
+import { HeartCrack, Puzzle } from 'lucide-react-native';
 
 const QuizStartScreen = ({ navigation }: any) => {
-
-    useEffect(() => {
-    const backAction = () => {
-      navigation.goBack()
-      return true // Impede o comportamento padrão do botão voltar
-    }
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction
-    )
-
-    return () => backHandler.remove() // Limpeza ao desmontar
-  }, [navigation])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -26,7 +12,6 @@ const QuizStartScreen = ({ navigation }: any) => {
       {/* Exit Button */}
       <TouchableOpacity 
         style={styles.exitButton}
-        onPress={() => navigation.navigate("initPage")}
       >
         <Text style={styles.exitText}>Sair</Text>
       </TouchableOpacity>
@@ -34,14 +19,14 @@ const QuizStartScreen = ({ navigation }: any) => {
       {/* Main Content */}
       <View style={styles.content}>
         {/* Puzzle Icon */}
-        <Puzzle color="#6D122C" size={40} />
+        <HeartCrack  color="#f5f5f5" size={40} />
         
         {/* Title */}
-        <Text style={styles.title}>Jogue Connosco</Text>
+        <Text style={styles.title}>Resposta errada!</Text>
         
         {/* Subtitle */}
         <Text style={styles.subtitle}>
-          Acerte as perguntas do nosso Quiz educativo e acumule pontos para poder usá-los quando for preciso!
+          Ups!! Mas tudo bem errar, tu podes continuar!
         </Text>
         
         {/* Start Button */}
@@ -50,18 +35,18 @@ const QuizStartScreen = ({ navigation }: any) => {
           onPress={() => navigation.navigate("QuestionPage")}
         >
           <LinearGradient
-            colors={['#6D122C', '#8A1538']}
+            colors={['#242D29', '#242D29']}
             style={styles.gradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
           >
-            <Text style={styles.buttonText}>Iniciar</Text>
+            <Text style={styles.buttonText}>Repetir</Text>
           </LinearGradient>
         </TouchableOpacity>
       </View>
       
       <Image
-        source={require('../../assets/quiz-background.png.png')} // Altere para o caminho correto
+        source={require('../../../assets/buttonBlack.png')} // Altere para o caminho correto
         style={styles.backgroundImage}
         resizeMode="contain"
       />
@@ -72,13 +57,13 @@ const QuizStartScreen = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#000',
   },
   exitButton: {
     position: 'absolute',
     right: 14,
     borderWidth: 1,
-    borderColor: '#6D122C',
+    borderColor: '#dfdfdf',
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 20,
@@ -86,13 +71,12 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     position: 'absolute',
-    bottom: -80,
+    bottom: -55,
     width: '100%',
     height: 300,
   },
   exitText: {
-    color: '#6D122C',
-    fontSize: 14,
+    color: '#f5f5f5',
   },
   content: {
     flex: 1,
@@ -103,13 +87,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: "bold",
-    color: "#6F132C",
-    marginBottom: 16,
+    color: "#f5f5f5",
+    marginBottom: 8,
     marginTop: 24,
   },
   subtitle: {
     fontSize: 16,
-    color: '#333333',
+    color: '#dfdfdf',
     textAlign: 'center',
     lineHeight: 24,
     marginBottom: 40,
@@ -120,13 +104,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: 'hidden',
     width: '60%',
-    maxWidth: 250,
+    maxWidth: 300,
     elevation: 4,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    marginBottom: 90,
+    marginBottom: 140,
   },
   gradient: {
     paddingVertical: 8,
