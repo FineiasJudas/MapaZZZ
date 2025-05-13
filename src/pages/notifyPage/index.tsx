@@ -216,7 +216,7 @@ const NotifyPage = ({ navigation }) => {
       {/* Topo */}
       <View style={style.logoX}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ArrowLeft color="#6D122C" size={35} />
+          <ArrowLeft color="#6D122C" size={30} style={{marginTop: 6}}/>
         </TouchableOpacity>
         <Image source={logo} style={style.logoImg} />
       </View>
@@ -228,7 +228,7 @@ const NotifyPage = ({ navigation }) => {
             fontWeight: "bold",
             color: "#6D122C",
             marginBottom: 20,
-            marginLeft: 10,
+            marginLeft: 15,
           }}>
           Notificações
         </Text>

@@ -12,10 +12,10 @@ export const style = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: height * 0.001,
-    paddingHorizontal: width * 0.03
+    paddingHorizontal: width * 0.02
   },
   logoImg: {
-    width: width * 0.1,
+    width: width * 0.085,
     height: width * 0.1,
     resizeMode: 'contain',
   },

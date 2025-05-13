@@ -15,9 +15,9 @@ export const style = StyleSheet.create({
       marginTop: height * 0.001,
       paddingHorizontal: width * 0.03,
     },
-    imgLogo:{width: width * 0.1,
+    imgLogo:{width: width * 0.085,
     height: width * 0.1, resizeMode: 'contain'},
-    content: {width: '85%', marginTop: 30},
+    content: {width: '80%', marginTop: 30},
         boxInput: {
         marginBottom: 15,
       },

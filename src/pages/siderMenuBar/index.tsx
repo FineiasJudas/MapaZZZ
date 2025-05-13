@@ -138,19 +138,6 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
                 )}
               </TouchableOpacity>
             </ScrollView>
-
-            {/* Contact Information */}
-            <View style={styles.contactContainer}>
-              <Text style={styles.contactHeader}>Informações de Contacto:</Text>
-              <View style={styles.contactItem}>
-                <Mail size={16} color="#6D122C" />
-                <Text style={styles.contactText}>Salonis@gmail.com</Text>
-              </View>
-              <View style={styles.contactItem}>
-                <Phone size={16} color="#6D122C" />
-                <Text style={styles.contactText}>+244 946671828</Text>
-              </View>
-            </View>
           </Animated.View>
         </TouchableWithoutFeedback>
       </View>

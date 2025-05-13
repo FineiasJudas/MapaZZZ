@@ -97,7 +97,7 @@ const HospitalListScreen = ({ navigation }: any) => {
     <View style={style.Container}>
       <View style={style.logoX}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ArrowLeft color="#6D122C" size={35} />
+        <ArrowLeft color="#6D122C" size={30} style={{marginTop: 6}}/>
         </TouchableOpacity>
         <Image source={Logo} style={style.imgLogo} />
       </View>
@@ -108,7 +108,7 @@ const HospitalListScreen = ({ navigation }: any) => {
               fontSize: 18,
               fontWeight: "bold",
               color: "#6D122C",
-              marginLeft: 10,
+              marginLeft: 18,
             }}>
             Hospitais próximos:
           </Text>

@@ -352,6 +352,28 @@ const handleBackPress = async () => {
             </View>
           </View>
         </View>
+
+        {/* Seção de Previsão de Surtos */}
+        <View style={styles.hospitalSection}>
+          <View style={styles.hospitalContent}>
+            <Image
+              source={require("../../assets/malariaSurto.png")} // Adicione um artefato visual
+              style={styles.hospitalImage}
+            />
+            <View style={styles.hospitalTextContainer}>
+              <Text style={styles.hospitalTitle}>Previsão de Surtos de Malária</Text>
+              <Text style={styles.hospitalSubtitle}>
+                Veja as áreas com risco de surto nos próximos dias e tome ações preventivas!
+              </Text>
+              <TouchableOpacity
+                style={styles.findButton}
+                onPress={() => navigation.navigate("OutbreakPredictorPage")}>
+                <Text style={styles.findButtonText}>Ver Previsão</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+
       </ScrollView>
 
       {/* Bottom Navigation */}

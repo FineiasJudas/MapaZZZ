@@ -25,7 +25,7 @@ export default function HelperPage({ navigation }: any) {
     >
       <View style={style.conteinar}>
         <TouchableOpacity onPress={() =>  navigation.goBack()}>
-          <ArrowLeft color="#6D122C" size={35} />
+          <ArrowLeft color="#6D122C" size={30} style={{marginTop: 6}}/>
         </TouchableOpacity>
         <Image source={Logo} style={style.imgLogo} />
       </View>
