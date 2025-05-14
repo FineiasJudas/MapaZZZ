@@ -86,24 +86,10 @@ const SettingsPage = ({ navigation }: any) => {
           </TouchableOpacity>
         </View>
 
-        {/* Notifications */}
-        <Text style={styles.sectionTitle}>Notificações</Text>
+        {/* General */}
+        <Text style={styles.sectionTitle}>Geral</Text>
         <View style={styles.settingsGroup}>
-          <View style={styles.settingItem}>
-            <View style={styles.settingInfo}>
-              <Bell size={22} color="#6D122C" style={styles.settingIcon} />
-              <Text style={styles.settingLabel}>Notificações Push</Text>
-            </View>
-            <Switch
-              trackColor={{ false: "#e0e0e0", true: "#6D122C" }}
-              thumbColor={notifications ? "#fff" : "#fff"}
-              ios_backgroundColor="#e0e0e0"
-              onValueChange={() => setNotifications(!notifications)}
-              value={notifications}
-            />
-          </View>
-
-          <View style={styles.settingItem}>
+        {/*<View style={styles.settingItem}>
             <View style={styles.settingInfo}>
               <Moon size={22} color="#6D122C" style={styles.settingIcon} />
               <Text style={styles.settingLabel}>Modo Escuro</Text>
@@ -115,26 +101,8 @@ const SettingsPage = ({ navigation }: any) => {
               onValueChange={() => setDarkMode(!darkMode)}
               value={darkMode}
             />
-          </View>
+          </View>*/}
 
-          <View style={styles.settingItem}>
-            <View style={styles.settingInfo}>
-              <Globe size={22} color="#6D122C" style={styles.settingIcon} />
-              <Text style={styles.settingLabel}>Serviços de Localização</Text>
-            </View>
-            <Switch
-              trackColor={{ false: "#e0e0e0", true: "#6D122C" }}
-              thumbColor={locationServices ? "#fff" : "#fff"}
-              ios_backgroundColor="#e0e0e0"
-              onValueChange={() => setLocationServices(!locationServices)}
-              value={locationServices}
-            />
-          </View>
-        </View>
-
-        {/* General */}
-        <Text style={styles.sectionTitle}>Geral</Text>
-        <View style={styles.settingsGroup}>
           <TouchableOpacity style={styles.settingItem}>
             <View style={styles.settingInfo}>
               <Languages size={22} color="#6D122C" style={styles.settingIcon} />
