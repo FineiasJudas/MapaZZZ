@@ -43,14 +43,14 @@ import { style } from "./style";
 import useSocketNotification from "../utils/socketio";
 
 const HomePage = ({ navigation }: any) => {
-  const [weather, setWeather] = useState<{temp: string; condition: string}>({ 
-    temp: "--°C", 
-    condition: "Carregando..." 
+  const [weather, setWeather] = useState<{ temp: string; condition: string }>({
+    temp: "--°C",
+    condition: "Carregando..."
   });
   const { showAlert, showConfirmAlert } = useAlert();
   const [location, setLocation] = useState("Obtendo a localização...");
   const [loading, setLoading] = useState(false);
-  const [logged, setLogged] = useState(false);  
+  const [logged, setLogged] = useState(false);
   const [username, setUsername] = useState("Visitante");
   const [userPoints, setUserPoints] = useState(0);
   useSocketNotification();
@@ -64,7 +64,7 @@ const HomePage = ({ navigation }: any) => {
     Mist: <CloudFog color="#6B7280" size={18} />,
     default: <Thermometer color="#6D122C" size={18} />
   };
-  
+
   const weatherColors = {
     hot: "#DC2626",       // >30°C
     warm: "#EA580C",      // 20-30°C
@@ -90,16 +90,16 @@ const HomePage = ({ navigation }: any) => {
         `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=pt`
       );
       const data = await response.json();
-      
+
       if (data.weather) {
         const temp = Math.round(data.main.temp);
         const condition = data.weather[0].main;
-        
+
         setWeather({
           temp: `${temp}°C`,
           condition
         });
-        
+
         await AsyncStorage.setItem("@cachedWeather", JSON.stringify({
           temp: `${temp}°C`,
           condition
@@ -136,10 +136,11 @@ const HomePage = ({ navigation }: any) => {
             Authorization: `Bearer ${Token}`,
           },
         });
+
         const result = await response.json();
         if (response.ok) {
           setUsername(getFirstName(result.data.name));
-          setUserPoints(result.data.points);
+          setUserPoints(result.data.points || 0);
           setRegions(result.detalhes.danger_zones);
           await AsyncStorage.setItem(
             "@cachedUsername",
@@ -150,14 +151,6 @@ const HomePage = ({ navigation }: any) => {
       }
     } catch (error) {
       console.log("Erro ao buscar detalhes:", error);
-      const cachedUsername = await AsyncStorage.getItem("@cachedUsername");
-      const cachedUserPoints = await AsyncStorage.getItem("@cachedUserPoints");
-      if (cachedUsername) {
-        setUsername(cachedUsername);
-      }
-      if (cachedUserPoints) {
-        setUserPoints(Number(cachedUserPoints));
-      }
     }
   };
   const getLocation = async () => {
@@ -168,10 +161,10 @@ const HomePage = ({ navigation }: any) => {
         setLocation("Permissão negada");
         return;
       }
-  
+
       let location = await Location.getCurrentPositionAsync({});
       const { latitude, longitude } = location.coords;
-  
+
       // Chama a nova função do clima
       await getWeather(latitude, longitude);
       // Reverse geocoding para obter nome da localidade
@@ -184,9 +177,8 @@ const HomePage = ({ navigation }: any) => {
         const address = addressArray[0];
 
         // Exemplo: "Luanda, Angola"
-        const fullAddress = `${
-          address.district || address.city || address.subregion
-        }, ${address.country || address.region}`;
+        const fullAddress = `${address.district || address.city || address.subregion
+          }, ${address.country || address.region}`;
         setLocation(fullAddress);
         await AsyncStorage.setItem("@cachedLocation", fullAddress);
       } else {
@@ -213,58 +205,65 @@ const HomePage = ({ navigation }: any) => {
   };
 
   useEffect(() => {
+    (async () => {
+      const User = await AsyncStorage.getItem("User");
+      const Data = User ? JSON.parse(User) : null;
+      if (Data) {
+        setUsername(getFirstName(Data.name));
+        setUserPoints(Data.points);
+      }
+    })();
     checkPermission();
     getLocation();
     details();
   }, []);
 
   useEffect(() => {
-  const backAction = () => {
-    if (navigation.isFocused()) {
-      handleBackPress();
-      return true; // Impede o comportamento padrão
+    const backAction = () => {
+      if (navigation.isFocused()) {
+        handleBackPress();
+        return true; // Impede o comportamento padrão
+      }
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const Token = await AsyncStorage.getItem("Token");
+      if (Token) setLogged(true);
+      else setLogged(false);
+    })();
+  }, []);
+
+  const logOut = async () => {
+    try {
+      await AsyncStorage.removeItem("Token");
+      await AsyncStorage.removeItem("User");
+      setLogged(false);
+      navigation.navigate("Login");
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
     }
-    return false;
   };
 
-  const backHandler = BackHandler.addEventListener(
-    "hardwareBackPress",
-    backAction
-  );
+  const handleBackPress = async () => {
+    const confirmed = await showConfirmAlert(
+      "Deseja terminar a sessão?",
+      "Confirmação"
+    );
 
-  return () => backHandler.remove();
-}, []);
-
-useEffect(() => {
-  (async () => {
-    const Token = await AsyncStorage.getItem("Token");
-    if (Token) setLogged(true);
-    else setLogged(false);
-  })();
-}, []);
-
-const logOut = async () => {
-  try {
-    await AsyncStorage.removeItem("Token");
-    await AsyncStorage.removeItem("User");
-    setLogged(false);
-    navigation.navigate("Login");
-  } catch (error) {
-    console.error("Erro ao fazer logout:", error);
-  }
-};
-
-const handleBackPress = async () => {
-  const confirmed = await showConfirmAlert(
-    "Deseja terminar a sessão?", 
-    "Confirmação"
-  );
-  
-  if (confirmed) {
-    logOut() // Ou sua lógica para terminar sessão
-  }
-};
-
+    if (confirmed) {
+      logOut() // Ou sua lógica para terminar sessão
+    }
+  };
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -275,15 +274,15 @@ const handleBackPress = async () => {
             <Puzzle
               color="#6D122C"
               onPress={async () => {
-                 if (logged) navigation.navigate("GamingPage");
-                 else {
-                   navigation.navigate("Login");
-                   await showAlert(
-                     "aviso",
-                     "Você precisa estar logado para acessar esta página, tente Logar",
-                     "Atenção"
-                   );
-                 }
+                if (logged) navigation.navigate("GamingPage");
+                else {
+                  navigation.navigate("Login");
+                  await showAlert(
+                    "aviso",
+                    "Você precisa estar logado para acessar esta página, tente Logar",
+                    "Atenção"
+                  );
+                }
               }}
             />
           </TouchableOpacity>
@@ -312,7 +311,7 @@ const handleBackPress = async () => {
             <TouchableOpacity
               style={styles.userIcon}
               onPress={() => navigation.navigate("ProfilePage")}>
-              <User color="#6D122C" size={30}/>
+              <User color="#6D122C" size={30} />
             </TouchableOpacity>
             <View>
               <Text style={styles.welcomeText}>Bem-vindo, {username}</Text>
@@ -362,13 +361,17 @@ const handleBackPress = async () => {
         {/* Cartao de registros */}
         <View style={styles.statsContainer}>
           <View style={styles.statsCard}>
-            <Text style={styles.statsNumber}>+{userPoints}</Text>
+            <Text style={styles.statsNumber}>+{userPoints || 0}</Text>
             <View style={styles.statsLabelContainer}>
               <Text style={styles.statsLabel}>Pontos acumulados</Text>
             </View>
           </View>
           <View style={styles.statsCard}>
-            <Text style={styles.statsNumber}>+115</Text>
+            <Text 
+            onPress={async () => {
+              navigation.navigate("MapaPage");
+            }}
+            style={styles.statsNumber}>+115</Text>
             <View style={styles.statsLabelContainer}>
               <Text style={styles.statsLabel}>Zonas de Risco</Text>
             </View>
@@ -411,15 +414,15 @@ const handleBackPress = async () => {
               <TouchableOpacity
                 style={styles.startButton}
                 onPress={async () => {
-                   if (logged) navigation.navigate("GamingPage");
-                   else {
-                     navigation.navigate("Login");
-                     await showAlert(
-                       "aviso",
-                       "Você precisa estar logado para acessar esta página, tente Logar",
-                       "Atenção"
-                     );
-                   }
+                  if (logged) navigation.navigate("GamingPage");
+                  else {
+                    navigation.navigate("Login");
+                    await showAlert(
+                      "aviso",
+                      "Você precisa estar logado para acessar esta página, tente Logar",
+                      "Atenção"
+                    );
+                  }
                 }}>
                 <Text style={styles.startButtonText}>Iniciar agora</Text>
               </TouchableOpacity>
@@ -454,7 +457,7 @@ const handleBackPress = async () => {
                       "Atenção"
                     );
                   }
-               }}>
+                }}>
                 <Text style={styles.findButtonText}>Encontrar</Text>
               </TouchableOpacity>
             </View>
@@ -485,7 +488,7 @@ const handleBackPress = async () => {
                       "Atenção"
                     );
                   }
-               }}>
+                }}>
                 <Text style={styles.findButtonText}>Ver Previsão</Text>
               </TouchableOpacity>
             </View>
@@ -524,7 +527,7 @@ const handleBackPress = async () => {
                 "Atenção"
               );
             }
-         }}>
+          }}>
           <Hospital color="#6D122C" />
           <Text style={styles.navButtonText}>Hospitais</Text>
         </TouchableOpacity>
@@ -564,7 +567,7 @@ const handleBackPress = async () => {
                 "Atenção"
               );
             }
-         }}>
+          }}>
           <Cog color="#6D122C" />
           <Text style={styles.navButtonText}>Definições</Text>
         </TouchableOpacity>
@@ -671,9 +674,9 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     flexDirection: "row",
-    justifyContent:"center",
+    justifyContent: "center",
     alignItems: "center",
-    gap : 3,
+    gap: 3,
     paddingHorizontal: 16,
     paddingVertical: 8,
     backgroundColor: "white",
@@ -692,7 +695,6 @@ const styles = StyleSheet.create({
   statsCard: {
     flex: 1,
     backgroundColor: "#6D122C",
-
     borderRadius: 12,
     padding: 16,
     height: 120,

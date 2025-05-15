@@ -193,6 +193,7 @@ export default function SidebarComponent({ navigation }) {
     try {
       await AsyncStorage.removeItem("Token");
       await AsyncStorage.removeItem("User");
+      await AsyncStorage.removeItem("cachNotify");
       navigation.navigate("Login");
     } catch (error) {
       console.log("Erro ao fazer logout:", error);
@@ -284,7 +285,21 @@ export default function SidebarComponent({ navigation }) {
   };
 
   useEffect(() => {
+
     startLocationTracking();
+
+    (async () => {
+      const dangerZones = await AsyncStorage.getItem("cachDangerZones");
+      const User = await AsyncStorage.getItem("User");
+      const data = dangerZones ? JSON.parse(dangerZones) : null;
+      const dataUser = User ? JSON.parse(User) : null;
+      if (data)
+        setDangerZones(data || []);
+      if (dataUser)
+        setUserName(dataUser.name);
+      alert(dangerZones);
+    })();
+
 
     // Fetch danger zones
     (async () => {
@@ -298,6 +313,7 @@ export default function SidebarComponent({ navigation }) {
             "dangerZone",
             JSON.stringify(data.dangerZones)
           );
+          await AsyncStorage.setItem("cachDangerZones", data.dangerZones);
           setDangerZones(data.dangerZones || []);
         } else {
           console.log("Erro ao buscar zonas de perigo:", data.message);
