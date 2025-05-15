@@ -46,7 +46,7 @@ const NotifyPage = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // const cach = async () => {
   //   const cachNotify = await AsyncStorage.getItem("cachNotify");
@@ -106,7 +106,7 @@ const NotifyPage = ({ navigation }) => {
         if (response.status === 401 || response.status === 403) {
           await showAlert(
             "erro",
-            "Sessão expirada. Faça login novamente.",
+            "Não autorizado.",
             "Erro"
           );
           await AsyncStorage.removeItem("Token");
@@ -115,7 +115,7 @@ const NotifyPage = ({ navigation }) => {
           navigation.navigate("Login");
           return;
         }
-        throw new Error("Erro ao buscar notificações");
+        console.log("Erro ao buscar notificações");
       }
       await AsyncStorage.setItem("cachNotify", JSON.stringify(data));
 
@@ -126,9 +126,9 @@ const NotifyPage = ({ navigation }) => {
         ...item,
         image: getImageByType(item.typeNotification),
       }));
-
       setNotifications(notificationsWithImages);
     } catch (error) {
+      setLoading(false);
 
       console.log("Erro ao buscar notificações:", error);
       /*await showAlert(
@@ -143,6 +143,7 @@ const NotifyPage = ({ navigation }) => {
 
   useEffect(() => {
 
+    fetchNotifications();
     (async () => {
       const data = await AsyncStorage.getItem("cachNotify");
     
@@ -163,11 +164,10 @@ const NotifyPage = ({ navigation }) => {
         ...item,
         image: getImageByType(item.typeNotification),
       }));
-    
+      //alert(JSON.stringify(notificationsWithImages));
       setNotifications(notificationsWithImages);
     })();
 
-    fetchNotifications();
 
     // Configurar WebSocket
     const handleConnect = () => {

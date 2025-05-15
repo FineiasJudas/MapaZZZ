@@ -97,6 +97,7 @@ export default function Login({ navigation }: any) {
           const userData = {
             name: dataDetalhes.data.name,
             address: dataDetalhes.data.address,
+            points : dataDetalhes.data.points || 0
           };
           await AsyncStorage.setItem("User", JSON.stringify(userData))
         }

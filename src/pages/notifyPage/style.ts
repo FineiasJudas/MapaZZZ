@@ -51,8 +51,7 @@ export const style = StyleSheet.create({
     justifyContent: 'space-between',
   },
   notificationText: {
-    left: 1,
-    marginLeft: 8,
+    left: 0,
     fontSize: width * 0.04,
     color: '#333',
   },
@@ -81,9 +80,9 @@ export const style = StyleSheet.create({
     alignItems: 'center',
   },
   modalImage: {
-    width: 60,
-    height: 60,
-    marginBottom: 15,
+    width: 40,
+    height: 40,
+    marginBottom: 10,
     resizeMode: 'contain',
     alignSelf: 'center',
   },

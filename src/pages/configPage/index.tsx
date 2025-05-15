@@ -24,8 +24,11 @@ import {
   Languages,
 } from "lucide-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAlert } from "../alertProvider/index";
+
 
 const SettingsPage = ({ navigation }: any) => {
+    const { showAlert, showConfirmAlert } = useAlert();
   const [notifications, setNotifications] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [locationServices, setLocationServices] = useState(true);
@@ -48,6 +51,17 @@ const SettingsPage = ({ navigation }: any) => {
       navigation.navigate("Login");
     } catch (error) {
       console.error("Erro ao fazer logout:", error);
+    }
+  };
+
+  const handleBackPress = async () => {
+    const confirmed = await showConfirmAlert(
+      "Deseja terminar a sessão?", 
+      "Confirmação"
+    );
+    
+    if (confirmed) {
+      logOut() // Ou sua lógica para terminar sessão
     }
   };
 
@@ -90,6 +104,7 @@ const SettingsPage = ({ navigation }: any) => {
         {/* General */}
         <Text style={styles.sectionTitle}>Geral</Text>
         <View style={styles.settingsGroup}>
+
         {/*<View style={styles.settingItem}>
             <View style={styles.settingInfo}>
               <Moon size={22} color="#6D122C" style={styles.settingIcon} />
@@ -139,7 +154,9 @@ const SettingsPage = ({ navigation }: any) => {
         </View>
 
         {/* Logout */}
-        <TouchableOpacity onPress={() => logOut()} style={styles.logoutButton}>
+        <TouchableOpacity 
+        
+        onPress={() => handleBackPress()} style={styles.logoutButton}>
           <LogOut size={22} color="#ff3b30" style={styles.logoutIcon} />
           <Text style={styles.logoutText}>Terminar Sessão</Text>
         </TouchableOpacity>
