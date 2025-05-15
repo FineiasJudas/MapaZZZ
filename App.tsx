@@ -26,7 +26,8 @@ import ongPage from './src/pages/ongPage';
 import QuestionPage from './src/pages/gamingPage/questionPage';
 import CorretctA from './src/pages/gamingPage/correctAnwser';
 import WrongA from './src/pages/gamingPage/wrongAnwser';
-import OutbreakPredictorPage from './src/pages/outbreakPredictorPage'
+import OutbreakPredictorPage from './src/pages/outbreakPredictorPage';
+import SplashScreen from './src/pages/splashScreen';
 
 import { registerForPushNotificationsAsync } from './src/pages/manegeNotification/index';
 import { Import } from 'lucide-react-native';
@@ -59,8 +60,9 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
        <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
       <AlertProvider>
-        <NavigationContainer> 
+        <NavigationContainer>
           <Stack.Navigator initialRouteName="WelcomePage">
+            <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
             <Stack.Screen name="QuestionPage" component={QuestionPage} options={{ headerShown: false }} />
             <Stack.Screen name="GamingPage" component={GamingPage} options={{ headerShown: false }} />
             <Stack.Screen name="CorretctA" component={CorretctA} options={{ headerShown: false }} />

@@ -57,11 +57,11 @@ const ProfilePage = ({ navigation }: any) => {
         <View style={styles.statsContainer}>
           <View style={styles.statItem}>
             <Text style={styles.statNumber}>{name}</Text>
-            <TouchableOpacity
-              style={{ alignItems: "center", flexDirection: "row" }}>
+            <View
+              style={{ alignItems: "center", flexDirection: "row", justifyContent:'center'}}>
               <MapPin color="#6D122C" size={18} style={{ marginRight: 6 }} />
               <Text style={styles.statLabel}>{localizacao}</Text>
-            </TouchableOpacity>
+            </View>
           </View>
         </View>
 
@@ -181,7 +181,8 @@ const styles = StyleSheet.create({
   },
   menuContainer: {
     flex: 1,
-    paddingHorizontal: 20,
+    marginTop: 20,
+    paddingHorizontal: 30,
   },
   menuItem: {
     borderWidth: 1,
@@ -189,13 +190,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "white",
-    borderRadius: 15,
-    padding: 15,
+    borderRadius: 12,
+    padding: 12,
     marginBottom: 10,
   },
   menuIconContainer: {
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",

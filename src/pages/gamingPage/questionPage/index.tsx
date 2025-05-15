@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -19,10 +19,16 @@ const { width, height } = Dimensions.get("window");
 const QuizQuestionScreen = ({ navigation }: any) => {
   const [inputVisible, setInputVisible] = useState(false);
   const [answer, setAnswer] = useState("");
+  const [hasText, setHasText] = useState(false); // Novo estado
+  const [keyboardOffset, setKeyboardOffset] = useState(0);
   
   const handleResponder = () => {
     setInputVisible(true);
   };
+
+  useEffect(() => {
+    setHasText(answer.length > 0);
+  }, [answer]);
 
   const handleSubmit = () => {
     // Logic to handle submission and move to next question
@@ -100,25 +106,30 @@ const QuizQuestionScreen = ({ navigation }: any) => {
               </TouchableOpacity>
             </View>
             
-            <TextInput
-              style={styles.input}
-              placeholder="Escreva sua mensagem..."
-              placeholderTextColor="#FFFFFF80"
-              value={answer}
-              onChangeText={setAnswer}
-              multiline
-              autoFocus
-            />
-            
-            <View style={styles.buttonRow}>
-              <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("CorretctA")}>
-                <Text style={styles.buttonText}>Enviar</Text>
-              </TouchableOpacity>
+              <TextInput
+                style={styles.input}
+                placeholder="Escreva sua mensagem..."
+                placeholderTextColor="#FFFFFF80"
+                value={answer}
+                onChangeText={(text) => {
+                  setAnswer(text);
+                  setHasText(text.length > 0); 
+                }}
+                multiline
+                autoFocus
+              />
               
-              <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("WrongA")}>
-                <Text style={styles.buttonText}>Pular</Text>
-              </TouchableOpacity>
-            </View>
+              {hasText && (
+                <View style={styles.buttonRow}>
+                  <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("CorretctA")}>
+                    <Text style={styles.buttonText}>Enviar</Text>
+                  </TouchableOpacity>
+                  
+                  <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("WrongA")}>
+                    <Text style={styles.buttonText}>Pular</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
           </View>
         )}
       </KeyboardAvoidingView>

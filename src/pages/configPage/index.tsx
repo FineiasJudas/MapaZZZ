@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     borderColor: "#dfdfdf",
     borderRadius: 12,
     marginTop: 24,
-    padding: 16,
+    padding: 14,
   },
   logoutIcon: {
     marginRight: 12,
