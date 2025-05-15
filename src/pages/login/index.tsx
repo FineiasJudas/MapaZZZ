@@ -81,6 +81,7 @@ export default function Login({ navigation }: any) {
       if (response.ok) {
         ToastAndroid.show("Login feito com sucesso", ToastAndroid.LONG);
         await AsyncStorage.setItem("Token", data.token); // Salva o token no AsyncStorage
+       
         const resDetalhes = await fetch(
           "https://mapazzz.onrender.com/api/users/",
           {
@@ -97,7 +98,7 @@ export default function Login({ navigation }: any) {
             name: dataDetalhes.data.name,
             address: dataDetalhes.data.address,
           };
-          await AsyncStorage.setItem("User",JSON.stringify(userData))
+          await AsyncStorage.setItem("User", JSON.stringify(userData))
         }
         
         navigation.navigate("initPage");

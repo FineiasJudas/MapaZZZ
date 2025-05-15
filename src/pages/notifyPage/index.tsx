@@ -110,6 +110,8 @@ const NotifyPage = ({ navigation }) => {
             "Erro"
           );
           await AsyncStorage.removeItem("Token");
+          await AsyncStorage.removeItem("User");
+          await AsyncStorage.removeItem("cachNotify");
           navigation.navigate("Login");
           return;
         }
@@ -128,20 +130,43 @@ const NotifyPage = ({ navigation }) => {
       setNotifications(notificationsWithImages);
     } catch (error) {
 
-      console.error("Erro ao buscar notificações:", error);
-      await showAlert(
+      console.log("Erro ao buscar notificações:", error);
+      /*await showAlert(
         "erro",
         "Não foi possível carregar as notificações.",
         "Erro"
-      );
+      );*/
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    // cach();
-    // Carregar notificações iniciais
+
+    (async () => {
+      const data = await AsyncStorage.getItem("cachNotify");
+    
+      let notificationsData = [];
+    
+      if (data) {
+        try {
+          const parsedData = JSON.parse(data);
+          notificationsData = Array.isArray(parsedData)
+            ? parsedData
+            : parsedData.notifications || [];
+        } catch (error) {
+          console.error("Erro ao fazer parse do cachNotify:", error);
+        }
+      }
+    
+      const notificationsWithImages = notificationsData.map((item) => ({
+        ...item,
+        image: getImageByType(item.typeNotification),
+      }));
+    
+      setNotifications(notificationsWithImages);
+    })();
+
     fetchNotifications();
 
     // Configurar WebSocket
@@ -153,7 +178,7 @@ const NotifyPage = ({ navigation }) => {
       console.log("Evento recebido do WebSocket:", event);
       const newNotification = {
         id: Date.now().toString(),
-        title : event.data.title,
+        title: event.data.title,
         describe: event.data.describe || "Chuva detectada na sua localização!",
         createdAt: new Date().toISOString(),
         typeNotification: event.data.typeNotification || "clima",
@@ -192,7 +217,7 @@ const NotifyPage = ({ navigation }) => {
     };
   }, [navigation]);
 
-   useEffect(() => {
+  useEffect(() => {
     const backAction = () => {
       navigation.goBack()
       return true // Impede o comportamento padrão do botão voltar
@@ -216,7 +241,7 @@ const NotifyPage = ({ navigation }) => {
       {/* Topo */}
       <View style={style.logoX}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ArrowLeft color="#6D122C" size={30} style={{marginTop: 6}}/>
+          <ArrowLeft color="#6D122C" size={30} style={{ marginTop: 6 }} />
         </TouchableOpacity>
         <Image source={logo} style={style.logoImg} />
       </View>

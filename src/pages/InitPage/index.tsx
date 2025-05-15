@@ -65,10 +65,11 @@ const HomePage = ({ navigation }: any) => {
             Authorization: `Bearer ${Token}`,
           },
         });
+
         const result = await response.json();
         if (response.ok) {
           setUsername(getFirstName(result.data.name));
-          setUserPoints(result.data.points);
+          setUserPoints(result.data.points || 0);
           setRegions(result.detalhes.danger_zones);
           await AsyncStorage.setItem(
             "@cachedUsername",
@@ -79,14 +80,6 @@ const HomePage = ({ navigation }: any) => {
       }
     } catch (error) {
       console.log("Erro ao buscar detalhes:", error);
-      const cachedUsername = await AsyncStorage.getItem("@cachedUsername");
-      const cachedUserPoints = await AsyncStorage.getItem("@cachedUserPoints");
-      if (cachedUsername) {
-        setUsername(cachedUsername);
-      }
-      if (cachedUserPoints) {
-        setUserPoints(Number(cachedUserPoints));
-      }
     }
   };
   const getLocation = async () => {
@@ -111,9 +104,8 @@ const HomePage = ({ navigation }: any) => {
         const address = addressArray[0];
 
         // Exemplo: "Luanda, Angola"
-        const fullAddress = `${
-          address.district || address.city || address.subregion
-        }, ${address.country || address.region}`;
+        const fullAddress = `${address.district || address.city || address.subregion
+          }, ${address.country || address.region}`;
         setLocation(fullAddress);
         await AsyncStorage.setItem("@cachedLocation", fullAddress);
       } else {
@@ -140,38 +132,46 @@ const HomePage = ({ navigation }: any) => {
   };
 
   useEffect(() => {
+    (async () => {
+      const User = await AsyncStorage.getItem("User");
+      const Data = User ? JSON.parse(User) : null;
+      if (Data) {
+        setUsername(getFirstName(Data.name));
+        setUserPoints(Data.points);
+      }
+    })();
     checkPermission();
     getLocation();
     details();
   }, []);
 
   useEffect(() => {
-  const backAction = () => {
-    if (navigation.isFocused()) {
-      handleBackPress();
-      return true; // Impede o comportamento padrão
+    const backAction = () => {
+      if (navigation.isFocused()) {
+        handleBackPress();
+        return true; // Impede o comportamento padrão
+      }
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
+  const handleBackPress = async () => {
+    const confirmed = await showConfirmAlert(
+      "Deseja terminar a sessão?",
+      "Confirmação"
+    );
+
+    if (confirmed) {
+      BackHandler.exitApp(); // Ou sua lógica para terminar sessão
     }
-    return false;
   };
-
-  const backHandler = BackHandler.addEventListener(
-    "hardwareBackPress",
-    backAction
-  );
-
-  return () => backHandler.remove();
-}, []);
-
-const handleBackPress = async () => {
-  const confirmed = await showConfirmAlert(
-    "Deseja terminar a sessão?", 
-    "Confirmação"
-  );
-  
-  if (confirmed) {
-    BackHandler.exitApp(); // Ou sua lógica para terminar sessão
-  }
-};
 
   return (
     <View style={styles.container}>
@@ -183,15 +183,15 @@ const handleBackPress = async () => {
             <Puzzle
               color="#6D122C"
               onPress={async () => {
-                 if (logged) navigation.navigate("GamingPage");
-                 else {
-                   navigation.navigate("Login");
-                   await showAlert(
-                     "aviso",
-                     "Você precisa estar logado para acessar esta página, tente Logar",
-                     "Atenção"
-                   );
-                 }
+                if (logged) navigation.navigate("GamingPage");
+                else {
+                  navigation.navigate("Login");
+                  await showAlert(
+                    "aviso",
+                    "Você precisa estar logado para acessar esta página, tente Logar",
+                    "Atenção"
+                  );
+                }
               }}
             />
           </TouchableOpacity>
@@ -220,7 +220,7 @@ const handleBackPress = async () => {
             <TouchableOpacity
               style={styles.userIcon}
               onPress={() => navigation.navigate("ProfilePage")}>
-              <User color="#6D122C" size={30}/>
+              <User color="#6D122C" size={30} />
             </TouchableOpacity>
             <View>
               <Text style={styles.welcomeText}>Bem-vindo, {username}</Text>
@@ -313,15 +313,15 @@ const handleBackPress = async () => {
               <TouchableOpacity
                 style={styles.startButton}
                 onPress={async () => {
-                   if (logged) navigation.navigate("GamingPage");
-                   else {
-                     navigation.navigate("Login");
-                     await showAlert(
-                       "aviso",
-                       "Você precisa estar logado para acessar esta página, tente Logar",
-                       "Atenção"
-                     );
-                   }
+                  if (logged) navigation.navigate("GamingPage");
+                  else {
+                    navigation.navigate("Login");
+                    await showAlert(
+                      "aviso",
+                      "Você precisa estar logado para acessar esta página, tente Logar",
+                      "Atenção"
+                    );
+                  }
                 }}>
                 <Text style={styles.startButtonText}>Iniciar agora</Text>
               </TouchableOpacity>
@@ -518,9 +518,9 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     flexDirection: "row",
-    justifyContent:"center",
+    justifyContent: "center",
     alignItems: "center",
-    gap : 3,
+    gap: 3,
     paddingHorizontal: 16,
     paddingVertical: 8,
     backgroundColor: "white",
