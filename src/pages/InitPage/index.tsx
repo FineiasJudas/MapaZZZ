@@ -19,6 +19,7 @@ import {
   OctagonAlert,
   Gamepad2,
   Siren,
+  LogOut,
   Puzzle,
   Camera,
   TriangleAlert,
@@ -26,6 +27,13 @@ import {
   CheckCheck,
   Cog,
   Split,
+  Sun,
+  Cloud,
+  CloudRain,
+  Zap,
+  Snowflake,
+  CloudFog,
+  Thermometer,
 } from "lucide-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
@@ -35,13 +43,76 @@ import { style } from "./style";
 import useSocketNotification from "../utils/socketio";
 
 const HomePage = ({ navigation }: any) => {
+  const [weather, setWeather] = useState<{temp: string; condition: string}>({ 
+    temp: "--°C", 
+    condition: "Carregando..." 
+  });
   const { showAlert, showConfirmAlert } = useAlert();
   const [location, setLocation] = useState("Obtendo a localização...");
   const [loading, setLoading] = useState(false);
-  const [logged, setLogged] = useState(false);
+  const [logged, setLogged] = useState(false);  
   const [username, setUsername] = useState("Visitante");
   const [userPoints, setUserPoints] = useState(0);
   useSocketNotification();
+
+  const weatherIcons = {
+    Clear: <Sun color="#F59E0B" size={18} />,
+    Clouds: <Cloud color="#4B5563" size={18} />,
+    Rain: <CloudRain color="#3B82F6" size={18} />,
+    Thunderstorm: <Zap color="#F59E0B" size={18} />,
+    Snow: <Snowflake color="#93C5FD" size={18} />,
+    Mist: <CloudFog color="#6B7280" size={18} />,
+    default: <Thermometer color="#6D122C" size={18} />
+  };
+  
+  const weatherColors = {
+    hot: "#DC2626",       // >30°C
+    warm: "#EA580C",      // 20-30°C
+    mild: "#16A34A",      // 10-19°C
+    cool: "#3B82F6",      // 0-9°C
+    cold: "#1D4ED8"       // <0°C
+  };
+
+  const getTemperatureColor = (tempStr: string) => {
+    const temp = parseInt(tempStr.replace('°C', ''));
+    if (temp >= 30) return weatherColors.hot;
+    if (temp >= 20) return weatherColors.warm;
+    if (temp >= 10) return weatherColors.mild;
+    if (temp >= 0) return weatherColors.cool;
+    return weatherColors.cold;
+  };
+
+  // Clima request
+  const getWeather = async (lat: number, lon: number) => {
+    try {
+      const apiKey = '597816ec128b20a1e0d19827ed21a6f8';
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=pt`
+      );
+      const data = await response.json();
+      
+      if (data.weather) {
+        const temp = Math.round(data.main.temp);
+        const condition = data.weather[0].main;
+        
+        setWeather({
+          temp: `${temp}°C`,
+          condition
+        });
+        
+        await AsyncStorage.setItem("@cachedWeather", JSON.stringify({
+          temp: `${temp}°C`,
+          condition
+        }));
+      }
+    } catch (error) {
+      const cachedWeather = await AsyncStorage.getItem("@cachedWeather");
+      if (cachedWeather) {
+        setWeather(JSON.parse(cachedWeather));
+      }
+    }
+  };
+
   // Tipagem opcional (para TypeScript, mas também ajuda a entender o formato)
   type DangerZone = {
     id: string;
@@ -97,10 +168,12 @@ const HomePage = ({ navigation }: any) => {
         setLocation("Permissão negada");
         return;
       }
-
+  
       let location = await Location.getCurrentPositionAsync({});
       const { latitude, longitude } = location.coords;
-
+  
+      // Chama a nova função do clima
+      await getWeather(latitude, longitude);
       // Reverse geocoding para obter nome da localidade
       let addressArray = await Location.reverseGeocodeAsync({
         latitude,
@@ -162,6 +235,25 @@ const HomePage = ({ navigation }: any) => {
   return () => backHandler.remove();
 }, []);
 
+useEffect(() => {
+  (async () => {
+    const Token = await AsyncStorage.getItem("Token");
+    if (Token) setLogged(true);
+    else setLogged(false);
+  })();
+}, []);
+
+const logOut = async () => {
+  try {
+    await AsyncStorage.removeItem("Token");
+    await AsyncStorage.removeItem("User");
+    setLogged(false);
+    navigation.navigate("Login");
+  } catch (error) {
+    console.error("Erro ao fazer logout:", error);
+  }
+};
+
 const handleBackPress = async () => {
   const confirmed = await showConfirmAlert(
     "Deseja terminar a sessão?", 
@@ -169,7 +261,7 @@ const handleBackPress = async () => {
   );
   
   if (confirmed) {
-    BackHandler.exitApp(); // Ou sua lógica para terminar sessão
+    logOut() // Ou sua lógica para terminar sessão
   }
 };
 
@@ -229,6 +321,12 @@ const handleBackPress = async () => {
                 <MapPin color="#6D122C" size={18} style={{ marginRight: 6 }} />
                 <Text style={styles.statLabel}>{location}</Text>
               </TouchableOpacity>
+              <View style={styles.infoRow}>
+                {weatherIcons[weather.condition as keyof typeof weatherIcons] || weatherIcons.default}
+                <Text style={[styles.infoText, { color: getTemperatureColor(weather.temp) }]}>
+                  {weather.temp} - {weather.condition}
+                </Text>
+              </View>
             </View>
           </View>
           <View style={styles.actionButtons}>
@@ -346,7 +444,17 @@ const handleBackPress = async () => {
               </Text>
               <TouchableOpacity
                 style={styles.findButton}
-                onPress={() => navigation.navigate("nearHospitalPage")}>
+                onPress={async () => {
+                  if (logged) navigation.navigate("nearHospitalPage");
+                  else {
+                    navigation.navigate("Login");
+                    await showAlert(
+                      "aviso",
+                      "Você precisa estar logado para acessar esta página, tente Logar",
+                      "Atenção"
+                    );
+                  }
+               }}>
                 <Text style={styles.findButtonText}>Encontrar</Text>
               </TouchableOpacity>
             </View>
@@ -367,7 +475,17 @@ const handleBackPress = async () => {
               </Text>
               <TouchableOpacity
                 style={styles.findButton}
-                onPress={() => navigation.navigate("OutbreakPredictorPage")}>
+                onPress={async () => {
+                  if (logged) navigation.navigate("OutbreakPredictorPage");
+                  else {
+                    navigation.navigate("Login");
+                    await showAlert(
+                      "aviso",
+                      "Você precisa estar logado para acessar esta página, tente Logar",
+                      "Atenção"
+                    );
+                  }
+               }}>
                 <Text style={styles.findButtonText}>Ver Previsão</Text>
               </TouchableOpacity>
             </View>
@@ -396,7 +514,17 @@ const handleBackPress = async () => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.navButton}
-          onPress={() => navigation.navigate("nearHospitalPage")}>
+          onPress={async () => {
+            if (logged) navigation.navigate("nearHospitalPage");
+            else {
+              navigation.navigate("Login");
+              await showAlert(
+                "aviso",
+                "Você precisa estar logado para acessar esta página, tente Logar",
+                "Atenção"
+              );
+            }
+         }}>
           <Hospital color="#6D122C" />
           <Text style={styles.navButtonText}>Hospitais</Text>
         </TouchableOpacity>
@@ -426,7 +554,17 @@ const handleBackPress = async () => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.navButton}
-          onPress={() => navigation.navigate("configPage")}>
+          onPress={async () => {
+            if (logged) navigation.navigate("configPage");
+            else {
+              navigation.navigate("Login");
+              await showAlert(
+                "aviso",
+                "Você precisa estar logado para acessar esta página, tente Logar",
+                "Atenção"
+              );
+            }
+         }}>
           <Cog color="#6D122C" />
           <Text style={styles.navButtonText}>Definições</Text>
         </TouchableOpacity>
@@ -439,6 +577,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f5f5f5",
+  },
+  weatherText: {
+    fontSize: 12,
+    color: "#666",
+    marginTop: 4,
+  },
+  infoRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 4,
+    gap: 6,
+  },
+  infoText: {
+    fontSize: 12,
+    color: "#666",
   },
   header: {
     paddingTop: 18,

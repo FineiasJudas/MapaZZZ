@@ -28,9 +28,9 @@ export const style = StyleSheet.create({
     resizeMode: 'contain'
   },
   logoImg: {
-    width: width * 0.1,
+    width: width * 0.085,
     height: width * 0.1,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   },
   header: {
     fontSize: width * 0.055,
