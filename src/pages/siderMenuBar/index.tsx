@@ -80,9 +80,9 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
                     <Text style={styles.profileName}>{userName}</Text>
                   )}
                   <View style={styles.ratingContainer}>
-                    <Star size={16} color="#12ab40" fill="#12ab40" />
-                    <Star size={16} color="#12ab40" fill="#12ab40" />
-                    <Star size={16} color="#12ab40" fill="#12ab40" />
+                    <Star size={16} color="#ccc"  />
+                    <Star size={16} color="#ccc"  />
+                    <Star size={16} color="#ccc"  />
                     <Star size={16} color="#ccc" />
                     <Star size={16} color="#ccc" />
                   </View>
@@ -264,6 +264,7 @@ const styles = StyleSheet.create({
   profileContainer: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: 'center'
   },
   profileIcon: {
     width: 60,
@@ -291,12 +292,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     color: "#333",
-    marginBottom: 5,
+    marginBottom: 2,
   },
   ratingContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 5,
+    marginTop: 2,
   },
   menuItems: {
     flex: 1,

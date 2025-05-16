@@ -60,7 +60,7 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
        <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
       <AlertProvider>
-        <NavigationContainer>
+        <NavigationContainer> 
           <Stack.Navigator initialRouteName="WelcomePage">
             <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
             <Stack.Screen name="QuestionPage" component={QuestionPage} options={{ headerShown: false }} />

@@ -46,7 +46,7 @@ const NotifyPage = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // const cach = async () => {
   //   const cachNotify = await AsyncStorage.getItem("cachNotify");
@@ -106,14 +106,16 @@ const NotifyPage = ({ navigation }) => {
         if (response.status === 401 || response.status === 403) {
           await showAlert(
             "erro",
-            "Sessão expirada. Faça login novamente.",
+            "Não autorizado.",
             "Erro"
           );
           await AsyncStorage.removeItem("Token");
+          await AsyncStorage.removeItem("User");
+          await AsyncStorage.removeItem("cachNotify");
           navigation.navigate("Login");
           return;
         }
-        throw new Error("Erro ao buscar notificações");
+        console.log("Erro ao buscar notificações");
       }
       await AsyncStorage.setItem("cachNotify", JSON.stringify(data));
 
@@ -124,25 +126,48 @@ const NotifyPage = ({ navigation }) => {
         ...item,
         image: getImageByType(item.typeNotification),
       }));
-
       setNotifications(notificationsWithImages);
     } catch (error) {
+      setLoading(false);
 
-      console.error("Erro ao buscar notificações:", error);
-      await showAlert(
+      console.log("Erro ao buscar notificações:", error);
+      /*await showAlert(
         "erro",
         "Não foi possível carregar as notificações.",
         "Erro"
-      );
+      );*/
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    // cach();
-    // Carregar notificações iniciais
+
     fetchNotifications();
+    (async () => {
+      const data = await AsyncStorage.getItem("cachNotify");
+    
+      let notificationsData = [];
+    
+      if (data) {
+        try {
+          const parsedData = JSON.parse(data);
+          notificationsData = Array.isArray(parsedData)
+            ? parsedData
+            : parsedData.notifications || [];
+        } catch (error) {
+          console.error("Erro ao fazer parse do cachNotify:", error);
+        }
+      }
+    
+      const notificationsWithImages = notificationsData.map((item) => ({
+        ...item,
+        image: getImageByType(item.typeNotification),
+      }));
+      //alert(JSON.stringify(notificationsWithImages));
+      setNotifications(notificationsWithImages);
+    })();
+
 
     // Configurar WebSocket
     const handleConnect = () => {
@@ -153,7 +178,7 @@ const NotifyPage = ({ navigation }) => {
       console.log("Evento recebido do WebSocket:", event);
       const newNotification = {
         id: Date.now().toString(),
-        title : event.data.title,
+        title: event.data.title,
         describe: event.data.describe || "Chuva detectada na sua localização!",
         createdAt: new Date().toISOString(),
         typeNotification: event.data.typeNotification || "clima",
@@ -192,7 +217,7 @@ const NotifyPage = ({ navigation }) => {
     };
   }, [navigation]);
 
-   useEffect(() => {
+  useEffect(() => {
     const backAction = () => {
       navigation.goBack()
       return true // Impede o comportamento padrão do botão voltar
@@ -216,7 +241,7 @@ const NotifyPage = ({ navigation }) => {
       {/* Topo */}
       <View style={style.logoX}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ArrowLeft color="#6D122C" size={30} style={{marginTop: 6}}/>
+          <ArrowLeft color="#6D122C" size={30} style={{ marginTop: 6 }} />
         </TouchableOpacity>
         <Image source={logo} style={style.logoImg} />
       </View>

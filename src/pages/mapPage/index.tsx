@@ -55,6 +55,7 @@ export default function SidebarComponent({ navigation }) {
   const [userName, setUserName] = useState("Visitante...");
   const [loading, setLoading] = useState(false);
   const [logged, setLogged] = useState(false);
+
   const [routeCoordinates, setRouteCoordinates] = useState([]);
   const [destination, setDestination] = useState(null);
   const { showAlert } = useAlert();
@@ -66,7 +67,6 @@ export default function SidebarComponent({ navigation }) {
     try {
       const token = await AsyncStorage.getItem("Token");
       if (token) {
-        setLoading(true);
         setLogged(true);
         const response = await fetch("https://mapazzz.onrender.com/api/users/", {
           method: "GET",
@@ -193,6 +193,7 @@ export default function SidebarComponent({ navigation }) {
     try {
       await AsyncStorage.removeItem("Token");
       await AsyncStorage.removeItem("User");
+      await AsyncStorage.removeItem("cachNotify");
       navigation.navigate("Login");
     } catch (error) {
       console.log("Erro ao fazer logout:", error);
@@ -284,7 +285,11 @@ export default function SidebarComponent({ navigation }) {
   };
 
   useEffect(() => {
+
     startLocationTracking();
+
+
+
 
     // Fetch danger zones
     (async () => {
@@ -317,6 +322,17 @@ export default function SidebarComponent({ navigation }) {
           setDangerZones([]);
         }
       }
+    })();
+
+    (async () => {
+      const dangerZones = await AsyncStorage.getItem("dangerZone");
+      const User = await AsyncStorage.getItem("User");
+      const data = dangerZones ? JSON.parse(dangerZones) : [];
+      const dataUser = User ? JSON.parse(User) : null;
+      if (data)
+        setDangerZones(data);
+      if (dataUser)
+        setUserName(dataUser.name);
     })();
 
     getUserName();
@@ -420,13 +436,12 @@ export default function SidebarComponent({ navigation }) {
                 }}
                 anchor={{ x: 0.5, y: 0.5 }}
                 pinColor={color}
-                title={`Zona de perigo ${
-                  zone.level === "high"
+                title={`Zona de perigo ${zone.level === "high"
                     ? "alta"
                     : zone.level === "medium"
-                    ? "média"
-                    : "baixa"
-                }`}
+                      ? "média"
+                      : "baixa"
+                  }`}
                 description={`${zone.description}`}
               >
                 <Image

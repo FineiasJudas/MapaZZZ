@@ -46,6 +46,7 @@ const SettingsPage = ({ navigation }: any) => {
     try {
       await AsyncStorage.removeItem("Token");
       await AsyncStorage.removeItem("User");
+      await AsyncStorage.removeItem("cachNotify");
       setLogged(false);
       navigation.navigate("Login");
     } catch (error) {
