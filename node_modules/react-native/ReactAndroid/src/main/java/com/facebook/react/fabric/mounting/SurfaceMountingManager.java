@@ -21,6 +21,7 @@ import androidx.collection.SparseArrayCompat;
 import com.facebook.common.logging.FLog;
 import com.facebook.infer.annotation.Assertions;
 import com.facebook.infer.annotation.ThreadConfined;
+import com.facebook.react.bridge.ReactNoCrashSoftException;
 import com.facebook.react.bridge.ReactSoftExceptionLogger;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
@@ -232,19 +233,13 @@ public class SurfaceMountingManager {
             ((ReactRoot) rootView).setRootViewTag(mSurfaceId);
           }
 
-          if (!ReactNativeFeatureFlags.forceBatchingMountItemsOnAndroid()) {
-            mRootViewAttached = true;
-          }
-
           executeMountItemsOnViewAttach();
 
-          if (ReactNativeFeatureFlags.forceBatchingMountItemsOnAndroid()) {
-            // By doing this after `executeMountItemsOnViewAttach`, we ensure
-            // that any operations scheduled while processing this queue are
-            // also added to the queue, instead of being processed immediately
-            // through the queue in `MountItemDispatcher`.
-            mRootViewAttached = true;
-          }
+          // By doing this after `executeMountItemsOnViewAttach`, we ensure
+          // that any operations scheduled while processing this queue are
+          // also added to the queue, instead of being processed immediately
+          // through the queue in `MountItemDispatcher`.
+          mRootViewAttached = true;
         };
 
     if (UiThreadUtil.isOnUiThread()) {
@@ -411,7 +406,7 @@ public class SurfaceMountingManager {
 
     try {
       getViewGroupManager(parentViewState).addView(parentView, view, index);
-    } catch (IllegalStateException e) {
+    } catch (IllegalStateException | IndexOutOfBoundsException e) {
       // Wrap error with more context for debugging
       throw new IllegalStateException(
           "addViewAt: failed to insert view ["
@@ -806,12 +801,10 @@ public class SurfaceMountingManager {
       throw new IllegalStateException("Unable to find View for tag: " + reactTag);
     }
 
-    if (ReactNativeFeatureFlags.setAndroidLayoutDirection()) {
-      viewToUpdate.setLayoutDirection(
-          layoutDirection == 1
-              ? View.LAYOUT_DIRECTION_LTR
-              : layoutDirection == 2 ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_INHERIT);
-    }
+    viewToUpdate.setLayoutDirection(
+        layoutDirection == 1
+            ? View.LAYOUT_DIRECTION_LTR
+            : layoutDirection == 2 ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_INHERIT);
 
     // Even though we have exact dimensions, we still call measure because some platform views (e.g.
     // Switch) assume that method will always be called before onLayout and onDraw. They use it to
@@ -1041,14 +1034,13 @@ public class SurfaceMountingManager {
 
     if (viewState == null) {
       ReactSoftExceptionLogger.logSoftException(
-          MountingManager.TAG,
-          new IllegalStateException(
+          ReactSoftExceptionLogger.Categories.SURFACE_MOUNTING_MANAGER_MISSING_VIEWSTATE,
+          new ReactNoCrashSoftException(
               "Unable to find viewState for tag: " + reactTag + " for deleteView"));
       return;
     }
 
-    if (ReactNativeFeatureFlags.enableEventEmitterRetentionDuringGesturesOnAndroid()
-        && mViewsWithActiveTouches.contains(reactTag)) {
+    if (mViewsWithActiveTouches.contains(reactTag)) {
       // If the view that went offscreen is still being touched, we can't delete it yet.
       // We have to delay the deletion till the touch is completed.
       // This is causing bugs like those otherwise:
@@ -1187,16 +1179,10 @@ public class SurfaceMountingManager {
   }
 
   public void markActiveTouchForTag(int reactTag) {
-    if (!ReactNativeFeatureFlags.enableEventEmitterRetentionDuringGesturesOnAndroid()) {
-      return;
-    }
     mViewsWithActiveTouches.add(reactTag);
   }
 
   public void sweepActiveTouchForTag(int reactTag) {
-    if (!ReactNativeFeatureFlags.enableEventEmitterRetentionDuringGesturesOnAndroid()) {
-      return;
-    }
     mViewsWithActiveTouches.remove(reactTag);
     if (mViewsToDeleteAfterTouchFinishes.contains(reactTag)) {
       mViewsToDeleteAfterTouchFinishes.remove(reactTag);

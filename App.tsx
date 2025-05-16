@@ -1,12 +1,13 @@
 import 'react-native-gesture-handler';
-import { StyleSheet } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
 import { StatusBar } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import { NavigationContainer } from '@react-navigation/native';
 import { AlertProvider } from './src/pages/alertProvider/index';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import NetInfo from '@react-native-community/netinfo';
 
 import Login from './src/pages/login';
 import Sign from './src/pages/sign';
@@ -28,12 +29,18 @@ import CorretctA from './src/pages/gamingPage/correctAnwser';
 import WrongA from './src/pages/gamingPage/wrongAnwser';
 import OutbreakPredictorPage from './src/pages/outbreakPredictorPage'
 
+
+
+
+
 import { registerForPushNotificationsAsync } from './src/pages/manegeNotification/index';
 import { Import } from 'lucide-react-native';
+import Toast from 'react-native-toast-message';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const [isConnected, setIsConnected] = useState<boolean | null>(true);
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => {
       if (token) {
@@ -47,19 +54,54 @@ export default function App() {
 
     const responseSubscription = Notifications.addNotificationResponseReceivedListener((response) => {
       console.log('Notificação clicada:', response);
-    });
 
+    });
     return () => {
       subscription.remove();
       responseSubscription.remove();
     };
   }, []);
 
+  useEffect(() => {
+    let previousConnectionStatus: boolean | null = null;
+
+    // Listener da conexão
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      const isNowConnected = state.isConnected;
+
+      if (previousConnectionStatus !== null && isNowConnected !== previousConnectionStatus) {
+        if (!isNowConnected) {
+          Toast.show({
+            type: 'error',
+            text1: 'Sem conexão',
+            text2: 'Você perdeu a conexão com a internet.',
+            position: 'top',
+          });
+        } else {
+          Toast.show({
+            type: 'success',
+            text1: 'Conectado',
+            text2: 'A conexão foi restabelecida.',
+            position: 'top',
+          });
+          // Aqui você pode chamar sua função para atualizar os dados
+          // ex: fetchData();
+        }
+      }
+      previousConnectionStatus = isNowConnected;
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-       <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
+      <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
       <AlertProvider>
-        <NavigationContainer> 
+        <NavigationContainer>
           <Stack.Navigator initialRouteName="WelcomePage">
             <Stack.Screen name="QuestionPage" component={QuestionPage} options={{ headerShown: false }} />
             <Stack.Screen name="GamingPage" component={GamingPage} options={{ headerShown: false }} />
@@ -82,6 +124,7 @@ export default function App() {
             <Stack.Screen name="ongPage" component={ongPage} options={{ headerShown: false }} />
           </Stack.Navigator>
         </NavigationContainer>
+        <Toast />
       </AlertProvider>
     </GestureHandlerRootView>
   );

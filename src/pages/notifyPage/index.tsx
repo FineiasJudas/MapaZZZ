@@ -46,7 +46,7 @@ const NotifyPage = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // const cach = async () => {
   //   const cachNotify = await AsyncStorage.getItem("cachNotify");
@@ -126,8 +126,8 @@ const NotifyPage = ({ navigation }) => {
         ...item,
         image: getImageByType(item.typeNotification),
       }));
-
       setNotifications(notificationsWithImages);
+
     } catch (error) {
 
       console.log("Erro ao buscar notificações:", error);
@@ -145,9 +145,9 @@ const NotifyPage = ({ navigation }) => {
 
     (async () => {
       const data = await AsyncStorage.getItem("cachNotify");
-    
+
       let notificationsData = [];
-    
+
       if (data) {
         try {
           const parsedData = JSON.parse(data);
@@ -158,12 +158,12 @@ const NotifyPage = ({ navigation }) => {
           console.error("Erro ao fazer parse do cachNotify:", error);
         }
       }
-    
+
       const notificationsWithImages = notificationsData.map((item) => ({
         ...item,
         image: getImageByType(item.typeNotification),
       }));
-    
+
       setNotifications(notificationsWithImages);
     })();
 

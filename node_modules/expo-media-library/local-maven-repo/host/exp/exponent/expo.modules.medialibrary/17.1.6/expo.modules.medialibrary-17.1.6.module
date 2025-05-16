@@ -1,0 +1,110 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "host.exp.exponent",
+    "module": "expo.modules.medialibrary",
+    "version": "17.1.6",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.13"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.exifinterface",
+          "module": "exifinterface",
+          "version": {
+            "requires": "1.3.3"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "expo.modules.medialibrary-17.1.6.aar",
+          "url": "expo.modules.medialibrary-17.1.6.aar",
+          "size": 205421,
+          "sha512": "818c67cb57ecb827891d36079379c06431b1402ff72c4ac4477ae1f827957ea68b6d977e2e5e72e8dc6d21ce02f926dcaafaa2f00b7ca9680fc487e15d206760",
+          "sha256": "a84be41482d1b04f2d1fc0fc594483a2f84d392a583b0b5a36aae164a32ad9e4",
+          "sha1": "ef12fca829da07378e61c084bc9eaaf3ddc58ba5",
+          "md5": "43816e498c4dfb12ba3cf8beb9cbe9e2"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk7",
+          "version": {
+            "requires": "2.0.21"
+          }
+        },
+        {
+          "group": "androidx.annotation",
+          "module": "annotation",
+          "version": {
+            "requires": "1.2.0"
+          }
+        },
+        {
+          "group": "androidx.exifinterface",
+          "module": "exifinterface",
+          "version": {
+            "requires": "1.3.3"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "expo.modules.medialibrary-17.1.6.aar",
+          "url": "expo.modules.medialibrary-17.1.6.aar",
+          "size": 205421,
+          "sha512": "818c67cb57ecb827891d36079379c06431b1402ff72c4ac4477ae1f827957ea68b6d977e2e5e72e8dc6d21ce02f926dcaafaa2f00b7ca9680fc487e15d206760",
+          "sha256": "a84be41482d1b04f2d1fc0fc594483a2f84d392a583b0b5a36aae164a32ad9e4",
+          "sha1": "ef12fca829da07378e61c084bc9eaaf3ddc58ba5",
+          "md5": "43816e498c4dfb12ba3cf8beb9cbe9e2"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseSourcePublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "expo.modules.medialibrary-17.1.6-sources.jar",
+          "url": "expo.modules.medialibrary-17.1.6-sources.jar",
+          "size": 32481,
+          "sha512": "e25288a07185f860f73217c6dd9e1eff89379c6f469c09e4db4df734dc31cf8bb586fab6c1fa13b34b865bf50757190e8f873372170ec81e49f8bad936387a7c",
+          "sha256": "6549ee6e5b7c4879b2b684b029e5dac80df460b9b37de33577e1ede17be14b1f",
+          "sha1": "0b54d105bca4a251a1c2d4b73cbf339ad76911fa",
+          "md5": "b2d8bacb5f732b5aaed1d54ac8c3da1a"
+        }
+      ]
+    }
+  ]
+}

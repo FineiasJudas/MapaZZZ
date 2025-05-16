@@ -1,11 +1,73 @@
-import React, { useEffect } from 'react';
-import { SafeAreaView, Text, TouchableOpacity, View, StyleSheet, StatusBar, Image, BackHandler } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, Text, TouchableOpacity, View, StyleSheet, StatusBar, Image, BackHandler, ToastAndroid, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Puzzle } from 'lucide-react-native';
-
+import { Puzzle, ReceiptEuro } from 'lucide-react-native';
+import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRoute } from '@react-navigation/native';
 const QuizStartScreen = ({ navigation }: any) => {
 
-    useEffect(() => {
+  const route = useRoute();
+
+  const [questionAi, setQuestionAi] = useState("Carregando...");
+  const [loading, setLoading] = useState(true);
+
+  const get_question = async () => {
+    try {
+      const token = await AsyncStorage.getItem("Token");
+
+      if (!token) {
+        ToastAndroid.show("Tente fazer login", ToastAndroid.LONG);
+        navigation.navigate("Login");
+        return;
+      }
+      const url = "https://mapazzz.onrender.com/api/game/get_question";
+
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` // <-- Adiciona o token aqui!
+        }
+      });
+
+      const data = await response.json(); // <-- Adiciona await aqui
+
+      if (response.ok) {
+        // Aqui você pode salvar a pergunta no estado, etc.
+        setLoading(false);
+        return data.problem;
+        // Exemplo: setQuestion(data);
+      } else {
+        if (response.status === 401 || response.status === 403) {
+          ToastAndroid.show("Tente fazer login", ToastAndroid.LONG);
+          navigation.navigate("Login");
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: 'Erro',
+            text2: "Erro na conexão com servidor",
+            position: 'top',
+          });
+        }
+        setLoading(false);
+        return "Tenta mais tarde...";
+      }
+
+    } catch (error) {
+      console.error("Erro de rede:", error);
+      Toast.show({
+        type: 'error',
+        text1: 'Sem conexão',
+        text2: 'Você perdeu a conexão com a internet.',
+        position: 'top',
+      });
+    }
+    finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
     const backAction = () => {
       navigation.goBack()
       return true // Impede o comportamento padrão do botão voltar
@@ -22,50 +84,67 @@ const QuizStartScreen = ({ navigation }: any) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="#f0f0f0" barStyle="dark-content" />
-      
+
       {/* Exit Button */}
-      <TouchableOpacity 
+      <TouchableOpacity
         style={styles.exitButton}
         onPress={() => navigation.navigate("initPage")}
       >
         <Text style={styles.exitText}>Sair</Text>
       </TouchableOpacity>
-      
+
       {/* Main Content */}
       <View style={styles.content}>
         {/* Puzzle Icon */}
         <Puzzle color="#6D122C" size={40} />
-        
+
         {/* Title */}
         <Text style={styles.title}>Jogue Connosco</Text>
-        
+
         {/* Subtitle */}
         <Text style={styles.subtitle}>
           Acerte as perguntas do nosso Quiz educativo e acumule pontos para poder usá-los quando for preciso!
         </Text>
-        
+
         {/* Start Button */}
-        <TouchableOpacity 
-          style={styles.startButton}
-          onPress={() => navigation.navigate("QuestionPage")}
-        >
-          <LinearGradient
-            colors={['#6D122C', '#8A1538']}
-            style={styles.gradient}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-          >
-            <Text style={styles.buttonText}>Iniciar</Text>
-          </LinearGradient>
-        </TouchableOpacity>
+
+        {loading ? (
+          <>
+            <TouchableOpacity
+              style={styles.startButton}
+              onPress={async () => {
+                const problem = await get_question();
+                await AsyncStorage.setItem("Problem", problem)
+                navigation.navigate("QuestionPage");
+              }
+              }
+            >
+              <LinearGradient
+                colors={['#6D122C', '#8A1538']}
+                style={styles.gradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              >
+                <Text style={styles.buttonText}>Iniciar</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            <ActivityIndicator size="small" color="#6D122C" />
+          </>
+        )
+
+        }
+
       </View>
-      
+
       <Image
         source={require('../../assets/quiz-background.png.png')} // Altere para o caminho correto
         style={styles.backgroundImage}
         resizeMode="contain"
       />
-    </SafeAreaView>
+    </SafeAreaView >
   );
 };
 

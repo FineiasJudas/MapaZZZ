@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -10,19 +10,67 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
+  ToastAndroid,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { CheckCheck, Puzzle } from "lucide-react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-toast-message";
 
 const { width, height } = Dimensions.get("window");
 
 const QuizQuestionScreen = ({ navigation }: any) => {
   const [inputVisible, setInputVisible] = useState(false);
   const [answer, setAnswer] = useState("");
-  
+  const [hasText, setHasText] = useState(false); // Novo estado
+  const [keyboardOffset, setKeyboardOffset] = useState(0);
+  const [questionAi, setQuestionAi] = useState("Carregando...");
+  const [responseAi, setResponseAi] = useState("");
+
   const handleResponder = () => {
     setInputVisible(true);
   };
+
+  const getAnwer = async () => {
+    const token = await AsyncStorage.getItem("Token");
+
+    if (!token) {
+      ToastAndroid.show("Tente fazer login", ToastAndroid.LONG);
+      navigation.navigate("Login");
+      return;
+    }
+    const url = "https://mapazzz.onrender.com/api/game/get_response";
+    if (!responseAi.trim() || !responseAi) {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: "Faltou dar a resposta",
+        position: 'top',
+      });
+      return;
+    }
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({
+        problem: questionAi,
+        response: responseAi,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}` // <-- Adiciona o token aqui!
+      }
+    });
+  }
+
+  const getProblem = async () => {
+    const problem = await AsyncStorage.getItem("Problem");
+    if (problem)
+      setQuestionAi(problem);
+  }
+  useEffect(() => {
+    setHasText(answer.length > 0);
+    getProblem();
+  }, [answer]);
 
   const handleSubmit = () => {
     // Logic to handle submission and move to next question
@@ -57,7 +105,7 @@ const QuizQuestionScreen = ({ navigation }: any) => {
         {/* Top wavy background with overlaid elements */}
         <View style={styles.topBackgroundContainer}>
           <Image source={require("../../../assets/topNav.png")} style={styles.topBackground} />
-          
+
           {/* Overlay content on top of the background image */}
           <View style={styles.topContentOverlay}>
             {/* Logo/Puzzle icon */}
@@ -65,7 +113,7 @@ const QuizQuestionScreen = ({ navigation }: any) => {
 
             {/* Exit button */}
             <TouchableOpacity onPress={() => navigation.navigate("GamingPage")}
-             style={styles.exitButton}>
+              style={styles.exitButton}>
               <Text style={styles.exitText}>Sair</Text>
             </TouchableOpacity>
           </View>
@@ -73,22 +121,22 @@ const QuizQuestionScreen = ({ navigation }: any) => {
 
         {/* Question content */}
         <View style={styles.questionContainer}>
-          <Text style={styles.questionNumber}>Questão 1</Text>
+          <Text style={styles.questionNumber}>Questão</Text>
           <Text style={styles.questionText}>
-            Qual o animal que mais alimenta-se de mosquitos, ajudando a reduzir a sua proliferação?
+            {questionAi}
           </Text>
         </View>
 
         {/* Answer input section */}
         {!inputVisible ? (
           <View style={styles.responderContainer}>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.responderButton}
               onPress={handleResponder}
             >
               <Text style={styles.responderText}>Responder</Text>
-               <CheckCheck size={22} color={'white'}
-               
+              <CheckCheck size={22} color={'white'}
+
               />
             </TouchableOpacity>
           </View>
@@ -99,26 +147,31 @@ const QuizQuestionScreen = ({ navigation }: any) => {
                 <Text style={styles.cancelText}>Cancelar</Text>
               </TouchableOpacity>
             </View>
-            
+
             <TextInput
               style={styles.input}
               placeholder="Escreva sua mensagem..."
               placeholderTextColor="#FFFFFF80"
               value={answer}
-              onChangeText={setAnswer}
+              onChangeText={(text) => {
+                setAnswer(text);
+                setHasText(text.length > 0);
+              }}
               multiline
               autoFocus
             />
-            
-            <View style={styles.buttonRow}>
-              <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("CorretctA")}>
-                <Text style={styles.buttonText}>Enviar</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("WrongA")}>
-                <Text style={styles.buttonText}>Pular</Text>
-              </TouchableOpacity>
-            </View>
+
+            {hasText && (
+              <View style={styles.buttonRow}>
+                <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("CorretctA")}>
+                  <Text style={styles.buttonText}>Enviar</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("WrongA")}>
+                  <Text style={styles.buttonText}>Pular</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         )}
       </KeyboardAvoidingView>
@@ -250,6 +303,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,0.1)",
     borderRadius: 8,
     paddingVertical: 10,
+    marginBottom: 20,
     alignItems: "center",
     flex: 0.48,
   },

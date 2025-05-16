@@ -66,7 +66,6 @@ export default function SidebarComponent({ navigation }) {
     try {
       const token = await AsyncStorage.getItem("Token");
       if (token) {
-        setLoading(true);
         setLogged(true);
         const response = await fetch("https://mapazzz.onrender.com/api/users/", {
           method: "GET",
@@ -289,17 +288,15 @@ export default function SidebarComponent({ navigation }) {
     startLocationTracking();
 
     (async () => {
-      const dangerZones = await AsyncStorage.getItem("cachDangerZones");
+      const dangerZones = await AsyncStorage.getItem("dangerZone");
       const User = await AsyncStorage.getItem("User");
       const data = dangerZones ? JSON.parse(dangerZones) : null;
       const dataUser = User ? JSON.parse(User) : null;
       if (data)
         setDangerZones(data || []);
-      if (dataUser)
+      if (dataUser.name)
         setUserName(dataUser.name);
-      alert(dangerZones);
     })();
-
 
     // Fetch danger zones
     (async () => {
@@ -313,25 +310,12 @@ export default function SidebarComponent({ navigation }) {
             "dangerZone",
             JSON.stringify(data.dangerZones)
           );
-          await AsyncStorage.setItem("cachDangerZones", data.dangerZones);
           setDangerZones(data.dangerZones || []);
         } else {
           console.log("Erro ao buscar zonas de perigo:", data.message);
         }
       } catch (error) {
-        try {
-          const dangerZonesOff = await AsyncStorage.getItem("dangerZone");
-          if (dangerZonesOff) {
-            setDangerZones(JSON.parse(dangerZonesOff));
-            console.log("Zonas de perigo carregadas do cache (offline).");
-          } else {
-            console.log("Nenhuma zona de perigo salva localmente.");
-            setDangerZones([]);
-          }
-        } catch (storageError) {
-          console.log("Erro ao ler dados salvos localmente:", storageError);
-          setDangerZones([]);
-        }
+        console.log("Error getting danger zones");
       }
     })();
 

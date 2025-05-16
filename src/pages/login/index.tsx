@@ -47,9 +47,9 @@ export default function Login({ navigation }: any) {
         return false;
       };
 
-      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+      const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
       return () =>
-        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+        subscription.remove();
     }, [navigation]));
 
   useEffect(() => {
@@ -97,10 +97,10 @@ export default function Login({ navigation }: any) {
           const userData = {
             name: dataDetalhes.data.name,
             address: dataDetalhes.data.address,
+            points : dataDetalhes.data.points || 0
           };
           await AsyncStorage.setItem("User", JSON.stringify(userData))
         }
-        
         navigation.navigate("initPage");
       } else {
         await showAlert(
