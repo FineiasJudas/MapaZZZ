@@ -25,6 +25,8 @@ import {
 } from "lucide-react-native";
 import { useAlert } from "../alertProvider/index";
 
+
+
 interface ImprovedSideMenuProps {
   menuOpen: boolean;
   toggleMenu: () => void;
@@ -48,6 +50,24 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
   showAlert,
   logOut,
 }) => {
+
+  const { showConfirmAlert } = useAlert();
+  
+  const handleBackPress = async () => {
+    if (logged)
+    {
+      const confirmed =  showConfirmAlert(
+        "Deseja terminar a sessão?",
+        "Confirmação"
+      );
+      if (await confirmed) {
+        logOut() // Ou sua lógica para terminar sessão
+      }
+    }
+    else
+    navigation.navigate("Login");
+  };
+  
   if (!menuOpen) return null;
 
   return (
@@ -115,10 +135,7 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
                   alignItems: "center",
                   marginTop: 10,
                 }}
-                onPress={() => {
-                  if (logged) logOut;
-                  else navigation.navigate("Login");
-                }}
+                onPress={() =>  handleBackPress()}
                 activeOpacity={0.7}>
                 <View
                   style={[
@@ -134,7 +151,7 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
                 {logged ? (
                   <Text style={styles.logoutText}>Terminar Sessão</Text>
                 ) : (
-                  <Text style={styles.loginText}>Fazer Login</Text>
+                  <Text style={{fontSize: 16}} >Fazer Login</Text>
                 )}
               </TouchableOpacity>
             </ScrollView>
@@ -361,3 +378,7 @@ const styles = StyleSheet.create({
 });
 
 export default ImprovedSideMenu;
+function showConfirmAlert(arg0: string, arg1: string) {
+  throw new Error("Function not implemented.");
+}
+

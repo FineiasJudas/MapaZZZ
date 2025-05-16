@@ -250,16 +250,20 @@ const HomePage = ({ navigation }: any) => {
       console.error("Erro ao fazer logout:", error);
     }
   };
-
+  
   const handleBackPress = async () => {
-    const confirmed = await showConfirmAlert(
-      "Deseja terminar a sessão?",
-      "Confirmação"
-    );
-
-    if (confirmed) {
-      logOut() // Ou sua lógica para terminar sessão
+    if (logged)
+    {
+      const confirmed = await showConfirmAlert(
+        "Deseja terminar a sessão?",
+        "Confirmação"
+      );
+      if (confirmed) {
+        logOut() // Ou sua lógica para terminar sessão
+      }
     }
+    else
+    navigation.navigate("Login");
   };
   return (
     <View style={styles.container}>
