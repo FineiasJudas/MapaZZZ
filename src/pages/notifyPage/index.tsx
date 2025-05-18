@@ -28,7 +28,7 @@ import useSocketNotification from "../utils/socketio";
 // Configuração do WebSocket com socket.io-client
 import { io } from "socket.io-client";
 const socket = io("https://mapazzz.onrender.com", {
-  transports: ["websocket"]
+  transports: ["websocket"],
 });
 
 // Configuração de notificações
@@ -127,9 +127,7 @@ const NotifyPage = ({ navigation }) => {
         image: getImageByType(item.typeNotification),
       }));
       setNotifications(notificationsWithImages);
-
     } catch (error) {
-
       console.log("Erro ao buscar notificações:", error);
       /*await showAlert(
         "erro",
@@ -142,7 +140,6 @@ const NotifyPage = ({ navigation }) => {
   };
 
   useEffect(() => {
-
     (async () => {
       const data = await AsyncStorage.getItem("cachNotify");
 
@@ -219,17 +216,17 @@ const NotifyPage = ({ navigation }) => {
 
   useEffect(() => {
     const backAction = () => {
-      navigation.goBack()
-      return true // Impede o comportamento padrão do botão voltar
-    }
+      navigation.goBack();
+      return true; // Impede o comportamento padrão do botão voltar
+    };
 
     const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
+      "hardwareBackPress",
       backAction
-    )
+    );
 
-    return () => backHandler.remove() // Limpeza ao desmontar
-  }, [navigation])
+    return () => backHandler.remove(); // Limpeza ao desmontar
+  }, [navigation]);
 
   const handleNotificationPress = (notification) => {
     setSelectedNotification(notification);
@@ -321,13 +318,25 @@ const NotifyPage = ({ navigation }) => {
                 <Text style={style.modalText}>
                   {selectedNotification.describe || "Sem detalhes"}
                 </Text>
+                {selectedNotification.title == "Jogo" ? (
+                  <>
+                    <TouchableOpacity
+                      style={style.closeButton}
+                      onPress={() => navigation.navigate("GamingPage")}>
+                      <Text style={style.closeButtonText}>Goo</Text>
+                    </TouchableOpacity>
+                  </>
+                ) : (
+                  <>
+                    <TouchableOpacity
+                      style={style.closeButton}
+                      onPress={() => setModalVisible(false)}>
+                      <Text style={style.closeButtonText}>Fechar</Text>
+                    </TouchableOpacity>
+                  </>
+                )}
               </>
             )}
-            <TouchableOpacity
-              style={style.closeButton}
-              onPress={() => setModalVisible(false)}>
-              <Text style={style.closeButtonText}>Fechar</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </Modal>

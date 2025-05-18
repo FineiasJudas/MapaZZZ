@@ -11,12 +11,15 @@ export default function useSocketNotification() {
 
     socket.on('notification', (data) => {
       console.log('Notificação recebida do servidor:', data);
-        
+      const typeNotify = data.data.title == "Jogo" ? "GamingPage" : "initPage";
       Notifications.scheduleNotificationAsync({
         content: {
           title: data.data.title || 'Nova Notificação!',
           body: data.data.describe|| 'Você recebeu uma nova notificação',
           sound: true,
+          data : {
+            screen : typeNotify 
+          }
         },
         trigger: null,
       });
