@@ -210,7 +210,7 @@ export default function Sign ({ navigation }: any) {
           <TouchableOpacity>
             <Text
               style={style.entrarComoGuessButton}
-              onPress={() => navigation.navigate('MapaPage')}
+              onPress={() => navigation.navigate('initPage')}
             >
               Entrar como visitante
             </Text>

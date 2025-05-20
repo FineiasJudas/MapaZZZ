@@ -75,11 +75,10 @@ export default function SidebarComponent({ navigation }) {
         if (response.ok) {
           setUserName(data.data.name);
         } else {
-          setUserName("Visitante...");
           console.log("Erro ao buscar nome do usuário:", data);
         }
       } else {
-        setUserName("Visitante...");
+        console.log("Erro ao buscar nome do usuário:");
       }
     } catch (error) {
       setUserName("Visitante...");

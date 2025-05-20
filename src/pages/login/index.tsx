@@ -180,7 +180,7 @@ export default function Login({ navigation }: any) {
         </View>
 
         <View style={style.signAsGuessView}>
-          <TouchableOpacity onPress={() => navigation.navigate("MapaPage")}>
+          <TouchableOpacity onPress={() => navigation.navigate("initPage")}>
             <Text style={style.entrarComoGuessButton}>
               Entrar como visitante
             </Text>

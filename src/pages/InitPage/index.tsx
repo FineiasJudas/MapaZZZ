@@ -41,6 +41,10 @@ import logo from "../../assets/logo.png";
 import bySalonis from "../../assets/bySalōnis.png";
 import { style } from "./style";
 import useSocketNotification from "../utils/socketio";
+import App from "../photo";
+
+import RNMinimizeApp from 'react-native-minimize';
+
 
 const HomePage = ({ navigation }: any) => {
   const [weather, setWeather] = useState<{ temp: string; condition: string }>({
@@ -255,14 +259,9 @@ const HomePage = ({ navigation }: any) => {
   };
 
   const handleBackPress = async () => {
-    const confirmed = await showConfirmAlert(
-      "Deseja terminar a sessão?",
-      "Confirmação"
-    );
-
-    if (confirmed) {
-      logOut() // Ou sua lógica para terminar sessão
-    }
+    //--
+    RNMinimizeApp.minimizeApp(); // Minimiza o app
+    return true; // evita o comportamento padrão (fechar o app)
   };
   return (
     <View style={styles.container}>
@@ -367,11 +366,11 @@ const HomePage = ({ navigation }: any) => {
             </View>
           </View>
           <View style={styles.statsCard}>
-            <Text 
-            onPress={async () => {
-              navigation.navigate("MapaPage");
-            }}
-            style={styles.statsNumber}>+115</Text>
+            <Text
+              onPress={async () => {
+                navigation.navigate("MapaPage");
+              }}
+              style={styles.statsNumber}>+115</Text>
             <View style={styles.statsLabelContainer}>
               <Text style={styles.statsLabel}>Zonas de Risco</Text>
             </View>
