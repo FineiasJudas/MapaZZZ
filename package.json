@@ -24,6 +24,7 @@
     "expo-media-library": "~17.1.6",
     "expo-notifications": "^0.31.1",
     "expo-status-bar": "~2.2.3",
+    "firebase": "^11.7.3",
     "lucide-react-native": "^0.486.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

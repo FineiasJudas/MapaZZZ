@@ -34,7 +34,7 @@ export default function Sign ({ navigation }: any) {
   const [addressSuggestions, setAddressSuggestions] = useState<string[]>([])
   const [acceptedTerms, setAcceptedTerms] = useState(false)
 
-  useFocusEffect(
+  useFocusEffect( 
     useCallback(() => {
       const onBackPress = () => {
         const state = navigation.getState();
@@ -49,10 +49,10 @@ export default function Sign ({ navigation }: any) {
         return false;
       };
 
-      BackHandler.addEventListener("hardwareBackPress", onBackPress);
-      return () =>
-        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
-    }, [navigation]));
+        const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
+             return () =>
+               subscription.remove();
+           }, [navigation]));
 
   // Função para cadastrar usuário
   const handleSignUp = async () => {
