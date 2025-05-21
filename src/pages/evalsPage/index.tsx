@@ -205,8 +205,8 @@ const EvalsPage = ({ navigation }: any) => {
           {/* Localização da Foto */}
           <View style={style.headerButtons}>
             <TouchableOpacity
-              onPress={async () => {
-                navigation.navigation.goBack();
+              onPress={() => {
+                navigation.navigate("initPage");
               }}
               style={{
                 padding: 5,

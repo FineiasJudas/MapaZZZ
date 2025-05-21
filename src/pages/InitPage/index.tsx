@@ -43,13 +43,12 @@ import { style } from "./style";
 import useSocketNotification from "../utils/socketio";
 import App from "../photo";
 
-import RNMinimizeApp from 'react-native-minimize';
-
+import RNMinimizeApp from "react-native-minimize";
 
 const HomePage = ({ navigation }: any) => {
   const [weather, setWeather] = useState<{ temp: string; condition: string }>({
     temp: "--°C",
-    condition: "Carregando..."
+    condition: "Carregando...",
   });
   const { showAlert, showConfirmAlert } = useAlert();
   const [location, setLocation] = useState("Obtendo a localização...");
@@ -66,19 +65,19 @@ const HomePage = ({ navigation }: any) => {
     Thunderstorm: <Zap color="#F59E0B" size={18} />,
     Snow: <Snowflake color="#93C5FD" size={18} />,
     Mist: <CloudFog color="#6B7280" size={18} />,
-    default: <Thermometer color="#6D122C" size={18} />
+    default: <Thermometer color="#6D122C" size={18} />,
   };
 
   const weatherColors = {
-    hot: "#DC2626",       // >30°C
-    warm: "#EA580C",      // 20-30°C
-    mild: "#16A34A",      // 10-19°C
-    cool: "#3B82F6",      // 0-9°C
-    cold: "#1D4ED8"       // <0°C
+    hot: "#DC2626", // >30°C
+    warm: "#EA580C", // 20-30°C
+    mild: "#16A34A", // 10-19°C
+    cool: "#3B82F6", // 0-9°C
+    cold: "#1D4ED8", // <0°C
   };
 
   const getTemperatureColor = (tempStr: string) => {
-    const temp = parseInt(tempStr.replace('°C', ''));
+    const temp = parseInt(tempStr.replace("°C", ""));
     if (temp >= 30) return weatherColors.hot;
     if (temp >= 20) return weatherColors.warm;
     if (temp >= 10) return weatherColors.mild;
@@ -89,7 +88,7 @@ const HomePage = ({ navigation }: any) => {
   // Clima request
   const getWeather = async (lat: number, lon: number) => {
     try {
-      const apiKey = '597816ec128b20a1e0d19827ed21a6f8';
+      const apiKey = "597816ec128b20a1e0d19827ed21a6f8";
       const response = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=pt`
       );
@@ -101,13 +100,16 @@ const HomePage = ({ navigation }: any) => {
 
         setWeather({
           temp: `${temp}°C`,
-          condition
+          condition,
         });
 
-        await AsyncStorage.setItem("@cachedWeather", JSON.stringify({
-          temp: `${temp}°C`,
-          condition
-        }));
+        await AsyncStorage.setItem(
+          "@cachedWeather",
+          JSON.stringify({
+            temp: `${temp}°C`,
+            condition,
+          })
+        );
       }
     } catch (error) {
       const cachedWeather = await AsyncStorage.getItem("@cachedWeather");
@@ -125,7 +127,7 @@ const HomePage = ({ navigation }: any) => {
   };
   const [regions, setRegions] = useState<DangerZone[]>([]);
 
-  const getFirstName = (name) => {
+  const getFirstName = (name: string) => {
     return name.split(" ")[0];
   };
 
@@ -181,8 +183,9 @@ const HomePage = ({ navigation }: any) => {
         const address = addressArray[0];
 
         // Exemplo: "Luanda, Angola"
-        const fullAddress = `${address.district || address.city || address.subregion
-          }, ${address.country || address.region}`;
+        const fullAddress = `${
+          address.district || address.city || address.subregion
+        }, ${address.country || address.region}`;
         setLocation(fullAddress);
         await AsyncStorage.setItem("@cachedLocation", fullAddress);
       } else {
@@ -297,7 +300,8 @@ const HomePage = ({ navigation }: any) => {
                   "Atenção"
                 );
               }
-            }}>
+            }}
+          >
             <Bell color="#6D122C" />
           </TouchableOpacity>
         </View>
@@ -309,19 +313,27 @@ const HomePage = ({ navigation }: any) => {
           <View style={styles.userInfoContainer}>
             <TouchableOpacity
               style={styles.userIcon}
-              onPress={() => navigation.navigate("ProfilePage")}>
+              onPress={() => navigation.navigate("ProfilePage")}
+            >
               <User color="#6D122C" size={30} />
             </TouchableOpacity>
             <View>
               <Text style={styles.welcomeText}>Bem-vindo, {username}</Text>
               <TouchableOpacity
-                style={{ alignItems: "center", flexDirection: "row" }}>
+                style={{ alignItems: "center", flexDirection: "row" }}
+              >
                 <MapPin color="#6D122C" size={18} style={{ marginRight: 6 }} />
                 <Text style={styles.statLabel}>{location}</Text>
               </TouchableOpacity>
               <View style={styles.infoRow}>
-                {weatherIcons[weather.condition as keyof typeof weatherIcons] || weatherIcons.default}
-                <Text style={[styles.infoText, { color: getTemperatureColor(weather.temp) }]}>
+                {weatherIcons[weather.condition as keyof typeof weatherIcons] ||
+                  weatherIcons.default}
+                <Text
+                  style={[
+                    styles.infoText,
+                    { color: getTemperatureColor(weather.temp) },
+                  ]}
+                >
                   {weather.temp} - {weather.condition}
                 </Text>
               </View>
@@ -340,7 +352,8 @@ const HomePage = ({ navigation }: any) => {
                     "Atenção"
                   );
                 }
-              }}>
+              }}
+            >
               <Text style={styles.actionButtonText}>Reportar </Text>
               <Camera color="#6D122C" />
             </TouchableOpacity>
@@ -349,7 +362,8 @@ const HomePage = ({ navigation }: any) => {
                 style={styles.actionButtonText}
                 onPress={async () => {
                   navigation.navigate("MapaPage");
-                }}>
+                }}
+              >
                 Zonas de Risco
               </Text>
               <TriangleAlert color="#6D122C" />
@@ -370,7 +384,10 @@ const HomePage = ({ navigation }: any) => {
               onPress={async () => {
                 navigation.navigate("MapaPage");
               }}
-              style={styles.statsNumber}>+115</Text>
+              style={styles.statsNumber}
+            >
+              +115
+            </Text>
             <View style={styles.statsLabelContainer}>
               <Text style={styles.statsLabel}>Zonas de Risco</Text>
             </View>
@@ -382,7 +399,8 @@ const HomePage = ({ navigation }: any) => {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          style={styles.recentRecords}>
+          style={styles.recentRecords}
+        >
           {regions.map((item) => (
             <View key={item.id} style={styles.recordCard}>
               <Image
@@ -405,7 +423,9 @@ const HomePage = ({ navigation }: any) => {
               style={styles.gameImage}
             />
             <View style={styles.gameTextContainer}>
-              <Text style={styles.gameTitle}>Esperimente o Malária Quiz!</Text>
+              <Text style={[styles.gameTitle]}>
+                Experimente o Malária Quiz!
+              </Text>
               <Text style={styles.gameSubtitle}>
                 Se divirta respondendo questões sobre a Malária e se torne num
                 grande mestre!
@@ -422,7 +442,8 @@ const HomePage = ({ navigation }: any) => {
                       "Atenção"
                     );
                   }
-                }}>
+                }}
+              >
                 <Text style={styles.startButtonText}>Iniciar agora</Text>
               </TouchableOpacity>
             </View>
@@ -456,7 +477,8 @@ const HomePage = ({ navigation }: any) => {
                       "Atenção"
                     );
                   }
-                }}>
+                }}
+              >
                 <Text style={styles.findButtonText}>Encontrar</Text>
               </TouchableOpacity>
             </View>
@@ -471,9 +493,12 @@ const HomePage = ({ navigation }: any) => {
               style={styles.hospitalImage}
             />
             <View style={styles.hospitalTextContainer}>
-              <Text style={styles.hospitalTitle}>Previsão de Surtos de Malária</Text>
+              <Text style={styles.hospitalTitle}>
+                Previsão de Surtos de Malária
+              </Text>
               <Text style={styles.hospitalSubtitle}>
-                Veja as áreas com risco de surto nos próximos dias e tome ações preventivas!
+                Veja as áreas com risco de surto nos próximos dias e tome ações
+                preventivas!
               </Text>
               <TouchableOpacity
                 style={styles.findButton}
@@ -487,13 +512,13 @@ const HomePage = ({ navigation }: any) => {
                       "Atenção"
                     );
                   }
-                }}>
+                }}
+              >
                 <Text style={styles.findButtonText}>Ver Previsão</Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
-
       </ScrollView>
 
       {/* Bottom Navigation */}
@@ -510,7 +535,8 @@ const HomePage = ({ navigation }: any) => {
                 "Atenção"
               );
             }
-          }}>
+          }}
+        >
           <User color="#6D122C" />
           <Text style={styles.navButtonText}>Perfil</Text>
         </TouchableOpacity>
@@ -526,7 +552,8 @@ const HomePage = ({ navigation }: any) => {
                 "Atenção"
               );
             }
-          }}>
+          }}
+        >
           <Hospital color="#6D122C" />
           <Text style={styles.navButtonText}>Hospitais</Text>
         </TouchableOpacity>
@@ -550,7 +577,8 @@ const HomePage = ({ navigation }: any) => {
                 "Atenção"
               );
             }
-          }}>
+          }}
+        >
           <CheckCheck color="#6D122C" />
           <Text style={styles.navButtonText}>Verificar</Text>
         </TouchableOpacity>
@@ -566,7 +594,8 @@ const HomePage = ({ navigation }: any) => {
                 "Atenção"
               );
             }
-          }}>
+          }}
+        >
           <Cog color="#6D122C" />
           <Text style={styles.navButtonText}>Definições</Text>
         </TouchableOpacity>
@@ -604,7 +633,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     backgroundColor: "white",
     borderBottomColor: "#e0e0e0",
-    elevation: 2
+    elevation: 2,
   },
   headerTitle: {
     color: "#6D122C",
@@ -651,7 +680,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginRight: 12,
-    padding: 30
+    padding: 30,
   },
   userIconText: {
     fontSize: 20,
@@ -680,7 +709,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     backgroundColor: "white",
     borderRadius: 20,
-    elevation: 4
+    elevation: 4,
   },
   actionButtonText: {
     fontSize: 14,
@@ -839,7 +868,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderTopColor: "#e0e0e0",
     paddingVertical: 10,
-    elevation: 10
+    elevation: 10,
   },
   navButton: {
     flex: 1,
