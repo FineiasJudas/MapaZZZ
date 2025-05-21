@@ -25,8 +25,6 @@ import {
 } from "lucide-react-native";
 import { useAlert } from "../alertProvider/index";
 
-
-
 interface ImprovedSideMenuProps {
   menuOpen: boolean;
   toggleMenu: () => void;
@@ -50,24 +48,6 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
   showAlert,
   logOut,
 }) => {
-
-  const { showConfirmAlert } = useAlert();
-  
-  const handleBackPress = async () => {
-    if (logged)
-    {
-      const confirmed =  showConfirmAlert(
-        "Deseja terminar a sessão?",
-        "Confirmação"
-      );
-      if (await confirmed) {
-        logOut() // Ou sua lógica para terminar sessão
-      }
-    }
-    else
-    navigation.navigate("Login");
-  };
-  
   if (!menuOpen) return null;
 
   return (
@@ -100,9 +80,9 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
                     <Text style={styles.profileName}>{userName}</Text>
                   )}
                   <View style={styles.ratingContainer}>
-                    <Star size={16} color="#ccc"  />
-                    <Star size={16} color="#ccc"  />
-                    <Star size={16} color="#ccc"  />
+                    <Star size={16} color="#12ab40" fill="#12ab40" />
+                    <Star size={16} color="#12ab40" fill="#12ab40" />
+                    <Star size={16} color="#12ab40" fill="#12ab40" />
                     <Star size={16} color="#ccc" />
                     <Star size={16} color="#ccc" />
                   </View>
@@ -135,7 +115,10 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
                   alignItems: "center",
                   marginTop: 10,
                 }}
-                onPress={() =>  handleBackPress()}
+                onPress={() => {
+                  if (logged) logOut;
+                  else navigation.navigate("Login");
+                }}
                 activeOpacity={0.7}>
                 <View
                   style={[
@@ -151,7 +134,7 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
                 {logged ? (
                   <Text style={styles.logoutText}>Terminar Sessão</Text>
                 ) : (
-                  <Text style={{fontSize: 16}} >Fazer Login</Text>
+                  <Text style={styles.loginText}>Fazer Login</Text>
                 )}
               </TouchableOpacity>
             </ScrollView>
@@ -281,7 +264,6 @@ const styles = StyleSheet.create({
   profileContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: 'center'
   },
   profileIcon: {
     width: 60,
@@ -309,12 +291,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     color: "#333",
-    marginBottom: 2,
+    marginBottom: 5,
   },
   ratingContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 2,
+    marginTop: 5,
   },
   menuItems: {
     flex: 1,
@@ -378,7 +360,3 @@ const styles = StyleSheet.create({
 });
 
 export default ImprovedSideMenu;
-function showConfirmAlert(arg0: string, arg1: string) {
-  throw new Error("Function not implemented.");
-}
-

@@ -47,9 +47,9 @@ export default function Login({ navigation }: any) {
         return false;
       };
 
-      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+      const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
       return () =>
-        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+        subscription.remove();
     }, [navigation]));
 
   useEffect(() => {
@@ -101,7 +101,6 @@ export default function Login({ navigation }: any) {
           };
           await AsyncStorage.setItem("User", JSON.stringify(userData))
         }
-        
         navigation.navigate("initPage");
       } else {
         await showAlert(
@@ -181,7 +180,7 @@ export default function Login({ navigation }: any) {
         </View>
 
         <View style={style.signAsGuessView}>
-          <TouchableOpacity onPress={() => navigation.navigate("MapaPage")}>
+          <TouchableOpacity onPress={() => navigation.navigate("initPage")}>
             <Text style={style.entrarComoGuessButton}>
               Entrar como visitante
             </Text>

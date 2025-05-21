@@ -28,7 +28,7 @@ import useSocketNotification from "../utils/socketio";
 // Configuração do WebSocket com socket.io-client
 import { io } from "socket.io-client";
 const socket = io("https://mapazzz.onrender.com", {
-  transports: ["websocket"]
+  transports: ["websocket"],
 });
 
 // Configuração de notificações
@@ -106,7 +106,7 @@ const NotifyPage = ({ navigation }) => {
         if (response.status === 401 || response.status === 403) {
           await showAlert(
             "erro",
-            "Não autorizado.",
+            "Sessão expirada. Faça login novamente.",
             "Erro"
           );
           await AsyncStorage.removeItem("Token");
@@ -115,7 +115,7 @@ const NotifyPage = ({ navigation }) => {
           navigation.navigate("Login");
           return;
         }
-        console.log("Erro ao buscar notificações");
+        throw new Error("Erro ao buscar notificações");
       }
       await AsyncStorage.setItem("cachNotify", JSON.stringify(data));
 
@@ -128,8 +128,6 @@ const NotifyPage = ({ navigation }) => {
       }));
       setNotifications(notificationsWithImages);
     } catch (error) {
-      setLoading(false);
-
       console.log("Erro ao buscar notificações:", error);
       /*await showAlert(
         "erro",
@@ -142,13 +140,11 @@ const NotifyPage = ({ navigation }) => {
   };
 
   useEffect(() => {
-
-    fetchNotifications();
     (async () => {
       const data = await AsyncStorage.getItem("cachNotify");
-    
+
       let notificationsData = [];
-    
+
       if (data) {
         try {
           const parsedData = JSON.parse(data);
@@ -159,15 +155,16 @@ const NotifyPage = ({ navigation }) => {
           console.error("Erro ao fazer parse do cachNotify:", error);
         }
       }
-    
+
       const notificationsWithImages = notificationsData.map((item) => ({
         ...item,
         image: getImageByType(item.typeNotification),
       }));
-      //alert(JSON.stringify(notificationsWithImages));
+
       setNotifications(notificationsWithImages);
     })();
 
+    fetchNotifications();
 
     // Configurar WebSocket
     const handleConnect = () => {
@@ -219,17 +216,17 @@ const NotifyPage = ({ navigation }) => {
 
   useEffect(() => {
     const backAction = () => {
-      navigation.goBack()
-      return true // Impede o comportamento padrão do botão voltar
-    }
+      navigation.goBack();
+      return true; // Impede o comportamento padrão do botão voltar
+    };
 
     const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
+      "hardwareBackPress",
       backAction
-    )
+    );
 
-    return () => backHandler.remove() // Limpeza ao desmontar
-  }, [navigation])
+    return () => backHandler.remove(); // Limpeza ao desmontar
+  }, [navigation]);
 
   const handleNotificationPress = (notification) => {
     setSelectedNotification(notification);
@@ -321,13 +318,25 @@ const NotifyPage = ({ navigation }) => {
                 <Text style={style.modalText}>
                   {selectedNotification.describe || "Sem detalhes"}
                 </Text>
+                {selectedNotification.title == "Jogo" ? (
+                  <>
+                    <TouchableOpacity
+                      style={style.closeButton}
+                      onPress={() => navigation.navigate("GamingPage")}>
+                      <Text style={style.closeButtonText}>Goo</Text>
+                    </TouchableOpacity>
+                  </>
+                ) : (
+                  <>
+                    <TouchableOpacity
+                      style={style.closeButton}
+                      onPress={() => setModalVisible(false)}>
+                      <Text style={style.closeButtonText}>Fechar</Text>
+                    </TouchableOpacity>
+                  </>
+                )}
               </>
             )}
-            <TouchableOpacity
-              style={style.closeButton}
-              onPress={() => setModalVisible(false)}>
-              <Text style={style.closeButtonText}>Fechar</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </Modal>

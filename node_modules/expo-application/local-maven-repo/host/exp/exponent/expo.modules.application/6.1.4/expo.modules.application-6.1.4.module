@@ -1,0 +1,94 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "host.exp.exponent",
+    "module": "expo.modules.application",
+    "version": "6.1.4",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.13"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "expo.modules.application-6.1.4.aar",
+          "url": "expo.modules.application-6.1.4.aar",
+          "size": 18618,
+          "sha512": "fd4db2759cf6cc1d894f610fa65e8893cfa1ec3286e9a1a7ce15c21c464424f4bdede011848bc15b93720b033010426486595d651712e74d7722eb283dffac19",
+          "sha256": "6e05ee81a5fe34e3adcadb7e03cca08f1c44f3b7956f65056793936be11b3661",
+          "sha1": "7847085b7d71045100db73f9093bd5e9a05e86aa",
+          "md5": "ad494cb4518dea9999f8caa969865658"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk7",
+          "version": {
+            "requires": "2.0.21"
+          }
+        },
+        {
+          "group": "com.android.installreferrer",
+          "module": "installreferrer",
+          "version": {
+            "requires": "2.2"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "expo.modules.application-6.1.4.aar",
+          "url": "expo.modules.application-6.1.4.aar",
+          "size": 18618,
+          "sha512": "fd4db2759cf6cc1d894f610fa65e8893cfa1ec3286e9a1a7ce15c21c464424f4bdede011848bc15b93720b033010426486595d651712e74d7722eb283dffac19",
+          "sha256": "6e05ee81a5fe34e3adcadb7e03cca08f1c44f3b7956f65056793936be11b3661",
+          "sha1": "7847085b7d71045100db73f9093bd5e9a05e86aa",
+          "md5": "ad494cb4518dea9999f8caa969865658"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseSourcePublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "expo.modules.application-6.1.4-sources.jar",
+          "url": "expo.modules.application-6.1.4-sources.jar",
+          "size": 2596,
+          "sha512": "99fbdc7e95a23fcd902954845ebc52e0f891244a215c53656530319137ef68df33964f869f9c7ed932a64d906d10772ed79d33b54893c2c09bbe0c2869fdad3d",
+          "sha256": "3cd9751bf9d6f0645c88ad7d6e9e1f09f6eca0f7f1bbd08a0d7889d6ba759314",
+          "sha1": "e81c4a99668d5fc8c91377705d45f32185bf5a03",
+          "md5": "7c9e7c1b37854a4b2f0869633392eeaa"
+        }
+      ]
+    }
+  ]
+}

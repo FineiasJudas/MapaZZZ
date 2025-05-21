@@ -19,8 +19,10 @@ end
 folly_config = get_folly_config()
 folly_compiler_flags = folly_config[:compiler_flags]
 folly_version = folly_config[:version]
-folly_dep_name = 'RCT-Folly/Fabric'
-boost_compiler_flags = '-Wno-documentation'
+folly_dep_name = folly_config[:dep_name]
+
+boost_config = get_boost_config()
+boost_compiler_flags = boost_config[:compiler_flags]
 
 Pod::Spec.new do |s|
   s.name                   = "React-RuntimeHermes"
@@ -40,24 +42,20 @@ Pod::Spec.new do |s|
   s.compiler_flags       = folly_compiler_flags + ' ' + boost_compiler_flags
 
   if ENV['USE_FRAMEWORKS']
-    s.header_mappings_dir     = './'
+    s.header_mappings_dir     = '../../'
     s.module_name             = 'React_RuntimeHermes'
   end
 
   s.dependency folly_dep_name, folly_version
-  s.dependency "React-nativeconfig"
   s.dependency "React-jsitracing"
   s.dependency "React-jsi"
   s.dependency "React-utils"
   s.dependency "React-RuntimeCore"
   s.dependency "React-featureflags"
   add_dependency(s, "React-jsinspector", :framework_name => 'jsinspector_modern')
+  add_dependency(s, "React-jsinspectortracing", :framework_name => 'jsinspector_moderntracing')
 
-  if ENV["USE_HERMES"] == nil || ENV["USE_HERMES"] == "1"
-    s.dependency "React-hermes"
-    s.dependency "hermes-engine"
-  else
-    s.dependency "React-jsc"
-    s.exclude_files = "hermes/*.{cpp,h}"
-  end
+  s.dependency "React-hermes"
+  s.dependency "hermes-engine"
+  add_dependency(s, "React-jsitooling", :framework_name => "JSITooling")
 end

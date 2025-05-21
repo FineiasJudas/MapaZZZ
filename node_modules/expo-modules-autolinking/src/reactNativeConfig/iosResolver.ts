@@ -1,5 +1,5 @@
-import glob from 'fast-glob';
 import fs from 'fs/promises';
+import { glob } from 'glob';
 import path from 'path';
 
 import type {
@@ -21,7 +21,9 @@ export async function resolveDependencyConfigImplIosAsync(
     return null;
   }
   const mainPackagePodspec = path.basename(packageRoot) + '.podspec';
-  const podspecFile = podspecs.includes(mainPackagePodspec) ? mainPackagePodspec : podspecs[0];
+  const podspecFile = podspecs.includes(mainPackagePodspec)
+    ? mainPackagePodspec
+    : podspecs.sort((a, b) => a.localeCompare(b))[0];
   const podspecPath = path.join(packageRoot, podspecFile);
 
   const packageJson = JSON.parse(await fs.readFile(path.join(packageRoot, 'package.json'), 'utf8'));

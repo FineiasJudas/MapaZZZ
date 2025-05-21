@@ -41,6 +41,9 @@ import logo from "../../assets/logo.png";
 import bySalonis from "../../assets/bySalōnis.png";
 import { style } from "./style";
 import useSocketNotification from "../utils/socketio";
+import App from "../photo";
+
+import RNMinimizeApp from 'react-native-minimize';
 
 const HomePage = ({ navigation }: any) => {
   const [weather, setWeather] = useState<{ temp: string; condition: string }>({
@@ -50,7 +53,7 @@ const HomePage = ({ navigation }: any) => {
   const { showAlert, showConfirmAlert } = useAlert();
   const [location, setLocation] = useState("Obtendo a localização...");
   const [loading, setLoading] = useState(false);
-  const [logged, setLogged] = useState(false);  
+  const [logged, setLogged] = useState(false);
   const [username, setUsername] = useState("Visitante");
   const [userPoints, setUserPoints] = useState(0);
   useSocketNotification();
@@ -64,6 +67,7 @@ const HomePage = ({ navigation }: any) => {
     Mist: <CloudFog color="#6B7280" size={18} />,
     default: <Thermometer color="#6D122C" size={18} />
   };
+
   const weatherColors = {
     hot: "#DC2626",       // >30°C
     warm: "#EA580C",      // 20-30°C
@@ -98,6 +102,7 @@ const HomePage = ({ navigation }: any) => {
           temp: `${temp}°C`,
           condition
         });
+
         await AsyncStorage.setItem("@cachedWeather", JSON.stringify({
           temp: `${temp}°C`,
           condition
@@ -159,9 +164,10 @@ const HomePage = ({ navigation }: any) => {
         setLocation("Permissão negada");
         return;
       }
-  
+
       let location = await Location.getCurrentPositionAsync({});
       const { latitude, longitude } = location.coords;
+
       // Chama a nova função do clima
       await getWeather(latitude, longitude);
       // Reverse geocoding para obter nome da localidade
@@ -250,20 +256,11 @@ const HomePage = ({ navigation }: any) => {
       console.error("Erro ao fazer logout:", error);
     }
   };
-  
+
   const handleBackPress = async () => {
-    if (logged)
-    {
-      const confirmed = await showConfirmAlert(
-        "Deseja terminar a sessão?",
-        "Confirmação"
-      );
-      if (confirmed) {
-        logOut() // Ou sua lógica para terminar sessão
-      }
-    }
-    else
-    navigation.navigate("Login");
+    //--
+    RNMinimizeApp.minimizeApp(); // Minimiza o app
+    return true; // evita o comportamento padrão (fechar o app)
   };
   return (
     <View style={styles.container}>
@@ -368,11 +365,11 @@ const HomePage = ({ navigation }: any) => {
             </View>
           </View>
           <View style={styles.statsCard}>
-            <Text 
-            onPress={async () => {
-              navigation.navigate("MapaPage");
-            }}
-            style={styles.statsNumber}>+115</Text>
+            <Text
+              onPress={async () => {
+                navigation.navigate("MapaPage");
+              }}
+              style={styles.statsNumber}>+115</Text>
             <View style={styles.statsLabelContainer}>
               <Text style={styles.statsLabel}>Zonas de Risco</Text>
             </View>

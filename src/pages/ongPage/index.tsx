@@ -107,7 +107,7 @@ export default function HelperPage({ navigation }: any) {
       behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <View style={style.conteinar}>
         <TouchableOpacity onPress={() =>  navigation.goBack()}>
-          <ArrowLeft color="#6D122C" size={30} />
+          <ArrowLeft color="#6D122C" size={35} />
         </TouchableOpacity>
 
         <Image

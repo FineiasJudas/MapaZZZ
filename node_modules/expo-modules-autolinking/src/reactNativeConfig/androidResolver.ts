@@ -1,5 +1,5 @@
-import glob from 'fast-glob';
 import fs from 'fs/promises';
+import { glob } from 'glob';
 import path from 'path';
 
 import type {
@@ -138,7 +138,7 @@ export async function parseNativePackageClassNameAsync(
 
 let lazyReactPackageRegex: RegExp | null = null;
 let lazyTurboReactPackageRegex: RegExp | null = null;
-export function matchNativePackageClassName(filePath: string, contents: Buffer): string | null {
+export function matchNativePackageClassName(_filePath: string, contents: Buffer): string | null {
   const fileContents = contents.toString();
 
   // [0] Match ReactPackage
@@ -256,7 +256,9 @@ export async function findGradleAndManifestAsync({
     glob('**/AndroidManifest.xml', { cwd: androidDir, ignore: globExcludes }),
     glob(gradlePattern, { cwd: androidDir, ignore: globExcludes }),
   ]);
-  const manifest = manifests.find((manifest) => manifest.includes('src/main/')) ?? manifests[0];
-  const gradle = gradles[0];
+  const manifest =
+    manifests.find((manifest) => manifest.includes('src/main/')) ??
+    manifests.sort((a, b) => a.localeCompare(b))[0];
+  const gradle = gradles.sort((a, b) => a.localeCompare(b))[0];
   return { gradle: gradle || null, manifest: manifest || null };
 }

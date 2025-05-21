@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, Text, TouchableOpacity, View, StyleSheet, StatusBar, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { HeartCrack, Puzzle } from 'lucide-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const QuizStartScreen = ({ navigation }: any) => {
+
+  const [recommendation, setRecommendation] = useState(
+      "Sem recomendações de momento..."
+    );
+  
+    useEffect(() => {
+      (async () => {
+        const res = await AsyncStorage.getItem("recommendation");
+        if (res) setRecommendation(res);
+      })();
+    }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -12,8 +24,9 @@ const QuizStartScreen = ({ navigation }: any) => {
       {/* Exit Button */}
       <TouchableOpacity 
         style={styles.exitButton}
+        onPress={() => navigation.navigate("GamingPage")}
       >
-        <Text style={styles.exitText}>Sair</Text>
+        <Text style={styles.exitText}>voltar</Text>
       </TouchableOpacity>
       
       {/* Main Content */}
@@ -26,7 +39,7 @@ const QuizStartScreen = ({ navigation }: any) => {
         
         {/* Subtitle */}
         <Text style={styles.subtitle}>
-          Ups!! Mas tudo bem errar, tu podes continuar!
+          {recommendation}
         </Text>
         
         {/* Start Button */}

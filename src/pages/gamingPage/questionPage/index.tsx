@@ -10,9 +10,14 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
+  ToastAndroid,
 } from "react-native";
+
 import { useNavigation } from "@react-navigation/native";
 import { CheckCheck, Puzzle } from "lucide-react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-toast-message";
+
 
 const { width, height } = Dimensions.get("window");
 
@@ -21,13 +26,84 @@ const QuizQuestionScreen = ({ navigation }: any) => {
   const [answer, setAnswer] = useState("");
   const [hasText, setHasText] = useState(false); // Novo estado
   const [keyboardOffset, setKeyboardOffset] = useState(0);
-  
+  const [questionAi, setQuestionAi] = useState("Carregando...");
+
   const handleResponder = () => {
     setInputVisible(true);
   };
 
+  const getAnwer = async () => {
+    const token = await AsyncStorage.getItem("Token");
+
+    if (!token) {
+      ToastAndroid.show("Tente fazer login", ToastAndroid.LONG);
+      navigation.navigate("Login");
+      return;
+    }
+    const url = "https://mapazzz.onrender.com/api/game/get_response";
+    if (!answer.trim() || !answer) {
+      Toast.show({
+        type: "error",
+        text1: "Erro",
+        text2: "Faltou dar a resposta",
+        position: "top",
+      });
+      return;
+    }
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({
+        problem: questionAi,
+        response: answer,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // <-- Adiciona o token aqui!
+      },
+    });
+    const data = await response.json();
+    if (response.ok) {
+      if (data.is_right) {
+        await AsyncStorage.setItem("recommendation", data.recommendation);
+        navigation.navigate("CorretctA");
+      }
+      else{
+        await AsyncStorage.setItem("recommendation", data.recommendation);
+        navigation.navigate("WrongA")
+      }
+    }
+    else
+    {
+      if (response.status == 401 || response.status == 403)
+      {
+        Toast.show({
+          type: "error",
+          text1: "Erro",
+          text2: "Token expirou tenta logar",
+          position: "top",
+        });
+        navigation.navigate("login");
+        return;
+      }
+      else
+      {
+        Toast.show({
+          type: "error",
+          text1: "Erro",
+          text2: "Erro ao pegar as respostas tente mais tarde!",
+          position: "top",
+        });
+      }
+    }
+  };
+
+  const getProblem = async () => {
+    const problem = await AsyncStorage.getItem("Problem");
+    if (problem) setQuestionAi(problem);
+  };
   useEffect(() => {
     setHasText(answer.length > 0);
+    getProblem();
   }, [answer]);
 
   const handleSubmit = () => {
@@ -58,20 +134,23 @@ const QuizQuestionScreen = ({ navigation }: any) => {
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.container}
-      >
+        style={styles.container}>
         {/* Top wavy background with overlaid elements */}
         <View style={styles.topBackgroundContainer}>
-          <Image source={require("../../../assets/topNav.png")} style={styles.topBackground} />
-          
+          <Image
+            source={require("../../../assets/topNav.png")}
+            style={styles.topBackground}
+          />
+
           {/* Overlay content on top of the background image */}
           <View style={styles.topContentOverlay}>
             {/* Logo/Puzzle icon */}
             <Puzzle size={35} color="#FFFFFF" style={styles.puzzleIcon} />
 
             {/* Exit button */}
-            <TouchableOpacity onPress={() => navigation.navigate("GamingPage")}
-             style={styles.exitButton}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("GamingPage")}
+              style={styles.exitButton}>
               <Text style={styles.exitText}>Sair</Text>
             </TouchableOpacity>
           </View>
@@ -79,23 +158,18 @@ const QuizQuestionScreen = ({ navigation }: any) => {
 
         {/* Question content */}
         <View style={styles.questionContainer}>
-          <Text style={styles.questionNumber}>Questão 1</Text>
-          <Text style={styles.questionText}>
-            Qual o animal que mais alimenta-se de mosquitos, ajudando a reduzir a sua proliferação?
-          </Text>
+          <Text style={styles.questionNumber}>Questão</Text>
+          <Text style={styles.questionText}>{questionAi}</Text>
         </View>
 
         {/* Answer input section */}
         {!inputVisible ? (
           <View style={styles.responderContainer}>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.responderButton}
-              onPress={handleResponder}
-            >
+              onPress={handleResponder}>
               <Text style={styles.responderText}>Responder</Text>
-               <CheckCheck size={22} color={'white'}
-               
-              />
+              <CheckCheck size={22} color={"white"} />
             </TouchableOpacity>
           </View>
         ) : (
@@ -105,31 +179,36 @@ const QuizQuestionScreen = ({ navigation }: any) => {
                 <Text style={styles.cancelText}>Cancelar</Text>
               </TouchableOpacity>
             </View>
-            
-              <TextInput
-                style={styles.input}
-                placeholder="Escreva sua mensagem..."
-                placeholderTextColor="#FFFFFF80"
-                value={answer}
-                onChangeText={(text) => {
-                  setAnswer(text);
-                  setHasText(text.length > 0); 
-                }}
-                multiline
-                autoFocus
-              />
-              
-              {hasText && (
-                <View style={styles.buttonRow}>
-                  <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("CorretctA")}>
-                    <Text style={styles.buttonText}>Enviar</Text>
-                  </TouchableOpacity>
-                  
-                  <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("WrongA")}>
-                    <Text style={styles.buttonText}>Pular</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
+
+            <TextInput
+              style={styles.input}
+              placeholder="Escreva sua mensagem..."
+              placeholderTextColor="#FFFFFF80"
+              value={answer}
+              onChangeText={(text) => {
+                setAnswer(text);
+                setHasText(text.length > 0);
+              }}
+              multiline
+              autoFocus
+            />
+
+            {hasText && (
+              <View style={styles.buttonRow}>
+                <TouchableOpacity style={styles.actionButton}>
+                  <Text style={styles.buttonText}>Pular</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPressIn={async () => {
+                    getAnwer();
+                  }}
+                  style={styles.actionButton}
+                 >
+                  <Text style={styles.buttonText}>Enviar</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         )}
       </KeyboardAvoidingView>
@@ -144,7 +223,7 @@ const styles = StyleSheet.create({
   },
   topBackgroundContainer: {
     height: height * 0.25,
-    position: 'relative',
+    position: "relative",
   },
   topBackground: {
     width: "100%",
@@ -154,7 +233,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 30,
   },
   topContentOverlay: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
@@ -170,7 +249,7 @@ const styles = StyleSheet.create({
   },
   exitButton: {
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.3)',
+    borderColor: "rgba(255,255,255,0.3)",
     backgroundColor: "rgba(255,255,255,0.3)",
     paddingHorizontal: 12,
     paddingVertical: 4,
@@ -238,7 +317,7 @@ const styles = StyleSheet.create({
   cancelHeaderContainer: {
     alignItems: "flex-end",
     marginBottom: 8,
-    marginRight: 8
+    marginRight: 8,
   },
   cancelText: {
     color: "#FFFFFF",
@@ -269,7 +348,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontWeight: "bold",
     fontSize: 16,
-  }
+  },
 });
 
 export default QuizQuestionScreen;

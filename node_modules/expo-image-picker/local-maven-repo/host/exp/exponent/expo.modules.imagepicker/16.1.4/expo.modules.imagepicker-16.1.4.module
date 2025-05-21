@@ -1,0 +1,129 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "host.exp.exponent",
+    "module": "expo.modules.imagepicker",
+    "version": "16.1.4",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.13"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "expo.modules.imagepicker-16.1.4.aar",
+          "url": "expo.modules.imagepicker-16.1.4.aar",
+          "size": 139885,
+          "sha512": "98caa3e4a93ca448bda15957b57ce916da28b02909fdce5779579bdc0e3867a5fb7035c1abd8e2e1648ccce3895fdb22aff6ccac736d2977d3bd7306300b72dd",
+          "sha256": "6367461a579335758001afbd99fa26d3d583efe94a557bec42eb3e9ae1275d4c",
+          "sha1": "ec535397f3cafc3384d9029ce635649149699d86",
+          "md5": "63334d35ac2ff9367ac11da315a65261"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk7",
+          "version": {
+            "requires": "2.0.21"
+          }
+        },
+        {
+          "group": "androidx.activity",
+          "module": "activity-ktx",
+          "version": {
+            "requires": "1.10.0"
+          }
+        },
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat",
+          "version": {
+            "requires": "1.7.0"
+          }
+        },
+        {
+          "group": "androidx.exifinterface",
+          "module": "exifinterface",
+          "version": {
+            "requires": "1.3.7"
+          }
+        },
+        {
+          "group": "com.vanniktech",
+          "module": "android-image-cropper",
+          "version": {
+            "requires": "4.6.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-android",
+          "version": {
+            "requires": "1.6.3"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.6.3"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "expo.modules.imagepicker-16.1.4.aar",
+          "url": "expo.modules.imagepicker-16.1.4.aar",
+          "size": 139885,
+          "sha512": "98caa3e4a93ca448bda15957b57ce916da28b02909fdce5779579bdc0e3867a5fb7035c1abd8e2e1648ccce3895fdb22aff6ccac736d2977d3bd7306300b72dd",
+          "sha256": "6367461a579335758001afbd99fa26d3d583efe94a557bec42eb3e9ae1275d4c",
+          "sha1": "ec535397f3cafc3384d9029ce635649149699d86",
+          "md5": "63334d35ac2ff9367ac11da315a65261"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseSourcePublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "expo.modules.imagepicker-16.1.4-sources.jar",
+          "url": "expo.modules.imagepicker-16.1.4-sources.jar",
+          "size": 21536,
+          "sha512": "9bd773f058c8fe6eadb1899408da2561f5f0f5a282ac4224e0cff6d32c814f14af3789dcb3fa8af61a505a9c0fcfe7a46f7e7e12b60e9ead850a3e2bcba3b274",
+          "sha256": "8fa3123644a6d7689c4adcabb5c9deb2f867ce5a03614dd0069733a6e5a84e6f",
+          "sha1": "fc062bb48d309b79b7301496928424edf0396b58",
+          "md5": "f19865790b2c1dfbc5e69944aad0896a"
+        }
+      ]
+    }
+  ]
+}

@@ -7,9 +7,9 @@ export const style = StyleSheet.create({
     flex: 1,
     alignItems: 'center'
   },
-  conteinar: { flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingHorizontal: 15, marginBottom: 22 },
+  conteinar: { flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingHorizontal: 15, marginBottom: 30 },
   imgLogo: {
-    width: width * 0.085,
+    width: width * 0.1,
     height: width * 0.1, resizeMode: 'contain'
   },
   content: { width: '80%' },

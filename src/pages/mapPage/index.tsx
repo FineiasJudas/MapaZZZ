@@ -35,6 +35,7 @@ import {
   User,
   CheckCheck,
   Cog,
+  Search,
 } from "lucide-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ImprovedSideMenu from "../siderMenuBar";
@@ -43,7 +44,11 @@ import useSocketNotification from "../utils/socketio";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
-export default function SidebarComponent({ navigation }) {
+export default function SidebarComponent({ navigation } : any) {
+  const [isUIVisible, setIsUIVisible] = useState(false);
+  const hideUITimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const [location, setLocation] = useState(null);
   const mapRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -55,7 +60,6 @@ export default function SidebarComponent({ navigation }) {
   const [userName, setUserName] = useState("Visitante...");
   const [loading, setLoading] = useState(false);
   const [logged, setLogged] = useState(false);
-
   const [routeCoordinates, setRouteCoordinates] = useState([]);
   const [destination, setDestination] = useState(null);
   const { showAlert } = useAlert();
@@ -121,6 +125,23 @@ export default function SidebarComponent({ navigation }) {
       showAlert("erro", "Erro ao conectar com o serviço de rotas.", "Erro");
     }
   };
+
+  const hideUI = () => {
+  setIsUIVisible(false);
+};
+
+
+
+const handleShowUI = () => {
+  setIsUIVisible(true);
+  if (hideUITimeoutRef.current) {
+    clearTimeout(hideUITimeoutRef.current);
+  }
+  hideUITimeoutRef.current = setTimeout(() => {
+    setIsUIVisible(false);
+  }, 10000);
+};
+
 
   const decodePolyline = (encoded) => {
     let points = [];
@@ -285,12 +306,7 @@ export default function SidebarComponent({ navigation }) {
   };
 
   useEffect(() => {
-
     startLocationTracking();
-
-
-
-
     // Fetch danger zones
     (async () => {
       try {
@@ -343,59 +359,55 @@ export default function SidebarComponent({ navigation }) {
     };*/
   }, []);
 
-  const MapStyle = [
-    {
-      featureType: "poi.business",
-      stylers: [{ visibility: "on" }],
-    },
-    {
-      featureType: "poi.school",
-      stylers: [{ visibility: "on" }],
-    },
-    {
-      featureType: "poi.place_of_worship",
-      stylers: [{ visibility: "off" }],
-    },
-    {
-      featureType: "poi",
-      elementType: "labels.text",
-      stylers: [{ visibility: "off" }],
-    },
-    {
-      featureType: "poi.medical",
-      stylers: [{ visibility: "on" }],
-    },
-    {
-      featureType: "administrative",
-      stylers: [{ visibility: "on" }],
-    },
-    {
-      featureType: "transit",
-      stylers: [{ visibility: "off" }],
-    },
-    {
-      featureType: "road",
-      stylers: [{ visibility: "on" }],
-    },
-    {
-      featureType: "water",
-      stylers: [{ color: "#aadaff" }],
-    },
-    {
-      featureType: "landscape",
-      stylers: [{ color: "#f3f4f4" }],
-    },
-  ];
+const MapStyle = [
+  {
+    featureType: "poi",
+    elementType: "labels.text",
+    stylers: [{ visibility: "off" }],
+  },
+  {
+    featureType: "poi.medical",
+    stylers: [{ visibility: "on" }],
+  },
+  {
+    featureType: "poi.school",
+    stylers: [{ visibility: "on" }],
+  },
+  {
+    featureType: "administrative",
+    stylers: [{ visibility: "on" }],
+  },
+  {
+    featureType: "road",
+    stylers: [{ color: "#b7b7bf" }, { visibility: "simplified" }],
+  },
+  {
+    featureType: "water",
+    stylers: [{ color: "#aadafi" }],
+  },
+  {
+    featureType: "landscape",
+    stylers: [{ color: "#e0e0e0" }],
+  },
+  {
+    featureType: "transit",
+    stylers: [{ visibility: "off" }],
+  }
+];
 
   return (
     <View style={style.container}>
       <MapView
-        ref={mapRef}
+       ref={mapRef}
         style={StyleSheet.absoluteFillObject}
         customMapStyle={MapStyle}
         showsUserLocation
-        showsCompass={false}
+        followsUserLocation={false}
         showsMyLocationButton={false}
+        loadingEnabled={true}
+        onPanDrag={hideUI}      // Esconde ao mover o mapa
+        onPress={handleShowUI}
+        showsCompass={false}
       >
         {location && (
           <Marker coordinate={location.coords}>
@@ -464,14 +476,26 @@ export default function SidebarComponent({ navigation }) {
         showAlert={showAlert}
         logOut={logOut}
       />
-      {!menuOpen && (
-        <TouchableOpacity style={style.menuButton} onPress={toggleMenu}>
-          <Menu color="#6D122C" style={style.menuIcon} />
-        </TouchableOpacity>
-      )}
-      <TouchableOpacity style={style.recenterButton} onPress={handleRecenter}>
-        <MapPinned color="#6D122C" style={style.recenterIcon} />
-      </TouchableOpacity>
+
+        {isUIVisible && !menuOpen && (
+          <View style={styles.topBar}>
+            <TouchableOpacity  onPress={toggleMenu}>
+              <Menu color="#6D122C" />
+            </TouchableOpacity>
+            <Text style={styles.title}>Mapa</Text>
+            <TouchableOpacity >
+              <Search color="#6D122C" />
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {isUIVisible && (
+          <TouchableOpacity style={styles.recenterButton} 
+          onPress={async () => { handleRecenter() }} >
+            <MapPinned color="#6D122C" style={style.recenterIcon} />
+          </TouchableOpacity>
+        )}
+
       {routeCoordinates.length > 0 && (
         <TouchableOpacity
           style={style.clearRouteButton}
@@ -484,9 +508,10 @@ export default function SidebarComponent({ navigation }) {
           <Text style={style.clearRouteText}>Limpar Rota</Text>
         </TouchableOpacity>
       )}
-      {showBottomBar && (
+
+      {showBottomBar && isUIVisible && (
         <View style={styles.bottomNav}>
-          <TouchableOpacity
+          <TouchableOpacity 
             style={styles.navButton}
             onPress={() => navigation.navigate("initPage")}
           >
@@ -570,7 +595,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderTopColor: "#e0e0e0",
     elevation: 8,
-    paddingVertical: 10,
+    paddingVertical: 8,
   },
   navButton: {
     flex: 1,
@@ -580,5 +605,49 @@ const styles = StyleSheet.create({
   navButtonText: {
     fontSize: 12,
     color: "#871434",
+  },
+  topBar: {
+    position: "absolute",
+    top: 10,
+    left: 8,
+    right: 8,
+    height: 45,
+    backgroundColor: "#fff",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    zIndex: 10,
+    elevation: 2,
+    borderRadius: 12
+    
+  },
+  title: {
+    color : '#6D122C',
+    fontSize: 15,
+    letterSpacing: 1,
+    fontWeight: "bold",
+  },
+  recenterButton: {
+    position: "absolute",
+    bottom: 90,
+    right: 20,
+    backgroundColor: "#fff",
+    padding: 10,
+    borderRadius: 30,
+    elevation: 2,
+    zIndex: 10,
+  },
+  bottomBar: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 70,
+    backgroundColor: "rgba(255,255,255,0.95)",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    zIndex: 10,
   },
 });

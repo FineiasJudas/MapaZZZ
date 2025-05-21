@@ -1,0 +1,117 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "host.exp.exponent",
+    "module": "expo.modules.device",
+    "version": "7.1.4",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.13"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "com.facebook.device.yearclass",
+          "module": "yearclass",
+          "version": {
+            "requires": "2.1.0"
+          }
+        },
+        {
+          "group": "androidx.legacy",
+          "module": "legacy-support-v4",
+          "version": {
+            "requires": "1.0.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "expo.modules.device-7.1.4.aar",
+          "url": "expo.modules.device-7.1.4.aar",
+          "size": 24553,
+          "sha512": "9b386faddbb8713f01928b7db94da576bfee4b4c9210fe8d2319aa74ecb2636f54402e2d02934fc68ab16260ccf4a08c6a142bbd4d04d443e34bd0146f822938",
+          "sha256": "963d3c5b674e4be9421e7335610067f8177f2c3e1dd5400e6b383fc677065899",
+          "sha1": "8679a3f9683d2770ca5ae5600be1057f56aaaa89",
+          "md5": "1e7302f908ffbcc0bb6ca3cc5a275ad4"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk7",
+          "version": {
+            "requires": "2.0.21"
+          }
+        },
+        {
+          "group": "com.facebook.device.yearclass",
+          "module": "yearclass",
+          "version": {
+            "requires": "2.1.0"
+          }
+        },
+        {
+          "group": "androidx.legacy",
+          "module": "legacy-support-v4",
+          "version": {
+            "requires": "1.0.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "expo.modules.device-7.1.4.aar",
+          "url": "expo.modules.device-7.1.4.aar",
+          "size": 24553,
+          "sha512": "9b386faddbb8713f01928b7db94da576bfee4b4c9210fe8d2319aa74ecb2636f54402e2d02934fc68ab16260ccf4a08c6a142bbd4d04d443e34bd0146f822938",
+          "sha256": "963d3c5b674e4be9421e7335610067f8177f2c3e1dd5400e6b383fc677065899",
+          "sha1": "8679a3f9683d2770ca5ae5600be1057f56aaaa89",
+          "md5": "1e7302f908ffbcc0bb6ca3cc5a275ad4"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseSourcePublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "expo.modules.device-7.1.4-sources.jar",
+          "url": "expo.modules.device-7.1.4-sources.jar",
+          "size": 3500,
+          "sha512": "3897d3fcc90aca42638bc83125fd00afe1daf22b6b45e2470f9ad938c17e6336ee95e181391368d7cea71c2d51ec1b1eb3256b50579dff0a12b2dfdfeed9129c",
+          "sha256": "c2acdefa4296add0c50104e3a23fe64f5ecb0d1f9fe7111d5210cbb3bbb94df7",
+          "sha1": "9e5e28a272674dfd67cba2e51da386c713c35605",
+          "md5": "b741e8d6ee80312b2864913828973397"
+        }
+      ]
+    }
+  ]
+}

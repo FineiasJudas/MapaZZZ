@@ -9,28 +9,98 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
+  ToastAndroid,
 } from "react-native";
 // Removed MapView and Marker imports
 import * as Location from "expo-location";
-import { ArrowLeft, OctagonAlert } from "lucide-react-native";
+import { ArrowLeft, AwardIcon, OctagonAlert } from "lucide-react-native";
 import Logo from '../../assets/logo.png';
+import Toast from "react-native-toast-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
 
 const OutbreakPredictorPage = ({ navigation }: any) => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [zones, setZones] = useState<any[]>([]);
   const [userLocation, setUserLocation] = useState<any>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  // Mock data with local image references
-  const mockZones = [
-    { id: '1', name: 'Cazenga', image: require('../../assets/cazenga.png'), weight: 0.7, reports: 12, rain: 120, ponds: 5 },
-    { id: '2', name: 'Luanda Sul', image: require('../../assets/luanda_sul.png'), weight: 0.5, reports: 8, rain: 95, ponds: 3 },
-    { id: '3', name: 'Talatona', image: require('../../assets/talatona.png'), weight: 0.3, reports: 4, rain: 75, ponds: 2 },
-  ];
+  function getNameRegion(address: any) {
+    const str = address.split(",");
+    if (str[str.length - 1] === '' || str[str.length - 1] === " ")
+      str.pop();
+    str.join(",");
+    let name = str[str.length - 1].substr(0, 20);
+    if (str[str.length - 1].length > 20)
+      name = `${name}...`;
+    return name;
+  }
+
+
+  const getZonesMostAffected = async () => {
+    const url = "https://mapazzz.onrender.com/api/hospital/most_effected";
+    try {
+      const respose = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      const data = await respose.json();
+      if (respose.ok) {
+        const mostAffectedZones = await data.mostAffectedZones;
+        const getData = mostAffectedZones.map((each: any, index: any) => {
+          let color = "";
+          if (each.level == "heigh")
+            color = "#D32F2F";
+          else if (each.level == "medium")
+            color = "#FFA000"
+          else
+            color = "#388E3C"
+          const objects = each.objectsFinds || ["Sem"];
+
+          return {
+            id: each.id,
+            name: getNameRegion(each.address),
+            photo: each.photo,
+            number_checkers: each.number_checkers || 0,
+            level: each.level,
+            color: color,
+            objectsFinds: objects.join(","),
+            weight: ((index + 93) * 7) / 10,
+          }
+        })
+        await AsyncStorage.setItem("zonesMostAffected", JSON.stringify(getData));
+        setZones(getData);
+      }
+      else {
+        Toast.show({
+          type: 'error',
+          text1: 'Erro',
+          text2: "Erro na conexão com a internet",
+          position: 'top',
+        });
+      }
+    } catch (error) {
+      console.log("Erro ao pegar as zonas", error);
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: "Erro na conexão com a internet",
+        position: 'top',
+      });
+    }
+  }
 
   useEffect(() => {
+    (async () => {
+      const data = await AsyncStorage.getItem("zonesMostAffected");
+      const zonesMostAffected = data ? JSON.parse(data) : null;
+      if (zonesMostAffected)
+        setZones(zonesMostAffected);
+    })();
+    getZonesMostAffected();
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status === 'granted') {
@@ -39,7 +109,7 @@ const OutbreakPredictorPage = ({ navigation }: any) => {
       }
       // Simulate fetch
       setTimeout(() => {
-        setZones(mockZones);
+        //setZones(mockZones);
         setLoading(false);
       }, 1000);
     })();
@@ -54,7 +124,7 @@ const OutbreakPredictorPage = ({ navigation }: any) => {
     return (
       <View style={styles.zoneContainer}>
         {/* Zone image */}
-        <Image source={item.image} style={styles.snapshot} />
+        <Image source={{ uri: item.photo }} style={styles.snapshot} />
 
         {/* Card below image */}
         <TouchableOpacity
@@ -65,23 +135,17 @@ const OutbreakPredictorPage = ({ navigation }: any) => {
           <View style={styles.cardHeader}>
             <OctagonAlert
               size={24}
-              color={
-                item.weight > 0.6
-                  ? '#D32F2F'
-                  : item.weight > 0.3
-                  ? '#FFA000'
-                  : '#388E3C'
-              }
+              color={item.color}
             />
             <Text style={styles.zoneName}>{item.name}</Text>
-            <Text style={styles.chanceText}>{chance}%</Text>
+            <Text style={styles.chanceText}>{item.weight}%</Text>
           </View>
 
           {expandedId === item.id && (
             <View style={styles.details}>
-              <Text style={styles.detailText}>Relatórios: {item.reports}</Text>
-              <Text style={styles.detailText}>Chuva (mm): {item.rain}</Text>
-              <Text style={styles.detailText}>Águas paradas: {item.ponds}</Text>
+              <Text style={styles.detailText}>Relatórios: {item.number_checkers}</Text>
+              <Text style={styles.detailText}>Nível: {item.level}</Text>
+              <Text style={styles.detailText}>Objectos: {item.objectsFinds}</Text>
             </View>
           )}
         </TouchableOpacity>
@@ -171,5 +235,4 @@ const styles = StyleSheet.create({
 });
 
 export default OutbreakPredictorPage;
-
 

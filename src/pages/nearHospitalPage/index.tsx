@@ -21,23 +21,78 @@ const HospitalListScreen = ({ navigation }: any) => {
   const [hospitals, setHospitals] = useState([
     {
       id: 1,
-      name: "Hospital geral",
-      address: "Talatona, Luanda",
-      phone: "940 929 955",
-      latitude: -8.839987,
-      longitude: 13.245567,
+      name: "Luanda Medical Center",
+      address: "R. Amílcar Cabral 3, Talatona, Luanda",
+      phone: "222 720 888",
+      latitude: -8.918270,
+      longitude: 13.173910,
       open_now: true,
-      distance: "2.5 km",
-      duration: "5mins",
+      distance: "2.1 km",
+      duration: "6 mins",
+    },
+    {
+      id: 2,
+      name: "Clínica Sagrada Esperança - Talatona",
+      address: "Talatona, Luanda",
+      phone: "222 693 195",
+      latitude: -8.918880,
+      longitude: 13.185480,
+      open_now: true,
+      distance: "1.8 km",
+      duration: "5 mins",
+    },
+    {
+      id: 3,
+      name: "Clínica Multiperfil",
+      address: "Via S8, Talatona, Luanda",
+      phone: "222 692 900",
+      latitude: -8.910000,
+      longitude: 13.190000,
+      open_now: true,
+      distance: "3.2 km",
+      duration: "8 mins",
+    },
+    {
+      id: 4,
+      name: "Clínica Girassol Talatona",
+      address: "Via Samba, Talatona, Luanda",
+      phone: "222 632 700",
+      latitude: -8.917300,
+      longitude: 13.202600,
+      open_now: true,
+      distance: "2.9 km",
+      duration: "7 mins",
+    },
+    {
+      id: 5,
+      name: "Clínica Global Diagnóstico",
+      address: "Via Expressa, Talatona, Luanda",
+      phone: "222 639 999",
+      latitude: -8.921500,
+      longitude: 13.207100,
+      open_now: true,
+      distance: "3.0 km",
+      duration: "7 mins",
+    },
+    {
+      id: 6,
+      name: "Clínica Sorriso Dourado",
+      address: "Talatona Shopping, Luanda",
+      phone: "926 442 605",
+      latitude: -8.921900,
+      longitude: 13.201800,
+      open_now: true,
+      distance: "2.6 km",
+      duration: "6 mins",
     },
   ]);
+
   const [selectedHospital, setSelectedHospital] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const getHospitals = async () => {
     try {
-      setLoading(false);
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         return;
@@ -54,7 +109,6 @@ const HospitalListScreen = ({ navigation }: any) => {
           body: JSON.stringify({ latitude, longitude }),
         }
       );
-
       const dados = await response.json();
       if (response.ok && dados.length) {
         setHospitals(dados);
@@ -97,24 +151,24 @@ const HospitalListScreen = ({ navigation }: any) => {
     <View style={style.Container}>
       <View style={style.logoX}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-        <ArrowLeft color="#6D122C" size={30} style={{marginTop: 6}}/>
+          <ArrowLeft color="#6D122C" size={30} style={{ marginTop: 6 }} />
         </TouchableOpacity>
         <Image source={Logo} style={style.imgLogo} />
       </View>
 
       <View style={style.conteinar}>
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: "bold",
-              color: "#6D122C",
-              marginLeft: 18,
-            }}>
-            Hospitais próximos:
-          </Text>
-        </View>
+        <Text
+          style={{
+            fontSize: 18,
+            fontWeight: "bold",
+            color: "#6D122C",
+            marginLeft: 18,
+          }}>
+          Hospitais próximos:
+        </Text>
+      </View>
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        
+
         {loading ? (
           <ScrollView style={style.content}>
             {hospitals.map((hospital) => (
@@ -162,8 +216,8 @@ const HospitalListScreen = ({ navigation }: any) => {
           </ScrollView>
         ) : (
           <>
-          <ActivityIndicator size="large" color="#6D122C" />
-          <Text >Procurando hospitais próximos...</Text>
+            <ActivityIndicator size="large" color="#6D122C" />
+            <Text >Procurando hospitais próximos...</Text>
           </>
         )}
       </View>

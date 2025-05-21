@@ -89,20 +89,24 @@ const UIAccessibilityTraits SwitchAccessibilityTrait = 0x20000000000001;
 
 static NSString *RCTRecursiveAccessibilityLabel(UIView *view)
 {
-  NSMutableString *str = [NSMutableString stringWithString:@""];
+  // Result string is initialized lazily to prevent useless but costly allocations.
+  NSMutableString *str = nil;
   for (UIView *subview in view.subviews) {
     NSString *label = subview.accessibilityLabel;
     if (!label) {
       label = RCTRecursiveAccessibilityLabel(subview);
     }
     if (label && label.length > 0) {
+      if (str == nil) {
+        str = [NSMutableString string];
+      }
       if (str.length > 0) {
         [str appendString:@" "];
       }
       [str appendString:label];
     }
   }
-  return str.length == 0 ? nil : str;
+  return str;
 }
 
 @implementation RCTView {
@@ -774,10 +778,10 @@ static CGFloat RCTDefaultIfNegativeTo(CGFloat defaultValue, CGFloat x)
       [directionAwareBorderRightColor resolvedColorWithTraitCollection:self.traitCollection];
 
   return (RCTBorderColors){
-      (borderTopColor ?: borderColor).CGColor,
-      (directionAwareBorderLeftColor ?: borderColor).CGColor,
-      (borderBottomColor ?: borderColor).CGColor,
-      (directionAwareBorderRightColor ?: borderColor).CGColor,
+      (borderTopColor ?: borderColor),
+      (directionAwareBorderLeftColor ?: borderColor),
+      (borderBottomColor ?: borderColor),
+      (directionAwareBorderRightColor ?: borderColor),
   };
 }
 
@@ -814,21 +818,20 @@ static CGFloat RCTDefaultIfNegativeTo(CGFloat defaultValue, CGFloat x)
       // the content. For this reason, only use iOS border drawing when clipping
       // or when the border is hidden.
 
-      (borderInsets.top == 0 || (borderColors.top && CGColorGetAlpha(borderColors.top) == 0) || self.clipsToBounds);
+      (borderInsets.top == 0 || (borderColors.top && CGColorGetAlpha(borderColors.top.CGColor) == 0) ||
+       self.clipsToBounds);
 
   // iOS clips to the outside of the border, but CSS clips to the inside. To
   // solve this, we'll need to add a container view inside the main view to
   // correctly clip the subviews.
 
-  CGColorRef backgroundColor;
-
-  backgroundColor = [_backgroundColor resolvedColorWithTraitCollection:self.traitCollection].CGColor;
+  UIColor *backgroundColor = [_backgroundColor resolvedColorWithTraitCollection:self.traitCollection];
 
   if (useIOSBorderRendering) {
     layer.cornerRadius = cornerRadii.topLeftHorizontal;
-    layer.borderColor = borderColors.left;
+    layer.borderColor = borderColors.left.CGColor;
     layer.borderWidth = borderInsets.left;
-    layer.backgroundColor = backgroundColor;
+    layer.backgroundColor = backgroundColor.CGColor;
     layer.contents = nil;
     layer.needsDisplayOnBoundsChange = NO;
     layer.mask = nil;
