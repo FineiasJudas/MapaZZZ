@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Switch,
   ScrollView,
+  ToastAndroid,
 } from "react-native";
 import {
   User,
@@ -76,7 +77,8 @@ const SettingsPage = ({ navigation }: any) => {
         {/* Account Settings */}
         <Text style={styles.sectionTitle}>Conta</Text>
         <View style={styles.settingsGroup}>
-          <TouchableOpacity style={styles.settingItem}>
+          <TouchableOpacity style={styles.settingItem} 
+          onPress={()  => ToastAndroid.show("Funcionalidade ou secção não disponível!", ToastAndroid.LONG)}>
             <View style={styles.settingInfo}>
               <User size={22} color="#6D122C" style={styles.settingIcon} />
               <Text style={styles.settingLabel}>Informações Pessoais</Text>
@@ -84,7 +86,7 @@ const SettingsPage = ({ navigation }: any) => {
             <ChevronRight size={20} color="#6D122C" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.settingItem}>
+          <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate("securityPrivacy")}>
             <View style={styles.settingInfo}>
               <Lock size={22} color="#6D122C" style={styles.settingIcon} />
               <Text style={styles.settingLabel}>Segurança e Privacidade</Text>
@@ -92,7 +94,8 @@ const SettingsPage = ({ navigation }: any) => {
             <ChevronRight size={20} color="#6D122C" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.settingItem}>
+          <TouchableOpacity style={styles.settingItem}
+          onPress={()  => ToastAndroid.show("Funcionalidade ou secção não disponível!", ToastAndroid.LONG)}>
             <View style={styles.settingInfo}>
               <Shield size={22} color="#6D122C" style={styles.settingIcon} />
               <Text style={styles.settingLabel}>Verificação de Conta</Text>
@@ -105,21 +108,8 @@ const SettingsPage = ({ navigation }: any) => {
         <Text style={styles.sectionTitle}>Geral</Text>
         <View style={styles.settingsGroup}>
 
-        {/*<View style={styles.settingItem}>
-            <View style={styles.settingInfo}>
-              <Moon size={22} color="#6D122C" style={styles.settingIcon} />
-              <Text style={styles.settingLabel}>Modo Escuro</Text>
-            </View>
-            <Switch
-              trackColor={{ false: "#e0e0e0", true: "#6D122C" }}
-              thumbColor={darkMode ? "#fff" : "#fff"}
-              ios_backgroundColor="#e0e0e0"
-              onValueChange={() => setDarkMode(!darkMode)}
-              value={darkMode}
-            />
-          </View>*/}
-
-          <TouchableOpacity style={styles.settingItem}>
+          <TouchableOpacity style={styles.settingItem}
+          onPress={()  => ToastAndroid.show("Funcionalidade ou secção não disponível!", ToastAndroid.LONG)}>
             <View style={styles.settingInfo}>
               <Languages size={22} color="#6D122C" style={styles.settingIcon} />
               <Text style={styles.settingLabel}>Idioma</Text>
@@ -154,7 +144,7 @@ const SettingsPage = ({ navigation }: any) => {
         </View>
 
         {/* Logout */}
-        <TouchableOpacity 
+        <TouchableOpacity
         
         onPress={() => handleBackPress()} style={styles.logoutButton}>
           <LogOut size={22} color="#ff3b30" style={styles.logoutIcon} />
@@ -241,7 +231,7 @@ const styles = StyleSheet.create({
     borderColor: "#dfdfdf",
     borderRadius: 12,
     marginTop: 24,
-    padding: 16,
+    padding: 14,
   },
   logoutIcon: {
     marginRight: 12,

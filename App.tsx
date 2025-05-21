@@ -28,13 +28,9 @@ import QuestionPage from './src/pages/gamingPage/questionPage';
 import CorretctA from './src/pages/gamingPage/correctAnwser';
 import WrongA from './src/pages/gamingPage/wrongAnwser';
 import OutbreakPredictorPage from './src/pages/outbreakPredictorPage'
-
-
-
-
-
-import { registerForPushNotificationsAsync } from './src/pages/manegeNotification/index';
+import securityPrivacy from './src/pages/configPage/securityPrivacy';
 import { Import } from 'lucide-react-native';
+import { registerForPushNotificationsAsync } from './src/pages/manegeNotification/index';
 import Toast from 'react-native-toast-message';
 
 const Stack = createNativeStackNavigator();
@@ -121,6 +117,7 @@ export default function App() {
             <Stack.Screen name="OutbreakPredictorPage" component={OutbreakPredictorPage} options={{ headerShown: false }} />
             <Stack.Screen name="nearHospitalPage" component={nearHospitalPage} options={{ headerShown: false }} />
             <Stack.Screen name="configPage" component={configPage} options={{ headerShown: false }} />
+            <Stack.Screen name="securityPrivacy" component={securityPrivacy} options={{ headerShown: false }} />
             <Stack.Screen name="ongPage" component={ongPage} options={{ headerShown: false }} />
           </Stack.Navigator>
         </NavigationContainer>
