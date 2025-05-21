@@ -222,7 +222,7 @@ const EvalsPage = ({ navigation }: any) => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                setShowLocation(!showLocation);
+                setShowLocation(true);
 
                 setTimeout(() => {
                   setShowLocation(false);
