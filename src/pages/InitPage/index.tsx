@@ -34,6 +34,7 @@ import {
   Snowflake,
   CloudFog,
   Thermometer,
+  ImageUp,
 } from "lucide-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
@@ -41,6 +42,7 @@ import logo from "../../assets/logo.png";
 import bySalonis from "../../assets/bySalōnis.png";
 import { style } from "./style";
 import useSocketNotification from "../utils/socketio";
+import { StatusBar } from 'react-native';
 import App from "../photo";
 
 import RNMinimizeApp from 'react-native-minimize';
@@ -264,9 +266,24 @@ const HomePage = ({ navigation }: any) => {
   };
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor="#E4E4E4" barStyle="dark-content" />
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Início</Text>
+      <View style={styles.userInfoContainer}>
+            <TouchableOpacity
+              style={styles.userIcon}
+              onPress={() => navigation.navigate("ProfilePage")}>
+              <User color="#000" size={25} />
+            </TouchableOpacity>
+            <View>
+              <Text style={styles.welcomeText}>{username}</Text>
+              <TouchableOpacity
+                style={{ alignItems: "center", flexDirection: "row" }}>
+                <MapPin color="#6D122C" size={13} style={{ marginRight: 6 }} />
+                <Text style={styles.statLabel}>{location}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         <View style={styles.headerButtons}>
           <TouchableOpacity style={styles.iconButton}>
             <Puzzle
@@ -301,23 +318,16 @@ const HomePage = ({ navigation }: any) => {
           </TouchableOpacity>
         </View>
       </View>
-
+      
       <ScrollView style={styles.content}>
-        {/* Welcome Card */}
-        <View style={styles.welcomeCard}>
-          <View style={styles.userInfoContainer}>
-            <TouchableOpacity
-              style={styles.userIcon}
-              onPress={() => navigation.navigate("ProfilePage")}>
-              <User color="#6D122C" size={30} />
-            </TouchableOpacity>
-            <View>
-              <Text style={styles.welcomeText}>Bem-vindo, {username}</Text>
-              <TouchableOpacity
-                style={{ alignItems: "center", flexDirection: "row" }}>
-                <MapPin color="#6D122C" size={18} style={{ marginRight: 6 }} />
-                <Text style={styles.statLabel}>{location}</Text>
-              </TouchableOpacity>
+
+      <View style={styles.headerInf}>
+        <View style={styles.ratInf}>
+            <View >
+              <Text style={{ fontWeight: "500", fontSize: 45, color: '#6F132C', marginLeft: 4, letterSpacing: 2}}>3500</Text>
+              <View style={{ paddingHorizontal: 8, paddingVertical: 3, backgroundColor: '#6F132C', borderRadius: 18  }}>
+                <Text style={{ fontSize: 12, color: '#fff'}}>Pontos acumulados</Text>
+              </View>
               <View style={styles.infoRow}>
                 {weatherIcons[weather.condition as keyof typeof weatherIcons] || weatherIcons.default}
                 <Text style={[styles.infoText, { color: getTemperatureColor(weather.temp) }]}>
@@ -325,8 +335,18 @@ const HomePage = ({ navigation }: any) => {
                 </Text>
               </View>
             </View>
+            
           </View>
-          <View style={styles.actionButtons}>
+          <View style={{ alignItems: 'flex-end' }}>
+            <View style={{ paddingHorizontal: 8, paddingVertical: 3, backgroundColor: "#E4E4E4", borderRadius: 18, marginBottom: 5 , borderColor: '#D8D8D8', borderWidth: 1,}}>
+              <Text style={styles.actionButtonText}>Actividades recentes</Text>
+            </View>
+            <Text style={{ fontSize: 14, color: "#000", right: 5}}>+20 Pontos</Text>
+            <Text style={{ fontSize: 14, color: "#000", right: 5 }}>12 Registros</Text>
+          </View>
+          </View>
+          <View >
+          <View style={styles.actionButtonsCont}>
             <TouchableOpacity
               style={styles.actionButton}
               onPress={async () => {
@@ -340,28 +360,29 @@ const HomePage = ({ navigation }: any) => {
                   );
                 }
               }}>
+              <ImageUp color="#000" />
               <Text style={styles.actionButtonText}>Reportar </Text>
-              <Camera color="#6D122C" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
+            <TriangleAlert color="#000" /> 
               <Text
                 style={styles.actionButtonText}
                 onPress={async () => {
                   navigation.navigate("MapaPage");
                 }}>
+                   
                 Zonas de Risco
               </Text>
-              <TriangleAlert color="#6D122C" />
             </TouchableOpacity>
           </View>
-        </View>
+          </View>
 
         {/* Cartao de registros */}
         <View style={styles.statsContainer}>
           <View style={styles.statsCard}>
-            <Text style={styles.statsNumber}>+{userPoints || 0}</Text>
+            <Text style={styles.statsNumber}>+100</Text>
             <View style={styles.statsLabelContainer}>
-              <Text style={styles.statsLabel}>Pontos acumulados</Text>
+              <Text style={styles.statsLabel}>Zonas de Risco</Text>
             </View>
           </View>
           <View style={styles.statsCard}>
@@ -369,10 +390,8 @@ const HomePage = ({ navigation }: any) => {
               onPress={async () => {
                 navigation.navigate("MapaPage");
               }}
-              style={styles.statsNumber}>+115</Text>
-            <View style={styles.statsLabelContainer}>
-              <Text style={styles.statsLabel}>Zonas de Risco</Text>
-            </View>
+              style={styles.statsNumber}>+55</Text>
+              <Text style={styles.statsLabel}>Utilizadres</Text>
           </View>
         </View>
 
@@ -588,6 +607,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginTop: 4,
+    marginLeft: 4,
     gap: 6,
   },
   infoText: {
@@ -595,13 +615,13 @@ const styles = StyleSheet.create({
     color: "#666",
   },
   header: {
-    paddingTop: 18,
+    paddingTop: 14,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: "white",
+    backgroundColor: "#F5F5F5",
     borderBottomColor: "#e0e0e0",
     elevation: 2
   },
@@ -643,14 +663,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   userIcon: {
-    width: 45,
-    height: 45,
+    width: 40,
+    height: 40,
     borderRadius: 30,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#E4E4E4",
     justifyContent: "center",
     alignItems: "center",
     marginRight: 12,
-    padding: 30
+    padding: 25
   },
   userIconText: {
     fontSize: 20,
@@ -670,36 +690,60 @@ const styles = StyleSheet.create({
     marginTop: 16,
     gap: 8,
   },
+  actionButtonsCont:{
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    gap: 15,
+    backgroundColor: "#F5F5F5",
+    paddingBottom: 15
+  },
+  headerInf:{
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    gap: 8,
+    backgroundColor: "#F5F5F5",
+    paddingBottom: 15
+  },
+  ratInf: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: 'space-between'
+  },
   actionButton: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    gap: 3,
+    width: '48%',
+    gap: 10,
     paddingHorizontal: 16,
-    paddingVertical: 8,
-    backgroundColor: "white",
-    borderRadius: 20,
-    elevation: 4
+    paddingVertical: 10,
+    backgroundColor: "#E4E4E4",
+    borderColor: '#D8D8D8',
+    borderRadius: 15,
+    borderWidth: 1,
   },
   actionButtonText: {
     fontSize: 14,
-    color: "#6D122C",
+    color: "##1C1C1C",
   },
   statsContainer: {
     flexDirection: "row",
-    margin: 16,
-    gap: 16,
+    gap: 1,
+    marginBottom: 14
   },
   statsCard: {
     flex: 1,
     backgroundColor: "#6D122C",
-    borderRadius: 12,
     padding: 16,
-    height: 120,
-    justifyContent: "space-between",
+    height: 60,
+    justifyContent: "center",
   },
   statsNumber: {
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: "bold",
     color: "white",
   },
