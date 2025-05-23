@@ -29,28 +29,33 @@ export default function CustomAlert({
   const colorMap = {
     erro: "#B00020",
     sucesso: "#007E33",
-    aviso: "#FF8800",
-    confirmacao: "#FF8800", // Cor para confirmação
+    aviso: "#6D122C",
+    confirmacao: "#6D122C", // Cor para confirmação
   };
 
   return (
-    <Modal visible={visible} transparent animationType="fade" onRequestClose={() => onClose(false)}>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      onRequestClose={() => onClose(false)}
+    >
       <View style={style.modalOverlay}>
         <View style={style.modalContent}>
           <Text style={[style.modalTitle, { color: colorMap[type] }]}>
             {title || titleMap[type]}
           </Text>
           <Text style={style.modalText}>{message}</Text>
-          
+
           {type === "confirmacao" ? (
             <View style={style.modalButtonsContainer}>
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={[style.modalButtonCancel]}
                 onPress={() => onClose(false)}
               >
                 <Text style={style.modalButtonTextCancel}>Cancelar</Text>
               </TouchableOpacity>
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={[style.modalButtonYes]}
                 onPress={() => onClose(true)}
               >
@@ -58,7 +63,7 @@ export default function CustomAlert({
               </TouchableOpacity>
             </View>
           ) : (
-            <TouchableOpacity 
+            <TouchableOpacity
               style={[style.modalButton]}
               onPress={() => onClose(false)}
             >

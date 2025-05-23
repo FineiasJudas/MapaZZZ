@@ -304,7 +304,7 @@ const NotifyPage = ({ navigation }: { navigation: NavigationProp<any> }) => {
           <ActivityIndicator size="large" color="#6D122C" />
         ) : (
           <ScrollView style={style.scroll}>
-            {notifications.length === 0 ? (
+            {notifications.length !== 0 ? (
               <Text style={style.notificationText}>
                 Nenhuma notificação disponível
               </Text>
