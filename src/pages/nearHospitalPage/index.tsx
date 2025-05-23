@@ -10,6 +10,7 @@ import {
   Pressable,
   BackHandler,
   ActivityIndicator,
+  SafeAreaView,
 } from "react-native";
 import { ArrowLeft, Hospital, MapPin } from "lucide-react-native";
 import Logo from "../../assets/logo.png";
@@ -110,7 +111,7 @@ const HospitalListScreen = ({ navigation }: any) => {
   }, [navigation]);
 
   return (
-    <View style={style.Container}>
+    <SafeAreaView style={style.Container}>
       <View style={style.logoX}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <ArrowLeft color="#6D122C" size={25} style={{ marginTop: 6 }} />
@@ -121,7 +122,7 @@ const HospitalListScreen = ({ navigation }: any) => {
       <View style={style.conteinar}>
         <Text
           style={{
-            fontSize: 20,
+            fontSize: 23,
             fontWeight: "bold",
             color: "#000",
           }}
@@ -198,7 +199,12 @@ const HospitalListScreen = ({ navigation }: any) => {
           </ScrollView>
         ) : (
           <View
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+            }}
           >
             <ActivityIndicator size="large" color="#6D122C" />
           </View>
@@ -278,7 +284,7 @@ const HospitalListScreen = ({ navigation }: any) => {
           </View>
         </Pressable>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 

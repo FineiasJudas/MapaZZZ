@@ -24,6 +24,7 @@ import alartRain from "../../assets/rainAlarte.png";
 import alertStop from "../../assets/stop.png";
 import alertEdu from "../../assets/goo.png";
 import useSocketNotification from "../utils/socketio";
+import { NavigationProp } from "@react-navigation/native";
 
 // Configuração do WebSocket com socket.io-client
 import { io } from "socket.io-client";
@@ -31,21 +32,43 @@ const socket = io("https://mapazzz.onrender.com", {
   transports: ["websocket"],
 });
 
+interface NotificationEventData {
+  title: string;
+  describe?: string;
+  typeNotification?: string;
+}
+
+interface NotificationEvent {
+  data: NotificationEventData;
+}
+
 // Configuração de notificações
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
     shouldPlaySound: true,
     shouldSetBadge: false,
+    shouldShowBanner: true,
+    shouldShowList: true,
   }),
 });
 
-const NotifyPage = ({ navigation }) => {
+const NotifyPage = ({ navigation }: { navigation: NavigationProp<any> }) => {
   const { showAlert } = useAlert();
   useSocketNotification();
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedNotification, setSelectedNotification] = useState(null);
-  const [notifications, setNotifications] = useState([]);
+  const [selectedNotification, setSelectedNotification] =
+    useState<NotificationData | null>(null);
+  interface NotificationData {
+    id: string;
+    title: string;
+    describe: string;
+    createdAt: string;
+    typeNotification: string;
+    image?: any;
+  }
+
+  const [notifications, setNotifications] = useState<NotificationData[]>([]);
   const [loading, setLoading] = useState(false);
 
   // const cach = async () => {
@@ -64,7 +87,7 @@ const NotifyPage = ({ navigation }) => {
   //     setNotifications(notificationsWithImages);
   //   }
   // };
-  const getImageByType = (type) => {
+  const getImageByType = (type: string) => {
     switch (type) {
       case "clima":
         return alartRain;
@@ -122,10 +145,21 @@ const NotifyPage = ({ navigation }) => {
       const notificationsData = Array.isArray(data)
         ? data
         : data.notifications || [];
-      const notificationsWithImages = notificationsData.map((item) => ({
-        ...item,
-        image: getImageByType(item.typeNotification),
-      }));
+      interface NotificationData {
+        id: string;
+        title: string;
+        describe: string;
+        createdAt: string;
+        typeNotification: string;
+        image?: any;
+      }
+
+      const notificationsWithImages: NotificationData[] = notificationsData.map(
+        (item: NotificationData) => ({
+          ...item,
+          image: getImageByType(item.typeNotification),
+        })
+      );
       setNotifications(notificationsWithImages);
     } catch (error) {
       console.log("Erro ao buscar notificações:", error);
@@ -156,10 +190,12 @@ const NotifyPage = ({ navigation }) => {
         }
       }
 
-      const notificationsWithImages = notificationsData.map((item) => ({
-        ...item,
-        image: getImageByType(item.typeNotification),
-      }));
+      const notificationsWithImages: NotificationData[] = notificationsData.map(
+        (item: NotificationData) => ({
+          ...item,
+          image: getImageByType(item.typeNotification),
+        })
+      );
 
       setNotifications(notificationsWithImages);
     })();
@@ -171,9 +207,9 @@ const NotifyPage = ({ navigation }) => {
       console.log("WebSocket conectado");
     };
 
-    const handleNotificationClimate = (event) => {
+    const handleNotificationClimate = (event: NotificationEvent) => {
       console.log("Evento recebido do WebSocket:", event);
-      const newNotification = {
+      const newNotification: NotificationData = {
         id: Date.now().toString(),
         title: event.data.title,
         describe: event.data.describe || "Chuva detectada na sua localização!",
@@ -228,7 +264,7 @@ const NotifyPage = ({ navigation }) => {
     return () => backHandler.remove(); // Limpeza ao desmontar
   }, [navigation]);
 
-  const handleNotificationPress = (notification) => {
+  const handleNotificationPress = (notification: NotificationData) => {
     setSelectedNotification(notification);
     setModalVisible(true);
   };
@@ -246,13 +282,22 @@ const NotifyPage = ({ navigation }) => {
       <View style={style.container}>
         <Text
           style={{
-            fontSize: 18,
+            fontSize: 23,
             fontWeight: "bold",
-            color: "#6D122C",
-            marginBottom: 20,
-            marginLeft: 15,
-          }}>
+            color: "#000",
+          }}
+        >
           Notificações
+        </Text>
+        <Text
+          style={{
+            fontSize: 15,
+            fontWeight: "regular",
+            color: "#999",
+            marginBottom: 25,
+          }}
+        >
+          Veja as notificações recebidas
         </Text>
 
         {loading ? (
@@ -267,18 +312,20 @@ const NotifyPage = ({ navigation }) => {
               notifications.map((item) => (
                 <TouchableOpacity
                   key={item.id}
-                  onPress={() => handleNotificationPress(item)}>
+                  onPress={() => handleNotificationPress(item)}
+                >
                   <View style={style.infCamp}>
-                    <Image source={item.image} style={style.notyType} />
+                    {/* <Image source={item.image} style={style.notyType} /> */}
                     <View style={style.styleText}>
                       <Text
                         numberOfLines={2}
                         ellipsizeMode="tail"
-                        style={style.notificationText}>
+                        style={style.notificationText}
+                      >
                         {item.describe || "Notificação sem descrição"}
                       </Text>
                       <View style={style.timeInfo}>
-                        <Clock color="#999" size={14} />
+                        <Clock color="#999" size={12} />
                         <Text style={style.timeText}>
                           {formatRelativeDate(item.createdAt)}
                         </Text>
@@ -297,7 +344,8 @@ const NotifyPage = ({ navigation }) => {
         visible={modalVisible}
         transparent
         animationType="slide"
-        onRequestClose={() => setModalVisible(false)}>
+        onRequestClose={() => setModalVisible(false)}
+      >
         <View style={style.modalOverlay}>
           <View style={style.modalContainer}>
             {selectedNotification && (
@@ -310,7 +358,8 @@ const NotifyPage = ({ navigation }) => {
                   style={[
                     style.modalText,
                     { fontWeight: "700", fontSize: 18, marginBottom: 8 },
-                  ]}>
+                  ]}
+                >
                   {selectedNotification.title ||
                     selectedNotification.describe ||
                     "Notificação"}
@@ -322,7 +371,8 @@ const NotifyPage = ({ navigation }) => {
                   <>
                     <TouchableOpacity
                       style={style.closeButton}
-                      onPress={() => navigation.navigate("GamingPage")}>
+                      onPress={() => navigation.navigate("GamingPage")}
+                    >
                       <Text style={style.closeButtonText}>Goo</Text>
                     </TouchableOpacity>
                   </>
@@ -330,7 +380,8 @@ const NotifyPage = ({ navigation }) => {
                   <>
                     <TouchableOpacity
                       style={style.closeButton}
-                      onPress={() => setModalVisible(false)}>
+                      onPress={() => setModalVisible(false)}
+                    >
                       <Text style={style.closeButtonText}>Fechar</Text>
                     </TouchableOpacity>
                   </>

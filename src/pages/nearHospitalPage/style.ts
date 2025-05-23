@@ -11,7 +11,7 @@ export const style = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginTop: 35,
+    marginTop: 0,
     width: "88%",
     marginHorizontal: "auto",
   },
@@ -41,7 +41,6 @@ export const style = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "bold",
-    // marginBottom: 15,
     color: "#6D122C",
     marginLeft: 0,
   },
@@ -53,7 +52,6 @@ export const style = StyleSheet.create({
   },
   styleText: {
     flex: 1,
-    // justifyContent: "space-between",
   },
   notificationText: {
     fontSize: 17,
