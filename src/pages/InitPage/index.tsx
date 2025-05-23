@@ -35,6 +35,11 @@ import {
   CloudFog,
   Thermometer,
   ImageUp,
+  BadgeCheck,
+  Bolt,
+  Cross,
+  ChevronRight,
+  MapPlus,
 } from "lucide-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
@@ -44,8 +49,8 @@ import { style } from "./style";
 import useSocketNotification from "../utils/socketio";
 import { StatusBar } from 'react-native';
 import App from "../photo";
-
 import RNMinimizeApp from 'react-native-minimize';
+import { LinearGradient } from "expo-linear-gradient";
 
 const HomePage = ({ navigation }: any) => {
   const [weather, setWeather] = useState<{ temp: string; condition: string }>({
@@ -266,7 +271,7 @@ const HomePage = ({ navigation }: any) => {
   };
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#E4E4E4" barStyle="dark-content" />
+      <StatusBar backgroundColor="#f5f5f5" barStyle="dark-content" />
       {/* Header */}
       <View style={styles.header}>
       <View style={styles.userInfoContainer}>
@@ -320,29 +325,24 @@ const HomePage = ({ navigation }: any) => {
       </View>
       
       <ScrollView style={styles.content}>
-
       <View style={styles.headerInf}>
         <View style={styles.ratInf}>
             <View >
-              <Text style={{ fontWeight: "500", fontSize: 45, color: '#6F132C', marginLeft: 4, letterSpacing: 2}}>3500</Text>
+              <Text style={{ fontWeight: "bold", fontSize: 45, color: '#6F132C', marginLeft: 3, letterSpacing: 2}}>3500</Text>
               <View style={{ paddingHorizontal: 8, paddingVertical: 3, backgroundColor: '#6F132C', borderRadius: 18  }}>
                 <Text style={{ fontSize: 12, color: '#fff'}}>Pontos acumulados</Text>
               </View>
-              <View style={styles.infoRow}>
+             
+            </View>
+            
+          </View>
+          <View style={{alignItems: 'flex-end', marginBottom: 38}}>
+          <View style={styles.infoRow}>
                 {weatherIcons[weather.condition as keyof typeof weatherIcons] || weatherIcons.default}
                 <Text style={[styles.infoText, { color: getTemperatureColor(weather.temp) }]}>
                   {weather.temp} - {weather.condition}
                 </Text>
               </View>
-            </View>
-            
-          </View>
-          <View style={{ alignItems: 'flex-end' }}>
-            <View style={{ paddingHorizontal: 8, paddingVertical: 3, backgroundColor: "#E4E4E4", borderRadius: 18, marginBottom: 5 , borderColor: '#D8D8D8', borderWidth: 1,}}>
-              <Text style={styles.actionButtonText}>Actividades recentes</Text>
-            </View>
-            <Text style={{ fontSize: 14, color: "#000", right: 5}}>+20 Pontos</Text>
-            <Text style={{ fontSize: 14, color: "#000", right: 5 }}>12 Registros</Text>
           </View>
           </View>
           <View >
@@ -360,11 +360,11 @@ const HomePage = ({ navigation }: any) => {
                   );
                 }
               }}>
-              <ImageUp color="#000" />
+              <Siren color="#000" />
               <Text style={styles.actionButtonText}>Reportar </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
-            <TriangleAlert color="#000" /> 
+              <MapPlus color="#000" />
               <Text
                 style={styles.actionButtonText}
                 onPress={async () => {
@@ -380,9 +380,9 @@ const HomePage = ({ navigation }: any) => {
         {/* Cartao de registros */}
         <View style={styles.statsContainer}>
           <View style={styles.statsCard}>
-            <Text style={styles.statsNumber}>+100</Text>
+            <Text style={styles.statsNumber}>+55</Text>
             <View style={styles.statsLabelContainer}>
-              <Text style={styles.statsLabel}>Zonas de Risco</Text>
+              <Text style={styles.statsLabel}>Utilizadres</Text>
             </View>
           </View>
           <View style={styles.statsCard}>
@@ -390,12 +390,11 @@ const HomePage = ({ navigation }: any) => {
               onPress={async () => {
                 navigation.navigate("MapaPage");
               }}
-              style={styles.statsNumber}>+55</Text>
-              <Text style={styles.statsLabel}>Utilizadres</Text>
+              style={styles.statsNumber}>+80</Text>
+              <Text style={styles.statsLabel}>Zonas de Risco</Text>
           </View>
         </View>
 
-        {/* Registros recentes */}
         <Text style={styles.sectionTitle}>Registros Recentes</Text>
         <ScrollView
           horizontal
@@ -405,12 +404,18 @@ const HomePage = ({ navigation }: any) => {
             <View key={item.id} style={styles.recordCard}>
               <Image
                 source={{ uri: item.image }}
-                style={styles.recordImage} // você vai definir essa estilização abaixo
+                style={styles.recordImage}
                 resizeMode="cover"
               />
-              <View style={styles.recordTimeLabel}>
-                <Text style={styles.recordTimeLabelText}>{item.address}</Text>
-              </View>
+              <LinearGradient
+              colors={['rgba(0,0,0,0.85)', 'rgba(0,0,0,0.6)', 'transparent']}
+              start={{ x: 0.5, y: 1 }}
+              end={{ x: 0.5, y: 0 }}
+              style={styles.recordTimeLabel}
+            >
+              <Text style={styles.recordTimeLabelText}>{item.address}</Text>
+            </LinearGradient>
+
             </View>
           ))}
         </ScrollView>
@@ -535,22 +540,6 @@ const HomePage = ({ navigation }: any) => {
         <TouchableOpacity
           style={styles.navButton}
           onPress={async () => {
-            if (logged) navigation.navigate("nearHospitalPage");
-            else {
-              navigation.navigate("Login");
-              await showAlert(
-                "aviso",
-                "Você precisa estar logado para acessar esta página, tente Logar",
-                "Atenção"
-              );
-            }
-          }}>
-          <Hospital color="#6D122C" />
-          <Text style={styles.navButtonText}>Hospitais</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.navButton}
-          onPress={async () => {
             if (logged) {
               navigation.navigate("EvalsPage");
               await showAlert(
@@ -569,9 +558,26 @@ const HomePage = ({ navigation }: any) => {
               );
             }
           }}>
-          <CheckCheck color="#6D122C" />
+          <BadgeCheck color="#6D122C"/>
           <Text style={styles.navButtonText}>Verificar</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={async () => {
+            if (logged) navigation.navigate("nearHospitalPage");
+            else {
+              navigation.navigate("Login");
+              await showAlert(
+                "aviso",
+                "Você precisa estar logado para acessar esta página, tente Logar",
+                "Atenção"
+              );
+            }
+          }}>
+        <Cross color="#6D122C" />
+          <Text style={styles.navButtonText}>Hospitais</Text>
+        </TouchableOpacity>
+        
         <TouchableOpacity
           style={styles.navButton}
           onPress={async () => {
@@ -585,7 +591,7 @@ const HomePage = ({ navigation }: any) => {
               );
             }
           }}>
-          <Cog color="#6D122C" />
+          <Bolt color="#6D122C"/>
           <Text style={styles.navButtonText}>Definições</Text>
         </TouchableOpacity>
       </View>
@@ -743,7 +749,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   statsNumber: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: "bold",
     color: "white",
   },
@@ -778,19 +784,21 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    paddingVertical: 4,
-    paddingHorizontal: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    justifyContent: "flex-start",
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4,
+  }, 
+  recordTimeLabelText: {
+    color: "white",
+    fontSize: 12,
   },
   recordImage: {
     width: 120,
     height: 200,
     borderRadius: 10,
     marginBottom: 5,
-  },
-  recordTimeLabelText: {
-    color: "white",
-    fontSize: 12,
   },
   gameSection: {
     margin: 16,

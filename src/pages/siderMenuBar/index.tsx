@@ -22,6 +22,7 @@ import {
   Phone,
   HeartHandshake,
   LogIn,
+  Cross,
 } from "lucide-react-native";
 import { useAlert } from "../alertProvider/index";
 
@@ -224,7 +225,7 @@ const menuItems = [
   // { title: 'Verificar Relatos', icon: OctagonAlert, route: 'EvalsPage' },
   { title: "Notificações", icon: BellRing, route: "notifyPage" },
   { title: "Jogos", icon: Gamepad2, route: "GamingPage" },
-  { title: "Hospitais Próximos", icon: Hospital, route: "nearHospitalPage" },
+  { title: "Hospitais Próximos", icon: Cross, route: "nearHospitalPage" },
   { title: "Seja um Apoiador", icon: HeartHandshake, route: "ongPage" },
   { title: "Ajuda e Suporte", icon: CircleHelp, route: "helpPage" },
 ];
