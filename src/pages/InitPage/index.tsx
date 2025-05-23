@@ -40,6 +40,10 @@ import {
   Cross,
   ChevronRight,
   MapPlus,
+  Box,
+  Archive,
+  BellElectric,
+  Package2,
 } from "lucide-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
@@ -319,7 +323,7 @@ const HomePage = ({ navigation }: any) => {
                 );
               }
             }}>
-            <Bell color="#6D122C" />
+            <Package2 color="#6D122C" />
           </TouchableOpacity>
         </View>
       </View>
