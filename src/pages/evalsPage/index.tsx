@@ -62,7 +62,7 @@ const EvalsPage = ({ navigation }: any) => {
             "Não há mais zonas para repostar.\nMuito obrigado pela sua participação.",
             "Aviso"
           );
-          navigation.navigate("MapaPage");
+          navigation.navigate("initPage");
           return;
         }
         setDangerZone(responseData.dangerZone);
@@ -75,7 +75,7 @@ const EvalsPage = ({ navigation }: any) => {
           "Não há mais zonas para repostar.\nMuito obrigado pela sua participação.",
           "Aviso"
         );
-        navigation.navigate("MapaPage");
+        navigation.navigate("initPage");
       }
     } catch (error) {
       console.error("Erro ao buscar dados:", error);

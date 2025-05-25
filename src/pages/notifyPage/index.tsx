@@ -233,7 +233,7 @@ const NotifyPage = ({ navigation }) => {
     setModalVisible(true);
   };
 
-  return (
+   return (
     <View style={style.mainConteiner}>
       {/* Topo */}
       <View style={style.logoX}>
@@ -246,13 +246,22 @@ const NotifyPage = ({ navigation }) => {
       <View style={style.container}>
         <Text
           style={{
-            fontSize: 18,
+            fontSize: 23,
             fontWeight: "bold",
-            color: "#6D122C",
-            marginBottom: 20,
-            marginLeft: 15,
-          }}>
+            color: "#000",
+          }}
+        >
           Notificações
+        </Text>
+        <Text
+          style={{
+            fontSize: 15,
+            fontWeight: "regular",
+            color: "#999",
+            marginBottom: 25,
+          }}
+        >
+          Veja as notificações recebidas
         </Text>
 
         {loading ? (
@@ -267,18 +276,20 @@ const NotifyPage = ({ navigation }) => {
               notifications.map((item) => (
                 <TouchableOpacity
                   key={item.id}
-                  onPress={() => handleNotificationPress(item)}>
+                  onPress={() => handleNotificationPress(item)}
+                >
                   <View style={style.infCamp}>
-                    <Image source={item.image} style={style.notyType} />
+                    {/* <Image source={item.image} style={style.notyType} /> */}
                     <View style={style.styleText}>
                       <Text
                         numberOfLines={2}
                         ellipsizeMode="tail"
-                        style={style.notificationText}>
+                        style={style.notificationText}
+                      >
                         {item.describe || "Notificação sem descrição"}
                       </Text>
                       <View style={style.timeInfo}>
-                        <Clock color="#999" size={14} />
+                        <Clock color="#999" size={12} />
                         <Text style={style.timeText}>
                           {formatRelativeDate(item.createdAt)}
                         </Text>
@@ -297,7 +308,8 @@ const NotifyPage = ({ navigation }) => {
         visible={modalVisible}
         transparent
         animationType="slide"
-        onRequestClose={() => setModalVisible(false)}>
+        onRequestClose={() => setModalVisible(false)}
+      >
         <View style={style.modalOverlay}>
           <View style={style.modalContainer}>
             {selectedNotification && (
@@ -310,7 +322,8 @@ const NotifyPage = ({ navigation }) => {
                   style={[
                     style.modalText,
                     { fontWeight: "700", fontSize: 18, marginBottom: 8 },
-                  ]}>
+                  ]}
+                >
                   {selectedNotification.title ||
                     selectedNotification.describe ||
                     "Notificação"}
@@ -322,7 +335,8 @@ const NotifyPage = ({ navigation }) => {
                   <>
                     <TouchableOpacity
                       style={style.closeButton}
-                      onPress={() => navigation.navigate("GamingPage")}>
+                      onPress={() => navigation.navigate("GamingPage")}
+                    >
                       <Text style={style.closeButtonText}>Goo</Text>
                     </TouchableOpacity>
                   </>
@@ -330,7 +344,8 @@ const NotifyPage = ({ navigation }) => {
                   <>
                     <TouchableOpacity
                       style={style.closeButton}
-                      onPress={() => setModalVisible(false)}>
+                      onPress={() => setModalVisible(false)}
+                    >
                       <Text style={style.closeButtonText}>Fechar</Text>
                     </TouchableOpacity>
                   </>
@@ -343,5 +358,4 @@ const NotifyPage = ({ navigation }) => {
     </View>
   );
 };
-
 export default NotifyPage;

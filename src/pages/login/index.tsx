@@ -75,42 +75,43 @@ export default function Login({ navigation }: any) {
           body: JSON.stringify({ username: email, password: senha }),
         }
       );
-
       const data = await response.json();
-
+    
       if (response.ok) {
         ToastAndroid.show("Login feito com sucesso", ToastAndroid.LONG);
         await AsyncStorage.setItem("Token", data.token); // Salva o token no AsyncStorage
-       
+
         const resDetalhes = await fetch(
           "https://mapazzz.onrender.com/api/users/",
           {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization : "Bearer " + data.token,
+              Authorization: "Bearer " + data.token,
             },
           }
         );
         const dataDetalhes = await resDetalhes.json();
         if (resDetalhes.ok) {
           const userData = {
-            name: dataDetalhes.data.name,
-            address: dataDetalhes.data.address,
-            points : dataDetalhes.data.points || 0
+            name: dataDetalhes?.data?.name || "",
+            address: dataDetalhes?.data?.address || "",
+            points: dataDetalhes?.data?.points || 0
           };
+          
           await AsyncStorage.setItem("User", JSON.stringify(userData))
         }
         navigation.navigate("initPage");
       } else {
         await showAlert(
           "erro",
-          data.errors[0].message || "Erro ao fazer login",
+          data?.errors?.[0]?.message || data?.message || "Erro ao fazer login",
           "Erro"
         );
       }
     } catch (error) {
       await showAlert("erro", "Falha na conexão com o servidor", "Erro");
+      alert(error)
     } finally {
       setLoading(false); // Desativa o estado de carregamento após a resposta
     }

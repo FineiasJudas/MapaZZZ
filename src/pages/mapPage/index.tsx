@@ -36,6 +36,10 @@ import {
   CheckCheck,
   Cog,
   Search,
+  Bolt,
+  BadgeCheck,
+  RefreshCcwDot,
+  RotateCcw,
 } from "lucide-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ImprovedSideMenu from "../siderMenuBar";
@@ -404,7 +408,7 @@ const MapStyle = [
         showsUserLocation
         followsUserLocation={false}
         showsMyLocationButton={false}
-        loadingEnabled={true}
+        loadingEnabled={false}
         onPanDrag={hideUI}      // Esconde ao mover o mapa
         onPress={handleShowUI}
         showsCompass={false}
@@ -484,7 +488,7 @@ const MapStyle = [
             </TouchableOpacity>
             <Text style={styles.title}>Mapa</Text>
             <TouchableOpacity >
-              <Search color="#6D122C" />
+            <RotateCcw color="#6D122C" />
             </TouchableOpacity>
           </View>
         )}
@@ -557,7 +561,7 @@ const MapStyle = [
               }
             }}
           >
-            <CheckCheck color="#6D122C" />
+          <BadgeCheck color="#6D122C"/>
             <Text style={styles.navButtonText}>Verificar</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -574,7 +578,7 @@ const MapStyle = [
               }
             }}
           >
-            <Cog color="#6D122C" />
+             <Bolt color="#6D122C"/>
             <Text style={styles.navButtonText}>Definições</Text>
           </TouchableOpacity>
         </View>
@@ -623,7 +627,7 @@ const styles = StyleSheet.create({
     
   },
   title: {
-    color : '#6D122C',
+    color : '#1c1c1c',
     fontSize: 15,
     letterSpacing: 1,
     fontWeight: "bold",

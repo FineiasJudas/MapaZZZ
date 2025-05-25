@@ -194,7 +194,7 @@ const { showAlert } = useAlert();
       {!photo && (
         <TouchableOpacity
           style={styles.topLeftLogo}
-          onPress={() => navigation.navigate('reportPage')}
+          onPress={() => navigation.navigate('initPage')}
         >
           <X color="#ffffff" size={35}/>
           <TouchableOpacity onPress={toggleCameraFacing}>

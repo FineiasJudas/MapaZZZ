@@ -34,6 +34,16 @@ import {
   Snowflake,
   CloudFog,
   Thermometer,
+  ImageUp,
+  BadgeCheck,
+  Bolt,
+  Cross,
+  ChevronRight,
+  MapPlus,
+  Box,
+  Archive,
+  BellElectric,
+  Package2,
 } from "lucide-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
@@ -41,21 +51,24 @@ import logo from "../../assets/logo.png";
 import bySalonis from "../../assets/bySalōnis.png";
 import { style } from "./style";
 import useSocketNotification from "../utils/socketio";
+import { StatusBar } from 'react-native';
 import App from "../photo";
-
-import RNMinimizeApp from "react-native-minimize";
+import RNMinimizeApp from 'react-native-minimize';
+import { LinearGradient } from "expo-linear-gradient";
 
 const HomePage = ({ navigation }: any) => {
   const [weather, setWeather] = useState<{ temp: string; condition: string }>({
     temp: "--°C",
-    condition: "Carregando...",
+    condition: "Carregando..."
   });
   const { showAlert, showConfirmAlert } = useAlert();
   const [location, setLocation] = useState("Obtendo a localização...");
   const [loading, setLoading] = useState(false);
   const [logged, setLogged] = useState(false);
   const [username, setUsername] = useState("Visitante");
-  const [userPoints, setUserPoints] = useState(0);
+  const [userPoints, setUserPoints] = useState(formatPoints(0));
+  const [userLength, setUserLength] = useState(1);
+  const [dangerLength, setDangerLength] = useState(1);
   useSocketNotification();
 
   const weatherIcons = {
@@ -65,19 +78,23 @@ const HomePage = ({ navigation }: any) => {
     Thunderstorm: <Zap color="#F59E0B" size={18} />,
     Snow: <Snowflake color="#93C5FD" size={18} />,
     Mist: <CloudFog color="#6B7280" size={18} />,
-    default: <Thermometer color="#6D122C" size={18} />,
+    default: <Thermometer color="#6D122C" size={18} />
   };
 
   const weatherColors = {
-    hot: "#DC2626", // >30°C
-    warm: "#EA580C", // 20-30°C
-    mild: "#16A34A", // 10-19°C
-    cool: "#3B82F6", // 0-9°C
-    cold: "#1D4ED8", // <0°C
+    hot: "#DC2626",       // >30°C
+    warm: "#EA580C",      // 20-30°C
+    mild: "#16A34A",      // 10-19°C
+    cool: "#3B82F6",      // 0-9°C
+    cold: "#1D4ED8"       // <0°C
   };
 
+  function formatPoints(number) {
+    return number.toString().padStart(4, '0');
+  }
+
   const getTemperatureColor = (tempStr: string) => {
-    const temp = parseInt(tempStr.replace("°C", ""));
+    const temp = parseInt(tempStr.replace('°C', ''));
     if (temp >= 30) return weatherColors.hot;
     if (temp >= 20) return weatherColors.warm;
     if (temp >= 10) return weatherColors.mild;
@@ -88,7 +105,7 @@ const HomePage = ({ navigation }: any) => {
   // Clima request
   const getWeather = async (lat: number, lon: number) => {
     try {
-      const apiKey = "597816ec128b20a1e0d19827ed21a6f8";
+      const apiKey = '597816ec128b20a1e0d19827ed21a6f8';
       const response = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=pt`
       );
@@ -100,16 +117,13 @@ const HomePage = ({ navigation }: any) => {
 
         setWeather({
           temp: `${temp}°C`,
-          condition,
+          condition
         });
 
-        await AsyncStorage.setItem(
-          "@cachedWeather",
-          JSON.stringify({
-            temp: `${temp}°C`,
-            condition,
-          })
-        );
+        await AsyncStorage.setItem("@cachedWeather", JSON.stringify({
+          temp: `${temp}°C`,
+          condition
+        }));
       }
     } catch (error) {
       const cachedWeather = await AsyncStorage.getItem("@cachedWeather");
@@ -127,8 +141,11 @@ const HomePage = ({ navigation }: any) => {
   };
   const [regions, setRegions] = useState<DangerZone[]>([]);
 
-  const getFirstName = (name: string) => {
-    return name.split(" ")[0];
+  const getName = (name) => {
+    const first = name.split(" ")[0] || " ";
+    const last = name.split(" ")[1] || ' ';
+    const full = `${first} ${last}`;
+    return full;
   };
 
   const details = async () => {
@@ -142,15 +159,24 @@ const HomePage = ({ navigation }: any) => {
             Authorization: `Bearer ${Token}`,
           },
         });
-
+        
         const result = await response.json();
         if (response.ok) {
-          setUsername(getFirstName(result.data.name));
-          setUserPoints(result.data.points || 0);
+          const full_data = {
+            name: getName(result?.data?.name ?? ""),
+            points: formatPoints(result?.data?.points ?? 0),
+            utilizadores: result?.detalhes?.quantidade_users ?? 1,
+            zonas: result?.detalhes?.quantidade_danger_zones ?? 0
+          };
+          setDangerLength(result?.detalhes?.quantidade_danger_zones);
+          setUserLength(result?.detalhes?.quantidade_users);
+          setUsername(getName(result.data.name));
+          setUserPoints(formatPoints(result.data.points) || formatPoints(0));
           setRegions(result.detalhes.danger_zones);
+          await AsyncStorage.setItem("cachFullData", JSON.stringify(full_data));
           await AsyncStorage.setItem(
             "@cachedUsername",
-            getFirstName(result.data.name)
+            getName(result.data.name)
           );
           await AsyncStorage.setItem("@cachedUserPoints", result.data.points);
         }
@@ -183,9 +209,8 @@ const HomePage = ({ navigation }: any) => {
         const address = addressArray[0];
 
         // Exemplo: "Luanda, Angola"
-        const fullAddress = `${
-          address.district || address.city || address.subregion
-        }, ${address.country || address.region}`;
+        const fullAddress = `${address.district || address.city || address.subregion
+          }, ${address.country || address.region}`;
         setLocation(fullAddress);
         await AsyncStorage.setItem("@cachedLocation", fullAddress);
       } else {
@@ -214,10 +239,17 @@ const HomePage = ({ navigation }: any) => {
   useEffect(() => {
     (async () => {
       const User = await AsyncStorage.getItem("User");
+
       const Data = User ? JSON.parse(User) : null;
       if (Data) {
-        setUsername(getFirstName(Data.name));
-        setUserPoints(Data.points);
+        setUsername(getName(Data.name));
+        setUserPoints(formatPoints(Data.points));
+      }
+      const fullData = await AsyncStorage.getItem("cachFullData");
+      const detalhes = fullData ? JSON.parse(fullData) : null;
+      if (detalhes !== null) {
+        setDangerLength(detalhes.zonas);
+        setUserLength(detalhes.utilizadores);
       }
     })();
     checkPermission();
@@ -268,9 +300,24 @@ const HomePage = ({ navigation }: any) => {
   };
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor="#f5f5f5" barStyle="dark-content" />
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Início</Text>
+        <View style={styles.userInfoContainer}>
+          <TouchableOpacity
+            style={styles.userIcon}
+            onPress={() => navigation.navigate("ProfilePage")}>
+            <User color="#000" size={25} />
+          </TouchableOpacity>
+          <View>
+            <Text style={styles.welcomeText}>{username}</Text>
+            <TouchableOpacity
+              style={{ alignItems: "center", flexDirection: "row" }}>
+              <MapPin color="#6D122C" size={13} style={{ marginRight: 6 }} />
+              <Text style={styles.statLabel}>{location}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
         <View style={styles.headerButtons}>
           <TouchableOpacity style={styles.iconButton}>
             <Puzzle
@@ -300,46 +347,35 @@ const HomePage = ({ navigation }: any) => {
                   "Atenção"
                 );
               }
-            }}
-          >
-            <Bell color="#6D122C" />
+            }}>
+            <Package2 color="#6D122C" />
           </TouchableOpacity>
         </View>
       </View>
 
       <ScrollView style={styles.content}>
-        {/* Welcome Card */}
-        <View style={styles.welcomeCard}>
-          <View style={styles.userInfoContainer}>
-            <TouchableOpacity
-              style={styles.userIcon}
-              onPress={() => navigation.navigate("ProfilePage")}
-            >
-              <User color="#6D122C" size={30} />
-            </TouchableOpacity>
-            <View>
-              <Text style={styles.welcomeText}>Bem-vindo, {username}</Text>
-              <TouchableOpacity
-                style={{ alignItems: "center", flexDirection: "row" }}
-              >
-                <MapPin color="#6D122C" size={18} style={{ marginRight: 6 }} />
-                <Text style={styles.statLabel}>{location}</Text>
-              </TouchableOpacity>
-              <View style={styles.infoRow}>
-                {weatherIcons[weather.condition as keyof typeof weatherIcons] ||
-                  weatherIcons.default}
-                <Text
-                  style={[
-                    styles.infoText,
-                    { color: getTemperatureColor(weather.temp) },
-                  ]}
-                >
-                  {weather.temp} - {weather.condition}
-                </Text>
+        <View style={styles.headerInf}>
+          <View style={styles.ratInf}>
+            <View >
+              <Text style={{ fontWeight: "bold", fontSize: 45, color: '#6F132C', marginLeft: 3, letterSpacing: 2 }}>{userPoints}</Text>
+              <View style={{ paddingHorizontal: 8, paddingVertical: 3, backgroundColor: '#6F132C', borderRadius: 18 }}>
+                <Text style={{ fontSize: 12, color: '#fff' }}>Pontos acumulados</Text>
               </View>
+
+            </View>
+
+          </View>
+          <View style={{ alignItems: 'flex-end', marginBottom: 38 }}>
+            <View style={styles.infoRow}>
+              {weatherIcons[weather.condition as keyof typeof weatherIcons] || weatherIcons.default}
+              <Text style={[styles.infoText, { color: getTemperatureColor(weather.temp) }]}>
+                {weather.temp} - {weather.condition}
+              </Text>
             </View>
           </View>
-          <View style={styles.actionButtons}>
+        </View>
+        <View >
+          <View style={styles.actionButtonsCont}>
             <TouchableOpacity
               style={styles.actionButton}
               onPress={async () => {
@@ -352,21 +388,20 @@ const HomePage = ({ navigation }: any) => {
                     "Atenção"
                   );
                 }
-              }}
-            >
+              }}>
+              <Siren color="#000" />
               <Text style={styles.actionButtonText}>Reportar </Text>
-              <Camera color="#6D122C" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
+              <MapPlus color="#000" />
               <Text
                 style={styles.actionButtonText}
                 onPress={async () => {
                   navigation.navigate("MapaPage");
-                }}
-              >
+                }}>
+
                 Zonas de Risco
               </Text>
-              <TriangleAlert color="#6D122C" />
             </TouchableOpacity>
           </View>
         </View>
@@ -374,9 +409,9 @@ const HomePage = ({ navigation }: any) => {
         {/* Cartao de registros */}
         <View style={styles.statsContainer}>
           <View style={styles.statsCard}>
-            <Text style={styles.statsNumber}>+{userPoints || 0}</Text>
+            <Text style={styles.statsNumber}>+{userLength}</Text>
             <View style={styles.statsLabelContainer}>
-              <Text style={styles.statsLabel}>Pontos acumulados</Text>
+              <Text style={styles.statsLabel}>Utilizadores</Text>
             </View>
           </View>
           <View style={styles.statsCard}>
@@ -384,33 +419,32 @@ const HomePage = ({ navigation }: any) => {
               onPress={async () => {
                 navigation.navigate("MapaPage");
               }}
-              style={styles.statsNumber}
-            >
-              +115
-            </Text>
-            <View style={styles.statsLabelContainer}>
-              <Text style={styles.statsLabel}>Zonas de Risco</Text>
-            </View>
+              style={styles.statsNumber}>+{dangerLength}</Text>
+            <Text style={styles.statsLabel}>Zonas de Risco</Text>
           </View>
         </View>
 
-        {/* Registros recentes */}
         <Text style={styles.sectionTitle}>Registros Recentes</Text>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          style={styles.recentRecords}
-        >
+          style={styles.recentRecords}>
           {regions.map((item) => (
             <View key={item.id} style={styles.recordCard}>
               <Image
                 source={{ uri: item.image }}
-                style={styles.recordImage} // você vai definir essa estilização abaixo
+                style={styles.recordImage}
                 resizeMode="cover"
               />
-              <View style={styles.recordTimeLabel}>
+              <LinearGradient
+                colors={['rgba(0,0,0,0.85)', 'rgba(0,0,0,0.6)', 'transparent']}
+                start={{ x: 0.5, y: 1 }}
+                end={{ x: 0.5, y: 0 }}
+                style={styles.recordTimeLabel}
+              >
                 <Text style={styles.recordTimeLabelText}>{item.address}</Text>
-              </View>
+              </LinearGradient>
+
             </View>
           ))}
         </ScrollView>
@@ -423,9 +457,7 @@ const HomePage = ({ navigation }: any) => {
               style={styles.gameImage}
             />
             <View style={styles.gameTextContainer}>
-              <Text style={[styles.gameTitle]}>
-                Experimente o Malária Quiz!
-              </Text>
+              <Text style={styles.gameTitle}>Esperimente o Malária Quiz!</Text>
               <Text style={styles.gameSubtitle}>
                 Se divirta respondendo questões sobre a Malária e se torne num
                 grande mestre!
@@ -442,8 +474,7 @@ const HomePage = ({ navigation }: any) => {
                       "Atenção"
                     );
                   }
-                }}
-              >
+                }}>
                 <Text style={styles.startButtonText}>Iniciar agora</Text>
               </TouchableOpacity>
             </View>
@@ -477,8 +508,7 @@ const HomePage = ({ navigation }: any) => {
                       "Atenção"
                     );
                   }
-                }}
-              >
+                }}>
                 <Text style={styles.findButtonText}>Encontrar</Text>
               </TouchableOpacity>
             </View>
@@ -493,12 +523,9 @@ const HomePage = ({ navigation }: any) => {
               style={styles.hospitalImage}
             />
             <View style={styles.hospitalTextContainer}>
-              <Text style={styles.hospitalTitle}>
-                Previsão de Surtos de Malária
-              </Text>
+              <Text style={styles.hospitalTitle}>Previsão de Surtos de Malária</Text>
               <Text style={styles.hospitalSubtitle}>
-                Veja as áreas com risco de surto nos próximos dias e tome ações
-                preventivas!
+                Veja as áreas com risco de surto nos próximos dias e tome ações preventivas!
               </Text>
               <TouchableOpacity
                 style={styles.findButton}
@@ -512,13 +539,13 @@ const HomePage = ({ navigation }: any) => {
                       "Atenção"
                     );
                   }
-                }}
-              >
+                }}>
                 <Text style={styles.findButtonText}>Ver Previsão</Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
+
       </ScrollView>
 
       {/* Bottom Navigation */}
@@ -535,27 +562,9 @@ const HomePage = ({ navigation }: any) => {
                 "Atenção"
               );
             }
-          }}
-        >
+          }}>
           <User color="#6D122C" />
           <Text style={styles.navButtonText}>Perfil</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.navButton}
-          onPress={async () => {
-            if (logged) navigation.navigate("nearHospitalPage");
-            else {
-              navigation.navigate("Login");
-              await showAlert(
-                "aviso",
-                "Você precisa estar logado para acessar esta página, tente Logar",
-                "Atenção"
-              );
-            }
-          }}
-        >
-          <Hospital color="#6D122C" />
-          <Text style={styles.navButtonText}>Hospitais</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.navButton}
@@ -577,11 +586,27 @@ const HomePage = ({ navigation }: any) => {
                 "Atenção"
               );
             }
-          }}
-        >
-          <CheckCheck color="#6D122C" />
+          }}>
+          <BadgeCheck color="#6D122C" />
           <Text style={styles.navButtonText}>Verificar</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={async () => {
+            if (logged) navigation.navigate("nearHospitalPage");
+            else {
+              navigation.navigate("Login");
+              await showAlert(
+                "aviso",
+                "Você precisa estar logado para acessar esta página, tente Logar",
+                "Atenção"
+              );
+            }
+          }}>
+          <Cross color="#6D122C" />
+          <Text style={styles.navButtonText}>Hospitais</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.navButton}
           onPress={async () => {
@@ -594,9 +619,8 @@ const HomePage = ({ navigation }: any) => {
                 "Atenção"
               );
             }
-          }}
-        >
-          <Cog color="#6D122C" />
+          }}>
+          <Bolt color="#6D122C" />
           <Text style={styles.navButtonText}>Definições</Text>
         </TouchableOpacity>
       </View>
@@ -618,6 +642,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginTop: 4,
+    marginLeft: 4,
     gap: 6,
   },
   infoText: {
@@ -625,15 +650,15 @@ const styles = StyleSheet.create({
     color: "#666",
   },
   header: {
-    paddingTop: 18,
+    paddingTop: 14,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: "white",
+    backgroundColor: "#F5F5F5",
     borderBottomColor: "#e0e0e0",
-    elevation: 2,
+    elevation: 2
   },
   headerTitle: {
     color: "#6D122C",
@@ -673,14 +698,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   userIcon: {
-    width: 45,
-    height: 45,
+    width: 40,
+    height: 40,
     borderRadius: 30,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#E4E4E4",
     justifyContent: "center",
     alignItems: "center",
     marginRight: 12,
-    padding: 30,
+    padding: 25
   },
   userIconText: {
     fontSize: 20,
@@ -700,36 +725,60 @@ const styles = StyleSheet.create({
     marginTop: 16,
     gap: 8,
   },
+  actionButtonsCont: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    gap: 15,
+    backgroundColor: "#F5F5F5",
+    paddingBottom: 15
+  },
+  headerInf: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    gap: 8,
+    backgroundColor: "#F5F5F5",
+    paddingBottom: 15
+  },
+  ratInf: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: 'space-between'
+  },
   actionButton: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    gap: 3,
+    width: '48%',
+    gap: 10,
     paddingHorizontal: 16,
-    paddingVertical: 8,
-    backgroundColor: "white",
-    borderRadius: 20,
-    elevation: 4,
+    paddingVertical: 10,
+    backgroundColor: "#E4E4E4",
+    borderColor: '#D8D8D8',
+    borderRadius: 15,
+    borderWidth: 1,
   },
   actionButtonText: {
     fontSize: 14,
-    color: "#6D122C",
+    color: "##1C1C1C",
   },
   statsContainer: {
     flexDirection: "row",
-    margin: 16,
-    gap: 16,
+    gap: 1,
+    marginBottom: 14
   },
   statsCard: {
     flex: 1,
     backgroundColor: "#6D122C",
-    borderRadius: 12,
     padding: 16,
-    height: 120,
-    justifyContent: "space-between",
+    height: 60,
+    justifyContent: "center",
   },
   statsNumber: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: "bold",
     color: "white",
   },
@@ -764,19 +813,21 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    paddingVertical: 4,
-    paddingHorizontal: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    justifyContent: "flex-start",
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4,
+  },
+  recordTimeLabelText: {
+    color: "white",
+    fontSize: 12,
   },
   recordImage: {
     width: 120,
     height: 200,
     borderRadius: 10,
     marginBottom: 5,
-  },
-  recordTimeLabelText: {
-    color: "white",
-    fontSize: 12,
   },
   gameSection: {
     margin: 16,
@@ -868,7 +919,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderTopColor: "#e0e0e0",
     paddingVertical: 10,
-    elevation: 10,
+    elevation: 10
   },
   navButton: {
     flex: 1,
