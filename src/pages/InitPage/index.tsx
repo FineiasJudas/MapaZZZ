@@ -313,7 +313,7 @@ const HomePage = ({ navigation }: any) => {
             <Text style={styles.welcomeText}>{username}</Text>
             <TouchableOpacity
               style={{ alignItems: "center", flexDirection: "row" }}>
-              <MapPin color="#6D122C" size={13} style={{ marginRight: 6 }} />
+              <MapPin color="#6d1625" size={13} style={{ marginRight: 6 }} />
               <Text style={styles.statLabel}>{location}</Text>
             </TouchableOpacity>
           </View>
@@ -321,7 +321,7 @@ const HomePage = ({ navigation }: any) => {
         <View style={styles.headerButtons}>
           <TouchableOpacity style={styles.iconButton}>
             <Puzzle
-              color="#6D122C"
+              color="#6d1625"
               onPress={async () => {
                 if (logged) navigation.navigate("GamingPage");
                 else {
@@ -348,7 +348,7 @@ const HomePage = ({ navigation }: any) => {
                 );
               }
             }}>
-            <Package2 color="#6D122C" />
+            <Package2 color="#6d1625" />
           </TouchableOpacity>
         </View>
       </View>
@@ -357,8 +357,8 @@ const HomePage = ({ navigation }: any) => {
         <View style={styles.headerInf}>
           <View style={styles.ratInf}>
             <View >
-              <Text style={{ fontWeight: "bold", fontSize: 45, color: '#6F132C', marginLeft: 3, letterSpacing: 2 }}>{userPoints}</Text>
-              <View style={{ paddingHorizontal: 8, paddingVertical: 3, backgroundColor: '#6F132C', borderRadius: 18 }}>
+              <Text style={{ fontWeight: "bold", fontSize: 45, color: '#6d1625', marginLeft: 3, letterSpacing: 2 }}>{userPoints}</Text>
+              <View style={{ paddingHorizontal: 8, paddingVertical: 3, backgroundColor: '#6d1625', borderRadius: 18 }}>
                 <Text style={{ fontSize: 12, color: '#fff' }}>Pontos acumulados</Text>
               </View>
 
@@ -563,7 +563,7 @@ const HomePage = ({ navigation }: any) => {
               );
             }
           }}>
-          <User color="#6D122C" />
+          <User color="#6d1625" />
           <Text style={styles.navButtonText}>Perfil</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -587,7 +587,7 @@ const HomePage = ({ navigation }: any) => {
               );
             }
           }}>
-          <BadgeCheck color="#6D122C" />
+          <BadgeCheck color="#6d1625" />
           <Text style={styles.navButtonText}>Verificar</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -603,7 +603,7 @@ const HomePage = ({ navigation }: any) => {
               );
             }
           }}>
-          <Cross color="#6D122C" />
+          <Cross color="#6d1625" />
           <Text style={styles.navButtonText}>Hospitais</Text>
         </TouchableOpacity>
 
@@ -620,7 +620,7 @@ const HomePage = ({ navigation }: any) => {
               );
             }
           }}>
-          <Bolt color="#6D122C" />
+          <Bolt color="#6d1625" />
           <Text style={styles.navButtonText}>Definições</Text>
         </TouchableOpacity>
       </View>
@@ -661,7 +661,7 @@ const styles = StyleSheet.create({
     elevation: 2
   },
   headerTitle: {
-    color: "#6D122C",
+    color: "#6d1625",
     fontSize: 24,
     fontWeight: "bold",
   },
@@ -772,7 +772,7 @@ const styles = StyleSheet.create({
   },
   statsCard: {
     flex: 1,
-    backgroundColor: "#6D122C",
+    backgroundColor: "#6d1625",
     padding: 16,
     height: 60,
     justifyContent: "center",
@@ -860,7 +860,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   startButton: {
-    backgroundColor: "#6D122C",
+    backgroundColor: "#6d1625",
     borderRadius: 20,
     paddingVertical: 8,
     paddingHorizontal: 16,
@@ -903,7 +903,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   findButton: {
-    backgroundColor: "#6D122C",
+    backgroundColor: "#6d1625",
     borderRadius: 20,
     paddingVertical: 8,
     paddingHorizontal: 16,
@@ -928,7 +928,7 @@ const styles = StyleSheet.create({
   },
   navButtonText: {
     fontSize: 12,
-    color: "#6D122C",
+    color: "#6d1625",
   },
   statLabel: {
     fontSize: 12,

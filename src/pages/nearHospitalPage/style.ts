@@ -12,7 +12,7 @@ export const style = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginTop: 0,
-    width: "88%",
+    width: "92%",
     marginHorizontal: "auto",
   },
   conteinar: { marginTop: height * 0.03, paddingHorizontal: width * 0.08 },
@@ -21,7 +21,7 @@ export const style = StyleSheet.create({
   buttonEnviar: {
     width: "80%",
     height: 45,
-    backgroundColor: "#6D122C",
+    backgroundColor: "#6d1625",
     borderRadius: 10,
     justifyContent: "center",
     padding: 12,
@@ -41,7 +41,7 @@ export const style = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#6D122C",
+    color: "#6d1625",
     marginLeft: 0,
   },
   notyType: {

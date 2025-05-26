@@ -158,14 +158,24 @@ const OutbreakPredictorPage = ({ navigation }: any) => {
       <View style={styles.mainContainer}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <ArrowLeft color="#6D122C" size={30} />
+            <ArrowLeft color="#6d1625" size={30} />
           </TouchableOpacity>
           <Image source={Logo} style={styles.logo} />
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.title}>Previsão de Surtos - Zonas</Text>
+        <View style={styles.textContainer}>
+        <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    color: "#000",
+                  }}
+                >
+                  Previsão de Surtos
+                </Text>
+      </View>
         </View>
-        <ActivityIndicator size="large" color="#6D122C" style={{ marginTop: 80 }} />
+        <ActivityIndicator size="large" color="#6d1625" style={{ marginTop: 80 }} />
       </View>
     );
   }
@@ -174,12 +184,29 @@ const OutbreakPredictorPage = ({ navigation }: any) => {
     <View style={styles.mainContainer}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ArrowLeft color="#6D122C" size={30} />
+          <ArrowLeft color="#6d1625" size={30} />
         </TouchableOpacity>
         <Image source={Logo} style={styles.logo} />
       </View>
       <View style={styles.textContainer}>
-        <Text style={styles.title}>Previsão de Surtos - Zonas</Text>
+        <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    color: "#000",
+                  }}
+                >
+                  Previsão de Surtos
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: "regular",
+                    color: "#999",
+                    marginBottom: 10,
+                  }}
+                >
+                  Zonas com risco de surto de Malária</Text>
       </View>
 
       <FlatList
@@ -196,19 +223,19 @@ const styles = StyleSheet.create({
   mainContainer: { flex: 1, backgroundColor: '#f5f5f5' },
   textContainer: {
     marginTop: height * 0.03,
-    paddingHorizontal: width * 0.08,
+    paddingHorizontal: width * 0.09,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: width * 0.02,
+    paddingHorizontal: width * 0.04,
   },
   logo: { width: width * 0.085, height: width * 0.1, resizeMode: 'contain' },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#6D122C',
+    color: '#6d1625',
     marginLeft: width * 0.02,
     marginBottom: height * 0.015,
   },

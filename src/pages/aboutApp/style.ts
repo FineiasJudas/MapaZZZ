@@ -13,11 +13,11 @@ export const style = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'space-between',
       marginTop: height * 0.001,
-      paddingHorizontal: width * 0.04,
+      paddingHorizontal: width * 0.03,
     },
     imgLogo:{width: width * 0.085,
     height: width * 0.1, resizeMode: 'contain'},
-    content: {width: '85%', marginTop: 30},
+    content: {width: '80%', marginTop: 30},
         boxInput: {
         marginBottom: 15,
       },
@@ -57,6 +57,13 @@ export const style = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
       },
+        text: {
+          fontSize: 16,
+        },
+        link: {
+          color: 'blue',
+          textDecorationLine: 'underline'
+        }
       
 });
 

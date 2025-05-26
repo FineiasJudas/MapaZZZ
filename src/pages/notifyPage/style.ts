@@ -12,7 +12,7 @@ export const style = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginTop: 0,
-    width: "88%",
+    width: "92%",
     marginHorizontal: "auto",
   },
   logoImg: {
@@ -93,7 +93,7 @@ export const style = StyleSheet.create({
     marginBottom: 20,
   },
   closeButton: {
-    backgroundColor: "#6D122C",
+    backgroundColor: "#6d1625",
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 8,

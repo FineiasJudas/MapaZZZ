@@ -31,11 +31,11 @@ export const style = StyleSheet.create({
     fontSize: 20,
     fontWeight: "800",
     marginVertical: 20,
-    color: "#6D122C",
+    color: "#6d1625",
   },
   quizDivider: {
     elevation: 4,
-    shadowColor: "#6D122C",
+    shadowColor: "#6d1625",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
@@ -70,7 +70,7 @@ export const style = StyleSheet.create({
         elevation: 2,
   },
   submitButton: {
-    backgroundColor: "#6D122C",
+    backgroundColor: "#6d1625",
     width: "95%",
     paddingVertical: 14,
     borderRadius: 10,
@@ -117,7 +117,7 @@ export const style = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 15,
-    color: "#6D122C",
+    color: "#6d1625",
   },
   editorTextInput: {
     width: "100%",
@@ -152,7 +152,7 @@ export const style = StyleSheet.create({
   },
   saveButton: {
     flex: 1,
-    backgroundColor: "#6D122C",
+    backgroundColor: "#6d1625",
     paddingVertical: 10,
     marginLeft: 10,
     borderRadius: 10,
@@ -164,7 +164,7 @@ export const style = StyleSheet.create({
     fontWeight: "bold",
   },
   closeButton: {
-    backgroundColor: "#6D122C",
+    backgroundColor: "#6d1625",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,

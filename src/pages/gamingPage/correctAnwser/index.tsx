@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 14,
     borderWidth: 1,
-    borderColor: "#6D122C",
+    borderColor: "#6d1625",
     paddingHorizontal: 15,
     paddingVertical: 5,
     borderRadius: 20,
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     height: 300,
   },
   exitText: {
-    color: "#6D122C",
+    color: "#6d1625",
     fontSize: 16,
   },
   content: {

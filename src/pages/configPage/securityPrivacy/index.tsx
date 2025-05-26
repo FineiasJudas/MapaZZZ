@@ -64,7 +64,7 @@ const SettingsPage = ({ navigation} : any) => {
             <View style={styles.settingInfo}>
               <Text style={styles.settingLabel}>Permissões</Text>
             </View>
-            <ChevronRight size={20} color="#6D122C" />
+            <ChevronRight size={20} color="#6d1625" />
           </TouchableOpacity>
 
           {/* Login e Senha */}
@@ -75,7 +75,7 @@ const SettingsPage = ({ navigation} : any) => {
             <View style={styles.settingInfo}>
               <Text style={styles.settingLabel}>Login e Senha</Text>
             </View>
-            <ChevronRight size={20} color="#6D122C" />
+            <ChevronRight size={20} color="#6d1625" />
           </TouchableOpacity>
 
           {/* Eliminar Conta */}
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#e0e0e0',
   },
-  headerTitle: { color: '#6D122C', fontSize: 20, fontWeight: 'bold' },
+  headerTitle: { color: '#6d1625', fontSize: 18, fontWeight: 'bold' },
   settingsContainer: { flex: 1, paddingHorizontal: 16 },
   sectionTitle: {
     fontSize: 16,

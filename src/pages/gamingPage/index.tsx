@@ -96,7 +96,7 @@ const QuizStartScreen = ({ navigation }: any) => {
       {/* Main Content */}
       <View style={styles.content}>
         {/* Puzzle Icon */}
-        <Puzzle color="#6D122C" size={40} />
+        <Puzzle color="#6d1625" size={40} />
 
         {/* Title */}
         <Text style={styles.title}>Jogue Connosco</Text>
@@ -120,7 +120,7 @@ const QuizStartScreen = ({ navigation }: any) => {
               }
             >
               <LinearGradient
-                colors={['#6D122C', '#8A1538']}
+                colors={['#6d1625', '#8A1538']}
                 style={styles.gradient}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
@@ -131,7 +131,7 @@ const QuizStartScreen = ({ navigation }: any) => {
           </>
         ) : (
           <>
-            <ActivityIndicator size="small" color="#6D122C" />
+            <ActivityIndicator size="small" color="#6d1625" />
           </>
         )
 
@@ -140,7 +140,7 @@ const QuizStartScreen = ({ navigation }: any) => {
       </View>
 
       <Image
-        source={require('../../assets/quiz-background.png.png')} // Altere para o caminho correto
+        source={require('../../assets/quiz-background.png')} // Altere para o caminho correto
         style={styles.backgroundImage}
         resizeMode="contain"
       />
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 14,
     borderWidth: 1,
-    borderColor: '#6D122C',
+    borderColor: '#6d1625',
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 20,
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     height: 300,
   },
   exitText: {
-    color: '#6D122C',
+    color: '#6d1625',
     fontSize: 14,
   },
   content: {

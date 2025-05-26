@@ -33,7 +33,7 @@ export const style = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 10,
-        borderColor: '#6D122C',
+        borderColor: '#6d1625',
         elevation: 3,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
@@ -113,7 +113,7 @@ showPasswordButton: {
   top: '30%', // Ajuste conforme necessário para alinhar verticalmente
 },
 showPasswordText: {
-  color: '#6D122C', // Cor do tema
+  color: '#6d1625', // Cor do tema
   fontSize: 14,
 },
     // Botões de login e cadastro
@@ -155,7 +155,7 @@ showPasswordText: {
         width: 20,
         height: 20,
         borderWidth: 2,
-        borderColor: '#6D122C',
+        borderColor: '#6d1625',
         alignItems: 'center',
         justifyContent: 'center',
         marginRight: 8
@@ -163,7 +163,7 @@ showPasswordText: {
       checkboxChecked: {
         width: 12,
         height: 12,
-        backgroundColor: '#6D122C'
+        backgroundColor: '#6d1625'
       },
       checkboxText: {
         fontSize: 14
@@ -199,7 +199,7 @@ showPasswordText: {
         alignSelf: 'flex-end',
         paddingVertical: 8,
         paddingHorizontal: 16,
-        backgroundColor: '#6D122C',
+        backgroundColor: '#6d1625',
         borderRadius: 8
       },
       closeModalButtonText: {
@@ -207,7 +207,7 @@ showPasswordText: {
         fontWeight: 'bold'
       },
       linkText: {
-        color: '#6D122C',
+        color: '#6d1625',
         textDecorationLine: 'underline',
         fontWeight: 'bold'
       },

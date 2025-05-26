@@ -420,13 +420,13 @@ const MapStyle = [
         )}
         {destination && (
           <Marker coordinate={destination} title="Destino">
-            <Hospital color="#6D122C" />
+            <Hospital color="#6d1625" />
           </Marker>
         )}
         {routeCoordinates.length > 0 && (
           <Polyline
             coordinates={routeCoordinates}
-            strokeColor="#6D122C"
+            strokeColor="#6d1625"
             strokeWidth={4}
           />
         )}
@@ -484,11 +484,11 @@ const MapStyle = [
         {isUIVisible && !menuOpen && (
           <View style={styles.topBar}>
             <TouchableOpacity  onPress={toggleMenu}>
-              <Menu color="#6D122C" />
+              <Menu color="#6d1625" />
             </TouchableOpacity>
             <Text style={styles.title}>Mapa</Text>
             <TouchableOpacity >
-            <RotateCcw color="#6D122C" />
+            <RotateCcw color="#6d1625" />
             </TouchableOpacity>
           </View>
         )}
@@ -496,7 +496,7 @@ const MapStyle = [
         {isUIVisible && (
           <TouchableOpacity style={styles.recenterButton} 
           onPress={async () => { handleRecenter() }} >
-            <MapPinned color="#6D122C" style={style.recenterIcon} />
+            <MapPinned color="#6d1625" style={style.recenterIcon} />
           </TouchableOpacity>
         )}
 
@@ -519,7 +519,7 @@ const MapStyle = [
             style={styles.navButton}
             onPress={() => navigation.navigate("initPage")}
           >
-            <Home color="#6D122C" />
+            <Home color="#6d1625" />
             <Text style={styles.navButtonText}>Início</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -536,7 +536,7 @@ const MapStyle = [
               }
             }}
           >
-            <Siren color="#6D122C" />
+            <Siren color="#6d1625" />
             <Text style={styles.navButtonText}>Reportar</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -561,7 +561,7 @@ const MapStyle = [
               }
             }}
           >
-          <BadgeCheck color="#6D122C"/>
+          <BadgeCheck color="#6d1625"/>
             <Text style={styles.navButtonText}>Verificar</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -578,7 +578,7 @@ const MapStyle = [
               }
             }}
           >
-             <Bolt color="#6D122C"/>
+             <Bolt color="#6d1625"/>
             <Text style={styles.navButtonText}>Definições</Text>
           </TouchableOpacity>
         </View>

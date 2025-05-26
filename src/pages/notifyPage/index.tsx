@@ -238,7 +238,7 @@ const NotifyPage = ({ navigation }) => {
       {/* Topo */}
       <View style={style.logoX}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ArrowLeft color="#6D122C" size={30} style={{ marginTop: 6 }} />
+          <ArrowLeft color="#6d1625" size={30} style={{ marginTop: 6 }} />
         </TouchableOpacity>
         <Image source={logo} style={style.logoImg} />
       </View>
@@ -265,7 +265,7 @@ const NotifyPage = ({ navigation }) => {
         </Text>
 
         {loading ? (
-          <ActivityIndicator size="large" color="#6D122C" />
+          <ActivityIndicator size="large" color="#6d1625" />
         ) : (
           <ScrollView style={style.scroll}>
             {notifications.length === 0 ? (

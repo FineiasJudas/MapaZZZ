@@ -122,7 +122,7 @@ const HospitalListScreen = ({ navigation }: any) => {
     <SafeAreaView style={style.Container}>
       <View style={style.logoX}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ArrowLeft color="#6D122C" size={25} style={{ marginTop: 6 }} />
+          <ArrowLeft color="#6d1625" size={30} style={{ marginTop: 6 }} />
         </TouchableOpacity>
         <Image source={Logo} style={style.imgLogo} />
       </View>
@@ -187,7 +187,7 @@ const HospitalListScreen = ({ navigation }: any) => {
                       <Text
                         style={{
                           fontSize: 15,
-                          color: "#6D122C",
+                          color: "#6d1625",
 
                           fontWeight: "bold",
                           paddingHorizontal: 12,
@@ -214,7 +214,7 @@ const HospitalListScreen = ({ navigation }: any) => {
               width: "100%",
             }}
           >
-            <ActivityIndicator size="large" color="#6D122C" />
+            <ActivityIndicator size="large" color="#6d1625" />
           </View>
         )}
       </View>

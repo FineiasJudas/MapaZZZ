@@ -5,7 +5,6 @@ const screenWidth = Dimensions.get("window").width;
 export const style = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -28,7 +27,7 @@ export const style = StyleSheet.create({
     marginBottom: 20,
   },
   modalButton: {
-    backgroundColor: "#6D122C",
+    backgroundColor: "#6d1625",
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 10,
@@ -38,17 +37,17 @@ export const style = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderWidth: 1,
-    borderColor: "#6D122C",
+    borderColor: "#6d1625",
     borderRadius: 10,
   },
   modalButtonYes: {
-    backgroundColor: "#6D122C",
+    backgroundColor: "#6d1625",
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 10,
   },
   modalButtonTextCancel: {
-    color: "#6D122C",
+    color: "#6d1625",
     fontWeight: "bold",
     fontSize: 16,
   },

@@ -80,27 +80,27 @@ const SettingsPage = ({ navigation }: any) => {
           <TouchableOpacity style={styles.settingItem} 
           onPress={()  => ToastAndroid.show("Funcionalidade ou secção não disponível!", ToastAndroid.LONG)}>
             <View style={styles.settingInfo}>
-              <User size={22} color="#6D122C" style={styles.settingIcon} />
+              <User size={22} color="#6d1625" style={styles.settingIcon} />
               <Text style={styles.settingLabel}>Informações Pessoais</Text>
             </View>
-            <ChevronRight size={20} color="#6D122C" />
+            <ChevronRight size={20} color="#6d1625" />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate("securityPrivacy")}>
             <View style={styles.settingInfo}>
-              <Lock size={22} color="#6D122C" style={styles.settingIcon} />
+              <Lock size={22} color="#6d1625" style={styles.settingIcon} />
               <Text style={styles.settingLabel}>Segurança e Privacidade</Text>
             </View>
-            <ChevronRight size={20} color="#6D122C" />
+            <ChevronRight size={20} color="#6d1625" />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.settingItem}
           onPress={()  => ToastAndroid.show("Funcionalidade ou secção não disponível!", ToastAndroid.LONG)}>
             <View style={styles.settingInfo}>
-              <Shield size={22} color="#6D122C" style={styles.settingIcon} />
+              <Shield size={22} color="#6d1625" style={styles.settingIcon} />
               <Text style={styles.settingLabel}>Verificação de Conta</Text>
             </View>
-            <ChevronRight size={20} color="#6D122C" />
+            <ChevronRight size={20} color="#6d1625" />
           </TouchableOpacity>
         </View>
 
@@ -111,12 +111,12 @@ const SettingsPage = ({ navigation }: any) => {
           <TouchableOpacity style={styles.settingItem}
           onPress={()  => ToastAndroid.show("Funcionalidade ou secção não disponível!", ToastAndroid.LONG)}>
             <View style={styles.settingInfo}>
-              <Languages size={22} color="#6D122C" style={styles.settingIcon} />
+              <Languages size={22} color="#6d1625" style={styles.settingIcon} />
               <Text style={styles.settingLabel}>Idioma</Text>
             </View>
             <View style={styles.valueContainer}>
               <Text style={styles.valueText}>Português</Text>
-              <ChevronRight size={20} color="#6D122C" />
+              <ChevronRight size={20} color="#6d1625" />
             </View>
           </TouchableOpacity>
 
@@ -126,17 +126,17 @@ const SettingsPage = ({ navigation }: any) => {
             <View style={styles.settingInfo}>
               <HelpCircle
                 size={22}
-                color="#6D122C"
+                color="#6d1625"
                 style={styles.settingIcon}
               />
               <Text style={styles.settingLabel}>Ajuda e Suporte</Text>
             </View>
-            <ChevronRight size={20} color="#6D122C" />
+            <ChevronRight size={20} color="#6d1625" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.settingItem}>
+          <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate("AboutApp")}>
             <View style={styles.settingInfo}>
-              <Info size={22} color="#6D122C" style={styles.settingIcon} />
+              <Info size={22} color="#6d1625" style={styles.settingIcon} />
               <Text style={styles.settingLabel}>Sobre o App</Text>
             </View>
             <ChevronRight size={20} color="#" />
@@ -171,8 +171,8 @@ const styles = StyleSheet.create({
     borderBottomColor: "#e0e0e0",
   },
   headerTitle: {
-    color: "#6D122C",
-    fontSize: 24,
+    color: "#6d1625",
+    fontSize: 22,
     fontWeight: "bold",
   },
   settingsContainer: {

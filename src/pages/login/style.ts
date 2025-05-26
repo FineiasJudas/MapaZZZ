@@ -83,7 +83,7 @@ showPasswordButton: {
   top: '30%', // Ajuste conforme necessário para alinhar verticalmente
 },
 showPasswordText: {
-  color: '#6D122C', // Cor do tema
+  color: '#6d1625', // Cor do tema
   fontSize: 14,
 },
   loginButtonView: {
@@ -151,7 +151,7 @@ showPasswordText: {
     marginBottom: 20,
   },
   modalButton: {
-    backgroundColor: "#6D122C",
+    backgroundColor: "#6d1625",
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 10,

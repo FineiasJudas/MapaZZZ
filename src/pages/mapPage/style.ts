@@ -23,14 +23,14 @@ export const style = StyleSheet.create({
     elevation: 5,
   },
   traceRouteText: {
-    color: '#6D122C',
+    color: '#6d1625',
     fontWeight: 'bold',
     position: "absolute",
     left: 100,
     top:100,
   },
   clearRouteText: {
-    color: '#6D122C',
+    color: '#6d1625',
     fontWeight: 'bold',
   },
   menuButton: {
@@ -172,7 +172,7 @@ export const style = StyleSheet.create({
   },
   bottomBarText: {
     fontSize: 10,
-    color: '#6D122C',
+    color: '#6d1625',
   },
   activeTabItem: {
   // backgroundColor: '#ffffff22', // leve destaque de fundo

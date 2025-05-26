@@ -29,6 +29,7 @@ import CorretctA from "./src/pages/gamingPage/correctAnwser";
 import WrongA from "./src/pages/gamingPage/wrongAnwser";
 import OutbreakPredictorPage from "./src/pages/outbreakPredictorPage";
 import securityPrivacy from "./src/pages/configPage/securityPrivacy";
+import AboutApp from './src/pages/aboutApp'
 import { registerForPushNotificationsAsync } from "./src/pages/manegeNotification/index";
 import Toast from "react-native-toast-message";
 import * as Font from "expo-font";
@@ -201,6 +202,11 @@ export default function App() {
             <Stack.Screen
               name="ongPage"
               component={ongPage}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="AboutApp"
+              component={AboutApp}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>

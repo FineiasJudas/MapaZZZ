@@ -52,7 +52,7 @@ export const style = StyleSheet.create({
   },
   buttonEntrarText2: {
     position: "absolute",
-    color: "#6D122C",
+    color: "#6d1625",
     fontSize: 18,
     fontWeight: "bold",
     textAlign: "center",

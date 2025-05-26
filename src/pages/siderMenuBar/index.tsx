@@ -66,7 +66,7 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
                   style={styles.profileIcon}
                   onPress={() => navigation.navigate("ProfilePage")}>
                   {loading ? (
-                    <ActivityIndicator size="small" color="#6D122C" />
+                    <ActivityIndicator size="small" color="#6d1625" />
                   ) : (
                     <Text style={styles.profileIconText}>
                       {userName ? userName[0] : "U"}
@@ -75,7 +75,7 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
                 </TouchableOpacity>
                 <View style={styles.profileTextContainer}>
                   {loading ? (
-                    <ActivityIndicator size="small" color="#6D122C" />
+                    <ActivityIndicator size="small" color="#6d1625" />
                   ) : (
                     <Text style={styles.profileName}>{userName}</Text>
                   )}
@@ -103,7 +103,7 @@ const ImprovedSideMenu: React.FC<ImprovedSideMenuProps> = ({
                   }
                   activeOpacity={0.7}>
                   <View style={styles.menuItemIconContainer}>
-                    <item.icon size={22} color="#6D122C" />
+                    <item.icon size={22} color="#6d1625" />
                   </View>
                   <Text style={styles.menuItemText}>{item.title}</Text>
                 </TouchableOpacity>
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
   profileIconText: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#6D122C",
+    color: "#6d1625",
   },
   profileTextContainer: {
     flex: 1,
