@@ -28,7 +28,7 @@ const QuizStartScreen = ({ navigation }: any) => {
       >
         <Text style={styles.exitText}>voltar</Text>
       </TouchableOpacity>
-      
+       
       {/* Main Content */}
       <View style={styles.content}>
         {/* Puzzle Icon */}

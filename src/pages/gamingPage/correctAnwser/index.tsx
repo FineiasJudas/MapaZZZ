@@ -26,12 +26,13 @@ const CorrectAnwswerScreen = ({ navigation }: any) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="#f0f0f0" barStyle="dark-content" />
-      {/* Exit Button */}
+      {/* Exit Button 
       <TouchableOpacity 
       onPress={() => navigation.navigate("GamingPage")}
       style={styles.exitButton}>
         <Text style={styles.exitText}>voltar</Text>
       </TouchableOpacity>
+      */}
       {/* Main Content */}
       <View style={styles.content}>
         {/* Puzzle Icon */}
@@ -42,9 +43,21 @@ const CorrectAnwswerScreen = ({ navigation }: any) => {
 
         {/* Subtitle */}
         <Text style={styles.subtitle}>{recommendation}</Text>
+        {/* Start Button */}
+        <TouchableOpacity 
+                style={styles.startButton}
+                onPress={() => navigation.navigate("QuestionPage")}
+              >
+                <LinearGradient
+                  colors={['#177E51', '#177E51']}
+                  style={styles.gradient}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                >
+                  <Text style={styles.buttonText}>Continuar</Text>
+                </LinearGradient>
+              </TouchableOpacity>
       </View>
-  
-
 
       <Puzzle size={35} color="#FFFFFF" style={{}} />
       <Image
@@ -99,7 +112,7 @@ const styles = StyleSheet.create({
     color: "#177E51",
     textAlign: "center",
     lineHeight: 24,
-    marginBottom: 100,
+    marginBottom: 18,
     paddingHorizontal: 8,
     maxWidth: 350,
   },
@@ -123,7 +136,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    marginBottom: 140,
+    marginBottom: 160,
   },
 });
 

@@ -120,7 +120,7 @@ const QuizStartScreen = ({ navigation }: any) => {
               }
             >
               <LinearGradient
-                colors={['#6d1625', '#8A1538']}
+                colors={['#6d1625', '#6d1625']}
                 style={styles.gradient}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}

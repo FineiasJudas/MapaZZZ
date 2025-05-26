@@ -732,7 +732,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     gap: 15,
     backgroundColor: "#F5F5F5",
-    paddingBottom: 15
+    paddingBottom: 20
   },
   headerInf: {
     flexDirection: "row",
@@ -741,7 +741,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     gap: 8,
     backgroundColor: "#F5F5F5",
-    paddingBottom: 15
+    paddingBottom: 20
   },
   ratInf: {
     flexDirection: "row",
@@ -768,7 +768,7 @@ const styles = StyleSheet.create({
   statsContainer: {
     flexDirection: "row",
     gap: 1,
-    marginBottom: 14
+    marginBottom: 18
   },
   statsCard: {
     flex: 1,
