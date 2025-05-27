@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Image, Text, TextInput, View, TouchableOpacity, Dimensions, BackHandler, KeyboardAvoidingView, Platform, ScrollView, Linking } from "react-native";
 import { style } from "./style";
 import Logo from "../../assets/logo.png";
-import { ArrowLeft } from "lucide-react-native";
+import { ArrowLeft, Gamepad2, MapPinned, Package2 } from "lucide-react-native";
 
 export default function HelperPage({ navigation }: any) {
   useEffect(() => {
@@ -34,17 +34,35 @@ export default function HelperPage({ navigation }: any) {
       </View>
 
       <View style={style.content}>
-        <Text style={{ fontSize: 18, fontWeight: "bold", color: "#6d1625", marginBottom: 20}}>
-        Sobre o App
+        <Text style={{ fontSize: 18, fontWeight: "bold", color: "#333", }}>
+        Sobre o App{'\n'}
         </Text>
-        <ScrollView>
+        <ScrollView >
             <Text>
-                Alguma coisa tipo o App MapaZZZ feito pela Salōnis é fixe! {'\n'}{'\n'}
-                Site:{' '}
-                <Text style={style.link} onPress={handleLinkPress}>
-                https://salonis-mapzzz.vercel.app
+              O <Text style={style.text}>MapaZzz</Text> foi desenvolvido com o objetivo de contribuir para a prevenção da malária, combinando tecnologia, educação e participação comunitária.
+              Com uma interface simples e intuitiva, oferecemos funcionalidades como:{'\n'}{'\n'}
+
+              <Text style={style.text}>Mapa interativode risco</Text>, baseado em dados geográficos e relatos dos utilizadores;{'\n'}{'\n'}
+              <Text style={style.text}>Sistema de alertas personalizados</Text>, com notificações sobre surtos e condições locais;{'\n'}{'\n'}
+              <Text style={style.text}>Gamificação</Text>, incentivando comportamentos preventivos de forma lúdica e educativa.{'\n'}{'\n'}
+
+              O nosso compromisso é com a saúde pública, o empoderamento comunitário e a inovação tecnológica no combate à malária.{'\n'}{'\n'}
+              <Text style={style.text}>Versão</Text>: 1.0.0{'\n'}
+              <Text style={style.text}>Última atualização</Text>: Maio de 2025{'\n'}{'\n'}
+              <Text style={style.text}>Desenvilvido pela equipe Salōnis</Text>:{'\n'}{'\n'}
+
+              <Text style={style.text}>Ohana Bento</Text> – Líder, UI/UX Designer e Gestora de Projeto{'\n'}
+              <Text style={style.text}>Justino Soares</Text> – Co-líder e Desenvolvedor Full Stack{'\n'}
+              <Text style={style.text}>Josef Quicuma</Text> – Desenvolvedor Back-End{'\n'}
+              <Text style={style.text}>Marco Carvalho</Text> – Co-Gestor de Projeto e Desenvolvedor{'\n'}
+              <Text style={style.text}>Finéias Jilaiassule</Text> – Desenvolvedor Front-End{'\n'}
+              <Text style={style.text}>Mário Salembe</Text> – UI/UX Designer e Desenvolvedor Front-End{'\n'}{'\n'}
+
+              <Text style={style.text}>Site Oficial</Text>:{' '}
+              <Text style={style.link} onPress={handleLinkPress}>
+                          https://salonis-mapzzz.vercel.app
+              </Text>
         </Text>
-            </Text>
         </ScrollView>
       </View>
     </KeyboardAvoidingView>
